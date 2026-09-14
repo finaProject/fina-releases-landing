@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Fina Releases [01]: una tarde de demos en vivo de todo lo que entró a producción este semestre. Viernes 23 de octubre, 18:00, Caracas. Cupos limitados.">
+<meta name="theme-color" content="#020007">
+<meta name="color-scheme" content="dark">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fina">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Fina Releases [01]">
+<meta property="og:description" content="Fina Releases [01]: una tarde de demos en vivo de todo lo que entró a producción este semestre. Viernes 23 de octubre, 18:00, Caracas. Cupos limitados.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fina Releases [01]">
+<meta name="twitter:description" content="Fina Releases [01]: una tarde de demos en vivo de todo lo que entró a producción este semestre. Viernes 23 de octubre, 18:00, Caracas. Cupos limitados.">
+
+<title>Fina Releases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=DotGothic16&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ================================================================
+   FINA RELEASES
+   Paleta y tipografía: Fina Design System (fina-landing/tokens.css)
+   Estructura y ritmo: estilo Platanus Hack
+   ================================================================ */
+:root{
+  /* ---- BRAND (tokens.css) ---- */
+  --fina-purple:       #620AFF;
+  --fina-purple-700:   #5800E8;
+  --fina-purple-light: #AB5AFF;
+  --fina-pink:         #FD37BE;
+  --fina-orange:       #FFB470;
+  --fina-gradient:      linear-gradient(180deg,#AB5AFF 0%,#620AFF 98%);
+  --fina-gradient-rrss: linear-gradient(92deg,#FD37BE 0%,#FFB470 100%);
+  --color-info:        #00CFD5;
+  --color-success:     #00AC69;
+  --color-warning:     #F4A100;
+
+  /* ---- Derivados del gradiente hero #1F005D -> #020007 ---- */
+  --ink:       #070010;
+  --ink-deep:  #020007;
+  --ink-violet:#1F005D;
+  --surface:   rgba(98,10,255,.07);
+  --surface-2: rgba(171,90,255,.10);
+  --rule:      rgba(171,90,255,.22);
+  --rule-soft: rgba(171,90,255,.11);
+
+  --fg:        #FFFFFF;
+  --fg-dim:    #C3B4E8;
+  --fg-faint:  #8574B5;
+
+  --sans:      'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* secundaria: retícula de píxeles. IBM Plex Mono queda de respaldo
+     por si DotGothic16 no trae algún acento o el · del separador. */
+  --pixel:     'DotGothic16', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --wrap: 1180px;
+  --gut: clamp(20px,5vw,64px);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  background:var(--ink-deep);
+  color:var(--fg);
+  font-family:var(--sans);
+  font-size:15px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  font-variant-numeric:tabular-nums;
+  overflow-x:hidden;
+}
+
+/* fondo: gradiente hero de marca + resplandor violeta + retícula de hilos (RRSS) */
+.bg{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+.bg-grad{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(120% 70% at 50% -5%, #2E0080 0%, transparent 62%),
+    linear-gradient(180deg,#1F005D 0%,#0B0020 45%,#020007 100%);
+}
+.bg-wires{
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(171,90,255,.16) 0 1px, transparent 1px 78px),
+    repeating-linear-gradient(0deg, rgba(98,10,255,.13) 0 1px, transparent 1px 78px);
+  mask-image:radial-gradient(ellipse 110% 65% at 50% 0%, #000 12%, transparent 72%);
+}
+.bg-glow{
+  position:absolute; left:50%; top:-14vw; width:min(1000px,110vw); aspect-ratio:1;
+  transform:translateX(-50%);
+  background:radial-gradient(circle, rgba(253,55,190,.20) 0%, transparent 58%);
+  filter:blur(40px);
+}
+
+.page{ position:relative; z-index:1; }
+
+a{ color:inherit; }
+:focus-visible{ outline:2px solid var(--fina-pink); outline-offset:3px; }
+.wrap{ max-width:var(--wrap); margin:0 auto; padding-inline:var(--gut); }
+
+/* ---------- tipografía utilitaria ---------- */
+.eyebrow{
+  font-family:var(--pixel); font-size:11px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint); margin:0;
+}
+.eyebrow .on{
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+.h2{
+  font-family:var(--sans); font-weight:800;
+  font-size:clamp(28px,4.6vw,54px); line-height:1.02; letter-spacing:-.035em;
+  margin:0; text-wrap:balance;
+}
+/* el pop de marca: gradiente rosa -> naranjo de las piezas de RRSS */
+.grad{
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.lede{ max-width:60ch; color:var(--fg-dim); font-size:clamp(14px,1.5vw,17px); margin:0; }
+
+.band{ border-top:1px solid var(--rule-soft); padding-block:clamp(56px,8vw,104px); }
+.band-head{ display:flex; flex-direction:column; gap:14px; margin-bottom:clamp(34px,5vw,56px); }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:sticky; top:0; z-index:40;
+  background:rgba(7,0,16,.72); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--rule-soft);
+}
+.nav-in{
+  max-width:var(--wrap); margin:0 auto; padding:0 var(--gut);
+  height:58px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.mark{
+  display:inline-flex; align-items:center; gap:9px;
+  text-decoration:none; white-space:nowrap;
+  font-family:var(--sans); font-weight:900; font-size:21px; letter-spacing:-.035em;
+}
+/* la barra inclinada del isotipo de fina */
+.mark .slash{
+  width:13px; height:19px; flex:none;
+  background:var(--fina-gradient-rrss);
+  clip-path:polygon(38% 0,100% 0,62% 100%,0 100%);
+}
+.mark .rel{
+  font-family:var(--pixel); font-size:11px; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--fg-faint);
+  padding-left:9px; margin-left:2px; border-left:1px solid var(--rule);
+}
+.nav-links{ display:flex; align-items:center; gap:24px; }
+.nav-links a{
+  font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--fg-dim); text-decoration:none; transition:color .15s;
+}
+.nav-links a:hover{ color:var(--fina-pink); }
+@media (max-width:820px){ .nav-links .hide-s{ display:none; } .mark .rel{ display:none; } }
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn{
+  position:relative; display:inline-flex; align-items:center; gap:12px;
+  font-family:var(--pixel); font-weight:700;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  text-decoration:none; white-space:nowrap;
+  padding:14px 24px; border-radius:6px; border:0;
+  background:var(--fina-gradient-rrss); color:#12002B;
+  box-shadow:0 0 0 0 rgba(253,55,190,0);
+  transition:box-shadow .2s, transform .12s;
+}
+.btn:hover{ transform:translateY(-2px); box-shadow:0 10px 30px -8px rgba(253,55,190,.55); }
+.btn .arw{ transition:transform .15s; }
+.btn:hover .arw{ transform:translateX(3px); }
+.btn-sm{ padding:10px 16px; font-size:11px; }
+.btn-ghost{
+  background:transparent; color:var(--fg);
+  box-shadow:inset 0 0 0 1px var(--rule);
+}
+.btn-ghost:hover{ box-shadow:inset 0 0 0 1px var(--fina-purple-light); transform:none; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{ padding-top:clamp(48px,7vw,84px); padding-bottom:clamp(40px,6vw,64px); }
+.boot{
+  display:flex; align-items:center; gap:10px;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--fg-faint); margin-bottom:26px;
+}
+.boot .dot{
+  width:7px; height:7px; border-radius:50%; background:var(--color-info);
+  box-shadow:0 0 0 3px rgba(0,207,213,.2);
+  animation:pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{opacity:1} 50%{opacity:.25} }
+
+h1{
+  /* a 162px sobra peso: 600 lee igual de firme y respira.
+     Menos tracking negativo, que era parte del empaste. */
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(44px,12.4vw,162px);
+  line-height:.88; letter-spacing:-.03em;
+  margin:0; text-transform:lowercase;
+}
+h1 .n{
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.reveal{ animation:wipe .95s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes wipe{ from{ clip-path:inset(0 100% 0 0);} to{ clip-path:inset(0 0 0 0);} }
+
+.hero-meta{
+  margin-top:28px; padding-top:22px; border-top:1px solid var(--rule);
+  display:flex; flex-wrap:wrap; gap:10px 34px; align-items:baseline;
+  font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-dim);
+}
+.hero-meta b{ color:var(--fg); font-weight:600; }
+.hero-cta{ margin-top:30px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+.seats{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-faint); }
+.seats b{ color:var(--fina-orange); font-weight:700; }
+
+/* contador */
+.count{
+  margin-top:44px; border-radius:10px; overflow:hidden;
+  background:var(--surface); box-shadow:inset 0 0 0 1px var(--rule);
+  display:grid; grid-template-columns:repeat(4,1fr);
+}
+.count div{ padding:20px 14px 16px; text-align:center; box-shadow:inset 1px 0 0 var(--rule-soft); }
+.count div:first-child{ box-shadow:none; }
+.count .v{
+  display:block; font-family:var(--sans); font-weight:800;
+  font-size:clamp(28px,5.2vw,50px); line-height:1; letter-spacing:-.03em; color:var(--fg);
+}
+.count .k{ display:block; margin-top:10px; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--fg-faint); }
+.count.is-live{ box-shadow:inset 0 0 0 1px var(--color-info); }
+.count.is-live .v{ color:var(--color-info); }
+
+/* ============================================================
+   MARQUESINA
+   ============================================================ */
+.marquee{
+  background:var(--fina-gradient-rrss); color:#12002B;
+  overflow:hidden; display:flex;
+}
+.marquee-track{ display:flex; flex:0 0 auto; min-width:100%; animation:slide 30s linear infinite; }
+.marquee span{
+  font-family:var(--sans); font-weight:800;
+  font-size:13px; letter-spacing:.02em; text-transform:uppercase;
+  padding:10px 0; white-space:nowrap;
+}
+.marquee span::after{ content:"  ///  "; opacity:.42; }
+@keyframes slide{ to{ transform:translateX(-100%); } }
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+.stat{ padding:clamp(26px,4vw,40px) 0; border-top:1px solid var(--rule-soft); }
+.stat:first-child{ border-top:0; }
+.stat .v{
+  font-family:var(--sans); font-weight:700;
+  font-size:clamp(54px,9vw,108px); line-height:.85; letter-spacing:-.04em;
+  display:block;
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.stat .k{ margin-top:16px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-dim); }
+.stat .d{ margin-top:7px; font-size:13px; color:var(--fg-faint); max-width:28ch; }
+@media (min-width:760px){
+  .stat{ border-top:0; border-left:1px solid var(--rule-soft); padding-inline:clamp(20px,3vw,36px); }
+  .stat:first-child{ border-left:0; padding-left:0; }
+}
+
+/* ============================================================
+   CHANGELOG
+   ============================================================ */
+.log{ border-top:1px solid var(--rule); }
+.log-row{
+  display:grid; gap:4px 20px; grid-template-columns:auto 1fr;
+  padding:22px 0 20px; border-bottom:1px solid var(--rule-soft);
+  transition:background .15s;
+}
+.log-row:hover{ background:var(--surface); }
+.log-plus{
+  font-family:var(--sans); font-weight:800; font-size:20px; line-height:1.2;
+  grid-row:1/span 2;
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.log-top{ display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; }
+.log-name{
+  font-family:var(--sans); font-weight:800;
+  font-size:clamp(18px,2.2vw,25px); letter-spacing:-.025em; margin:0;
+}
+.ver{
+  font-family:var(--pixel); font-size:11px; font-weight:600; letter-spacing:.08em;
+  color:var(--fg-faint); border:1px solid var(--rule); border-radius:4px; padding:2px 7px;
+}
+.chip{
+  font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  padding:3px 9px; border-radius:999px; border:1px solid currentColor;
+}
+.chip-live{ color:var(--color-info); }
+.chip-beta{ color:var(--fina-orange); }
+.chip-next{ color:var(--fg-faint); }
+.log-desc{ margin:0; color:var(--fg-dim); font-size:14px; max-width:68ch; grid-column:2; }
+@media (min-width:880px){
+  .log-row{ grid-template-columns:auto minmax(0,1fr) minmax(0,.85fr); align-items:start; }
+  .log-desc{ grid-column:3; grid-row:1; padding-top:5px; }
+}
+
+/* ============================================================
+   LINE-UP
+   ============================================================ */
+.lineup{
+  display:grid; gap:1px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  background:var(--rule-soft); border-radius:12px; overflow:hidden;
+  box-shadow:inset 0 0 0 1px var(--rule);
+}
+.slot{ background:#0A0118; padding:clamp(22px,3vw,30px); display:flex; flex-direction:column; gap:10px; }
+.slot .idx{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint); }
+.slot h3{ font-family:var(--sans); font-weight:800; font-size:19px; letter-spacing:-.015em; margin:0; text-wrap:balance; }
+.slot .who{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--fina-purple-light); }
+.slot p{ margin:0; font-size:13px; color:var(--fg-dim); }
+
+/* ============================================================
+   CRONOGRAMA
+   ============================================================ */
+.sched{ border-top:1px solid var(--rule); }
+.slotrow{
+  display:grid; grid-template-columns:100px 1fr auto; gap:14px 22px; align-items:baseline;
+  padding:16px 0; border-bottom:1px solid var(--rule-soft);
+}
+.slotrow .t{ font-weight:600; font-size:14px; color:var(--fina-orange); }
+.slotrow .n{ font-size:15px; }
+.slotrow .d{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-faint); }
+@media (max-width:640px){
+  .slotrow{ grid-template-columns:76px 1fr; }
+  .slotrow .d{ grid-column:2; }
+}
+
+/* ============================================================
+   LUGAR + FAQ
+   ============================================================ */
+.two{ display:grid; gap:clamp(30px,5vw,64px); grid-template-columns:1fr; }
+@media (min-width:900px){ .two{ grid-template-columns:.9fr 1.1fr; } }
+
+.venue{
+  background:var(--surface); border-radius:12px;
+  box-shadow:inset 0 0 0 1px var(--rule);
+  padding:clamp(24px,3vw,34px);
+}
+.venue dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:14px 22px; font-size:14px; }
+.venue dt{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--fg-faint); padding-top:3px; }
+.venue dd{ margin:0; color:var(--fg); }
+
+details{ border-bottom:1px solid var(--rule-soft); }
+summary{
+  cursor:pointer; list-style:none; padding:16px 0;
+  display:flex; justify-content:space-between; gap:18px; align-items:center;
+  font-family:var(--sans); font-weight:800; font-size:16px; letter-spacing:-.01em;
+}
+summary::-webkit-details-marker{ display:none; }
+summary::after{ content:"+"; color:var(--fina-pink); font-size:20px; line-height:1; }
+details[open] summary::after{ content:"\2212"; }
+details p{ margin:0 0 18px; color:var(--fg-dim); font-size:14px; max-width:62ch; }
+
+/* ============================================================
+   CIERRE
+   ============================================================ */
+.close{
+  border-top:1px solid var(--rule);
+  background:linear-gradient(180deg, rgba(98,10,255,.16) 0%, rgba(2,0,7,0) 100%);
+  text-align:center;
+}
+.close .h2{ margin-bottom:18px; }
+.close .lede{ margin-inline:auto; text-align:center; }
+.close .btn{ margin-top:32px; }
+
+footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
+.foot{
+  display:flex; flex-wrap:wrap; gap:10px 26px; justify-content:space-between;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-faint);
+}
+.foot a{ text-decoration:none; }
+.foot a:hover{ color:var(--fina-pink); }
+
+/* ============================================================
+   SEDE — dibujo en alambre, plotteado en vivo sobre canvas
+   ============================================================ */
+.hero-viz{
+  position:relative;
+  margin-top:clamp(30px,4.5vw,50px);
+  border-radius:14px;
+  overflow:hidden;
+  aspect-ratio:16/7;
+  background:
+    radial-gradient(75% 110% at 50% 108%, rgba(98,10,255,.26) 0%, transparent 68%),
+    rgba(7,0,16,.5);
+  box-shadow:inset 0 0 0 1px var(--rule);
+}
+@media (max-width:700px){ .hero-viz{ aspect-ratio:4/3; } }
+.hero-viz canvas{ display:block; width:100%; height:100%; }
+
+/* esquinas de encuadre, guiño de plano técnico */
+.hero-viz::before,
+.hero-viz::after{
+  content:""; position:absolute; width:18px; height:18px; pointer-events:none;
+  border-color:var(--fina-purple-light); opacity:.55;
+}
+.hero-viz::before{ top:14px; left:14px; border-top:1px solid; border-left:1px solid; }
+.hero-viz::after{ bottom:14px; right:14px; border-bottom:1px solid; border-right:1px solid; }
+
+.viz-tag{
+  position:absolute; left:20px; bottom:16px; pointer-events:none;
+  font-family:var(--pixel); font-size:10px; font-weight:500;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--fg-faint);
+}
+.viz-tag b{
+  font-weight:600;
+  background:var(--fina-gradient-rrss);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+/* ============================================================
+   COHETE — cierre. El evento es un lanzamiento, literal.
+   ============================================================ */
+.close{ text-align:left; }
+.close-in{
+  display:grid; gap:clamp(24px,4vw,56px);
+  grid-template-columns:1fr; align-items:center;
+}
+@media (min-width:920px){ .close-in{ grid-template-columns:1fr .9fr; } }
+
+.close-copy{ display:flex; flex-direction:column; align-items:flex-start; gap:16px; }
+.close .h2{ margin-bottom:0; }
+.close .lede{ margin-inline:0; text-align:left; }
+.close .btn{ margin-top:10px; }
+.close-copy .eyebrow{ margin:0 !important; }
+
+.stage{
+  position:relative; width:100%;
+  aspect-ratio:1/1.02; min-height:340px;
+}
+.stage canvas{
+  display:block; width:100%; height:100%;
+  cursor:grab; touch-action:pan-y;
+}
+.stage canvas:active{ cursor:grabbing; }
+.stage .viz-tag{
+  left:50%; right:auto; bottom:4px;
+  transform:translateX(-50%); white-space:nowrap;
+}
+@media (max-width:919px){ .stage{ order:-1; aspect-ratio:1/1; } }
+
+/* ============================================================
+   PORTADA — el isotipo ocupa la pantalla completa y tapa lo que
+   viene debajo. Al scrollear, el fondo se disuelve y las dos
+   barras se abren hacia fuera.
+
+   Rendimiento: cada mitad es un SVG propio con sus defs, para
+   que el navegador la promocione a capa de composición y la
+   mueva en la GPU. El scroll no toca variables CSS heredadas
+   (invalidan todo el subárbol): se escriben transform y opacity
+   directo sobre tres nodos. El valor se persigue con un lerp
+   por tiempo, así que la rueda no se siente a saltos.
+   ============================================================ */
+@keyframes iso-breathe      { 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
+@keyframes iso-breathe-soft { 0%,100%{ opacity:.82 } 50%{ opacity:1 } }
+@keyframes iso-travel       { from{ stroke-dashoffset:0 } to{ stroke-dashoffset:-100 } }
+@keyframes gate-in          { from{ transform:scale(.94) } to{ transform:scale(1) } }
+@keyframes gate-bob         { 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(5px) } }
+
+.gate{
+  position:fixed; inset:0; z-index:60;
+  display:grid; place-items:center;
+  overflow:hidden;
+  pointer-events:none;          /* el scroll pasa de largo hacia la página */
+}
+.gate-bg{
+  position:absolute; inset:0;
+  will-change:opacity;
+  background:
+    radial-gradient(120% 70% at 50% -5%, #2E0080 0%, transparent 62%),
+    linear-gradient(180deg,#1F005D 0%,#0B0020 45%,#020007 100%),
+    #020007;
+}
+
+.iso-stack{
+  position:relative;
+  width:min(84vh, 88vw); aspect-ratio:1;
+  animation:gate-in 1.1s cubic-bezier(.22,.61,.36,1) both;
+}
+.iso-half{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  display:block; overflow:visible;
+  transform:translate3d(0,0,0);
+  will-change:transform, opacity;
+  backface-visibility:hidden;
+}
+
+.iso-breathe     { animation:iso-breathe 6s cubic-bezier(.22,.61,.36,1) infinite; }
+.iso-breathe-soft{ animation:iso-breathe-soft 6s cubic-bezier(.22,.61,.36,1) infinite; }
+.iso-travel-a    { animation:iso-travel 9s linear infinite; }
+.iso-travel-b    { animation:iso-travel 9s linear infinite; animation-delay:-4.5s; }
+
+/* mientras el dedo arrastra, el latido y el destello se congelan:
+   son los que obligan a recalcular los desenfoques en cada frame */
+.gate.is-scrubbing .iso-breathe,
+.gate.is-scrubbing .iso-breathe-soft,
+.gate.is-scrubbing .iso-travel-a,
+.gate.is-scrubbing .iso-travel-b{ animation-play-state:paused; }
+
+.gate-hint{
+  position:absolute; left:50%; bottom:clamp(26px,6vh,54px);
+  transform:translateX(-50%);
+  margin:0; will-change:opacity;
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  font-family:var(--pixel); font-size:12px; font-weight:400;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--fg-dim);
+  white-space:nowrap;
+}
+.gate-hint .chev{
+  width:22px; height:13px; fill:none;
+  stroke:var(--fina-pink); stroke-width:2.4;
+  stroke-linecap:round; stroke-linejoin:round;
+  animation:gate-bob 1.9s ease-in-out infinite;
+}
+
+.gate-spacer{ height:135vh; }
+.hero{ padding-top:clamp(26px,5vw,54px); }
+
+@media (prefers-reduced-motion:reduce){
+  .gate{ position:relative; z-index:1; height:auto; padding:clamp(30px,6vw,60px) 0; }
+  .gate-bg, .gate-hint{ display:none; }
+  .iso-stack{ width:min(300px,56vw); animation:none; }
+  .gate-spacer{ display:none; }
+}
+
+/* ============================================================
+   CAPA MAQUINA — lo que escribe el sistema, no una persona,
+   sigue en monoespaciada. Figtree lleva todo el lenguaje humano.
+   ============================================================ */
+.boot, .hero-meta, .seats, .count .k, .stat .k, .slot .idx,
+.slotrow .t, .slotrow .d, .venue dt, .chip, .ver, .foot, .mark .rel{
+  font-family:var(--pixel);
+}
+.btn{ font-family:var(--sans); font-weight:800; letter-spacing:.1em; }
+.nav-links a{ font-family:var(--sans); font-weight:700; letter-spacing:.09em; }
+.eyebrow{ font-family:var(--pixel); }
+
+/* ============================================================
+   CALIBRADO DE LA SECUNDARIA
+   DotGothic16 trae un solo peso (400): fijo ese en toda la capa
+   para que ningún navegador sintetice una negrita falsa. Sus
+   métricas son de fuente japonesa —ascendente y descendente
+   altas—, así que también ato la interlínea o los chips crecen.
+   ============================================================ */
+.eyebrow, .boot, .hero-meta, .seats, .count .k, .stat .k, .slot .idx,
+.slotrow .t, .slotrow .d, .venue dt, .chip, .ver, .foot, .mark .rel, .viz-tag{
+  font-weight:400; letter-spacing:.09em; line-height:1.35;
+}
+.eyebrow, .seats, .stat .k, .slot .idx, .venue dt, .foot, .mark .rel{ font-size:12px; }
+.count .k, .viz-tag{ font-size:11px; }
+.chip{ font-size:11px; line-height:1.2; }
+.ver, .slotrow .d{ font-size:12px; }
+.boot, .hero-meta{ font-size:13px; }
+.slotrow .t{ font-size:15px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  .reveal{ clip-path:none; }
+}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <div class="bg-grad"></div>
+  <div class="bg-wires"></div>
+  <div class="bg-glow"></div>
+</div>
+
+<div class="page">
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="mark" href="#top"><span class="slash"></span>fina<span class="rel">Releases</span></a>
+    <div class="nav-links">
+      <a class="hide-s" href="#release">El release</a>
+      <a class="hide-s" href="#lineup">Line-up</a>
+      <a class="hide-s" href="#agenda">Agenda</a>
+      <a class="btn btn-sm" href="#rsvp">Reservar cupo</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= PORTADA: pantalla completa ================= -->
+<div class="gate" id="gate">
+  <div class="gate-bg" id="gate-bg"></div>
+
+  <div class="iso-stack">
+    <svg class="iso-half" id="iso-a" viewBox="480 132 1400 1400" role="img" aria-label="Isotipo de Fina">
+      <defs>
+        <linearGradient id="gMain-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
+          <stop offset="0" stop-color="#620AFF"/><stop offset="0.5" stop-color="#AB5AFF"/><stop offset="1" stop-color="#FD37BE"/>
+          <animateTransform attributeName="gradientTransform" type="translate" values="-95,113; 95,-113; -95,113" dur="9s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        </linearGradient>
+        <linearGradient id="gHot-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
+          <stop offset="0" stop-color="#8B3BFF"/><stop offset="0.45" stop-color="#F6EEFF"/><stop offset="1" stop-color="#FD37BE"/>
+          <animateTransform attributeName="gradientTransform" type="translate" values="-280,334; 280,-334; -280,334" dur="7s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        </linearGradient>
+        <linearGradient id="gInner-a" gradientUnits="userSpaceOnUse" x1="1560" y1="330" x2="800" y2="1310">
+          <stop offset="0" stop-color="#121D50"/><stop offset="0.5" stop-color="#090620"/><stop offset="1" stop-color="#1B0A3C"/>
+        </linearGradient>
+        <filter id="fHalo-a" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="40"/></filter>
+        <filter id="fSheath-a" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>
+        <filter id="fTravel-a" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="12"/></filter>
+        <filter id="fBand-a" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="8"/></filter>
+        <filter id="fHair-a" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="2.6"/></filter>
+        <filter id="fInner-a" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feMorphology operator="erode" radius="10"/><feGaussianBlur stdDeviation="26"/></filter>
+      </defs>
+      <g stroke="none" fill="url(#gInner-a)" filter="url(#fInner-a)" opacity=".9"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z"/></g>
+      <g class="iso-breathe"><g fill="none" filter="url(#fHalo-a)" opacity=".5"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gMain-a)" stroke-width="110"/></g></g>
+      <g class="iso-breathe-soft"><g fill="none" filter="url(#fSheath-a)" opacity=".8"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#FD37BE" stroke-width="66"/></g></g>
+      <g fill="none" filter="url(#fBand-a)"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gMain-a)" stroke-width="42"/></g>
+      <g fill="none" filter="url(#fHair-a)" opacity=".9"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#C9A6FF" stroke-width="21"/></g>
+      <g fill="none"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gHot-a)" stroke-width="9.5"/></g>
+      <g fill="none" opacity=".55" transform="translate(7,-8.4)" style="mix-blend-mode:screen"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#FFFFFF" stroke-width="3.6"/></g>
+      <g fill="none" filter="url(#fTravel-a)" opacity=".8" style="mix-blend-mode:screen"><path class="iso-travel-a" d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" pathLength="100" stroke="#C9A6FF" stroke-width="46" stroke-linecap="round" stroke-dasharray="14 86"/></g>
+      <g fill="none" filter="url(#fHair-a)" opacity=".95" style="mix-blend-mode:screen"><path class="iso-travel-a" d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" pathLength="100" stroke="#F6EEFF" stroke-width="21" stroke-linecap="round" stroke-dasharray="8 92"/></g>
+    </svg>
+
+    <svg class="iso-half" id="iso-b" viewBox="480 132 1400 1400" aria-hidden="true">
+      <defs>
+        <linearGradient id="gMain-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
+          <stop offset="0" stop-color="#FD37BE"/><stop offset="0.5" stop-color="#FF7CA0"/><stop offset="1" stop-color="#FFB470"/>
+          <animateTransform attributeName="gradientTransform" type="translate" values="95,-113; -95,113; 95,-113" dur="9s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        </linearGradient>
+        <linearGradient id="gHot-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
+          <stop offset="0" stop-color="#FD37BE"/><stop offset="0.45" stop-color="#FFF6EC"/><stop offset="1" stop-color="#FFB470"/>
+          <animateTransform attributeName="gradientTransform" type="translate" values="280,-334; -280,334; 280,-334" dur="7s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        </linearGradient>
+        <linearGradient id="gInner-b" gradientUnits="userSpaceOnUse" x1="1560" y1="330" x2="800" y2="1310">
+          <stop offset="0" stop-color="#121D50"/><stop offset="0.5" stop-color="#090620"/><stop offset="1" stop-color="#1B0A3C"/>
+        </linearGradient>
+        <filter id="fHalo-b" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="40"/></filter>
+        <filter id="fSheath-b" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>
+        <filter id="fTravel-b" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="12"/></filter>
+        <filter id="fBand-b" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="8"/></filter>
+        <filter id="fHair-b" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="2.6"/></filter>
+        <filter id="fInner-b" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feMorphology operator="erode" radius="10"/><feGaussianBlur stdDeviation="26"/></filter>
+      </defs>
+      <g stroke="none" fill="url(#gInner-b)" filter="url(#fInner-b)" opacity=".9"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z"/></g>
+      <g class="iso-breathe"><g fill="none" filter="url(#fHalo-b)" opacity=".5"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gMain-b)" stroke-width="110"/></g></g>
+      <g class="iso-breathe-soft"><g fill="none" filter="url(#fSheath-b)" opacity=".8"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FD37BE" stroke-width="66"/></g></g>
+      <g fill="none" filter="url(#fBand-b)"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gMain-b)" stroke-width="42"/></g>
+      <g fill="none" filter="url(#fHair-b)" opacity=".9"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FFD2B0" stroke-width="21"/></g>
+      <g fill="none"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gHot-b)" stroke-width="9.5"/></g>
+      <g fill="none" opacity=".55" transform="translate(7,-8.4)" style="mix-blend-mode:screen"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FFFFFF" stroke-width="3.6"/></g>
+      <g fill="none" filter="url(#fTravel-b)" opacity=".8" style="mix-blend-mode:screen"><path class="iso-travel-b" d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" pathLength="100" stroke="#FFC9A6" stroke-width="46" stroke-linecap="round" stroke-dasharray="14 86"/></g>
+      <g fill="none" filter="url(#fHair-b)" opacity=".95" style="mix-blend-mode:screen"><path class="iso-travel-b" d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" pathLength="100" stroke="#FFF6EC" stroke-width="21" stroke-linecap="round" stroke-dasharray="8 92"/></g>
+    </svg>
+  </div>
+
+  <p class="gate-hint" id="gate-hint">
+    Scrollea para descubrir
+    <svg class="chev" viewBox="0 0 24 14" aria-hidden="true"><path d="M2 2 L12 12 L22 2"/></svg>
+  </p>
+</div>
+<div class="gate-spacer" id="gate-spacer"></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero wrap" id="top">
+  <p class="boot"><span class="dot"></span> Registro abierto · build 2026.10</p>
+
+  <h1 class="reveal">fina releases <span class="n">[01]</span></h1>
+
+  <div class="hero-meta">
+    <span><b>23.10.2026</b> · Viernes</span>
+    <span><b>18:00</b> — 21:00 hrs</span>
+    <span><b>Caracas</b> · presencial</span>
+  </div>
+
+  <div class="hero-cta">
+    <a class="btn" href="#rsvp">Reservar mi cupo <span class="arw">&#8594;</span></a>
+    <span class="seats"><b>120</b> cupos · sin costo</span>
+  </div>
+
+  <figure class="hero-viz">
+    <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
+    <figcaption class="viz-tag">// sede · <b>caracas</b> · 09 pisos</figcaption>
+  </figure>
+
+  <div class="count" id="count" aria-label="Cuenta regresiva al evento">
+    <div><span class="v" id="c-d">00</span><span class="k">Días</span></div>
+    <div><span class="v" id="c-h">00</span><span class="k">Horas</span></div>
+    <div><span class="v" id="c-m">00</span><span class="k">Min</span></div>
+    <div><span class="v" id="c-s">00</span><span class="k">Seg</span></div>
+  </div>
+</header>
+
+<!-- ================= MARQUESINA ================= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span><span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span>
+  </div>
+  <div class="marquee-track">
+    <span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span><span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span>
+  </div>
+</div>
+
+<!-- ================= QUÉ ES + STATS ================= -->
+<section class="band wrap" style="border-top:0;">
+  <div class="band-head">
+    <p class="eyebrow">// 00 &nbsp;Qué es esto</p>
+    <h2 class="h2">Una tarde. Todo lo que <span class="grad">construimos</span> este semestre.</h2>
+    <p class="lede">Fina Releases es el evento donde mostramos, en vivo y sin PowerPoint, cada cosa nueva que entró a producción. El equipo que escribió el código lo demuestra y responde preguntas ahí mismo.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="v">06</span>
+      <div class="k">Releases</div>
+      <p class="d">Seis funcionalidades nuevas, demostradas contra datos reales.</p>
+    </div>
+    <div class="stat">
+      <span class="v">90'</span>
+      <div class="k">De demos</div>
+      <p class="d">Quince minutos por release. Cronómetro visible en pantalla.</p>
+    </div>
+    <div class="stat">
+      <span class="v">120</span>
+      <div class="k">Cupos</div>
+      <p class="d">Contadores, founders y equipos de finanzas. Por orden de llegada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHANGELOG ================= -->
+<section class="band wrap" id="release">
+  <div class="band-head">
+    <p class="eyebrow">// 01 &nbsp;En este release</p>
+    <h2 class="h2">Changelog <span class="grad">[en vivo]</span></h2>
+    <p class="lede">El orden del día es literalmente nuestro changelog. Cada línea es una demo.</p>
+  </div>
+
+  <div class="log">
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">Conciliación automática</h3>
+        <span class="ver">v2.6.0</span>
+        <span class="chip chip-live">En producción</span>
+      </div>
+      <p class="log-desc">Cruzamos el estado de cuenta bancario contra el libro mayor sin intervención manual. Lo corremos en vivo sobre un mes cerrado.</p>
+    </article>
+
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">Ingesta de facturas en tiempo real</h3>
+        <span class="ver">v2.6.0</span>
+        <span class="chip chip-live">En producción</span>
+      </div>
+      <p class="log-desc">Las facturas electrónicas entran al sistema apenas se emiten. Se acabó la carga por lotes a fin de mes.</p>
+    </article>
+
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">Cierre mensual en un tablero</h3>
+        <span class="ver">v2.6.1</span>
+        <span class="chip chip-live">En producción</span>
+      </div>
+      <p class="log-desc">Qué falta, quién lo tiene y cuánto lleva detenido. Un solo estado compartido entre el cliente y el contador.</p>
+    </article>
+
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">Clasificación asistida de gastos</h3>
+        <span class="ver">v2.7.0</span>
+        <span class="chip chip-beta">Beta abierta</span>
+      </div>
+      <p class="log-desc">Propone la cuenta contable y aprende de tus correcciones. Mostramos la tasa de acierto real, incluidos los errores.</p>
+    </article>
+
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">API pública</h3>
+        <span class="ver">v2.7.0</span>
+        <span class="chip chip-beta">Beta abierta</span>
+      </div>
+      <p class="log-desc">Lee tus movimientos, balances y documentos desde donde quieras. Demo escribiendo un script en pantalla.</p>
+    </article>
+
+    <article class="log-row">
+      <div class="log-plus">+</div>
+      <div class="log-top">
+        <h3 class="log-name">Multi-empresa</h3>
+        <span class="ver">v2.8.0</span>
+        <span class="chip chip-next">Próximo</span>
+      </div>
+      <p class="log-desc">Un login, todas tus sociedades, consolidado incluido. Adelanto de lo que viene y para cuándo.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ================= LINE-UP ================= -->
+<section class="band wrap" id="lineup">
+  <div class="band-head">
+    <p class="eyebrow">// 02 &nbsp;Line-up</p>
+    <h2 class="h2">Presenta quien lo <span class="grad">construyó</span>.</h2>
+    <p class="lede">Sin gerentes leyendo láminas. Cada demo la hace la persona que escribió el código o diseñó el flujo.</p>
+  </div>
+
+  <div class="lineup">
+    <div class="slot">
+      <span class="idx">01 / apertura</span>
+      <h3>Dónde está Fina hoy</h3>
+      <span class="who">Por anunciar</span>
+      <p>Diez minutos de contexto: qué cambió en el producto y por qué.</p>
+    </div>
+    <div class="slot">
+      <span class="idx">02 / demo</span>
+      <h3>Conciliación y facturación</h3>
+      <span class="who">Por anunciar</span>
+      <p>El bloque de automatización, corriendo sobre un cierre real.</p>
+    </div>
+    <div class="slot">
+      <span class="idx">03 / demo</span>
+      <h3>Clasificación &amp; API</h3>
+      <span class="who">Por anunciar</span>
+      <p>Lo que está en beta, con sus límites a la vista.</p>
+    </div>
+    <div class="slot">
+      <span class="idx">04 / cierre</span>
+      <h3>Roadmap y preguntas</h3>
+      <span class="who">Por anunciar</span>
+      <p>Micrófono abierto. Respondemos todo lo que se pueda responder.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AGENDA ================= -->
+<section class="band wrap" id="agenda">
+  <div class="band-head">
+    <p class="eyebrow">// 03 &nbsp;Agenda</p>
+    <h2 class="h2">Viernes 23 de octubre<span class="grad">.</span></h2>
+  </div>
+
+  <div class="sched">
+    <div class="slotrow"><span class="t">18:00</span><span class="n">Acreditación y café</span><span class="d">30 min</span></div>
+    <div class="slotrow"><span class="t">18:30</span><span class="n">Apertura — dónde está Fina hoy</span><span class="d">10 min</span></div>
+    <div class="slotrow"><span class="t">18:40</span><span class="n">Bloque 1 — automatización (3 releases)</span><span class="d">45 min</span></div>
+    <div class="slotrow"><span class="t">19:25</span><span class="n">Pausa</span><span class="d">15 min</span></div>
+    <div class="slotrow"><span class="t">19:40</span><span class="n">Bloque 2 — beta y plataforma (3 releases)</span><span class="d">45 min</span></div>
+    <div class="slotrow"><span class="t">20:25</span><span class="n">Roadmap, preguntas y cierre</span><span class="d">25 min</span></div>
+    <div class="slotrow"><span class="t">20:50</span><span class="n">Después: cervezas y conversación</span><span class="d">Libre</span></div>
+  </div>
+</section>
+
+<!-- ================= LUGAR + FAQ ================= -->
+<section class="band wrap">
+  <div class="two">
+    <div>
+      <div class="band-head">
+        <p class="eyebrow">// 04 &nbsp;Dónde</p>
+        <h2 class="h2">El lugar<span class="grad">.</span></h2>
+      </div>
+      <div class="venue">
+        <dl>
+          <dt>Sede</dt><dd>Oficinas Fina<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
+          <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
+          <dt>Fecha</dt><dd>Viernes 23 de octubre, 2026</dd>
+          <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
+          <dt>Costo</dt><dd>Sin costo, con registro previo</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div>
+      <div class="band-head">
+        <p class="eyebrow">// 05 &nbsp;Preguntas</p>
+        <h2 class="h2">Lo que siempre nos <span class="grad">preguntan</span>.</h2>
+      </div>
+      <details open>
+        <summary>¿Para quién es?</summary>
+        <p>Contadores, equipos de finanzas, founders y cualquiera que opere la contabilidad de una empresa. No hace falta ser cliente de Fina.</p>
+      </details>
+      <details>
+        <summary>¿Hay que saber de tecnología?</summary>
+        <p>No. Son demos de producto, no charlas técnicas. El bloque de API es el único con código en pantalla y se explica desde cero.</p>
+      </details>
+      <details>
+        <summary>¿Se transmite?</summary>
+        <p>Grabamos y publicamos las demos después. La sesión de preguntas es solo presencial.</p>
+      </details>
+      <details>
+        <summary>¿Puedo llevar a alguien de mi equipo?</summary>
+        <p>Sí. Cada persona reserva su propio cupo para que podamos contar bien los asientos.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si me inscribo y no puedo ir?</summary>
+        <p>Avísanos y liberamos tu cupo. Hay lista de espera.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CIERRE ================= -->
+<section class="band close" id="rsvp">
+  <div class="wrap close-in">
+    <div class="close-copy">
+      <p class="eyebrow">// 06 &nbsp;<span class="on">Registro abierto</span></p>
+      <h2 class="h2">Son <span class="grad">120</span> cupos.</h2>
+      <p class="lede">Reserva en treinta segundos. Te llega la confirmación al correo con la dirección exacta.</p>
+      <a class="btn" href="#" id="rsvp-link">Reservar mi cupo <span class="arw">&#8594;</span></a>
+      <p class="eyebrow">Viernes 23.10.2026 · 18:00 · Caracas</p>
+    </div>
+
+    <div class="stage" id="stage">
+      <span class="viz-tag">// arrastra para girar · clic para <b>despegar</b></span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <span>Fina Releases [01] — 2026</span>
+    <span><a href="mailto:hola@finapartner.com">hola@finapartner.com</a></span>
+    <span>Hecho en Caracas</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  /* === EDITAR: fecha y hora del evento (ISO con offset de Chile) === */
+  var TARGET = new Date("2026-10-23T18:00:00-04:00").getTime();
+
+  var box = document.getElementById("count");
+  var d = document.getElementById("c-d"), h = document.getElementById("c-h"),
+      m = document.getElementById("c-m"), s = document.getElementById("c-s");
+  var pad = function(n){ return String(n).padStart(2,"0"); };
+
+  function tick(){
+    var left = TARGET - Date.now();
+    if (left <= 0){
+      box.classList.add("is-live");
+      d.textContent = h.textContent = m.textContent = s.textContent = "00";
+      d.parentNode.querySelector(".k").textContent = "En vivo";
+      return;
+    }
+    var t = Math.floor(left/1000);
+    d.textContent = pad(Math.floor(t/86400));
+    h.textContent = pad(Math.floor(t/3600)%24);
+    m.textContent = pad(Math.floor(t/60)%60);
+    s.textContent = pad(t%60);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+
+<script>
+/* ============================================================
+   SEDE — el edificio se dibuja solo, de abajo hacia arriba.
+   Geometría procedural + proyección en perspectiva. Sin librerías.
+   ============================================================ */
+(function(){
+  var cv = document.getElementById("bld");
+  if(!cv || !cv.getContext) return;
+  var ctx = cv.getContext("2d");
+  var reduce = window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  /* ruido determinista: el temblor de línea no parpadea entre frames */
+  function rnd(i){ var x = Math.sin(i*127.1 + 311.7) * 43758.5453; return x - Math.floor(x); }
+
+  /* ---------- geometría: volúmenes, losas y montantes ---------- */
+  var S = [];
+  function push(a,b,w){ S.push({a:a,b:b,w:w}); }
+
+  function box(x0,x1,y0,y1,z0,z1,floors,step){
+    var c = [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],
+             [x0,y1,z0],[x1,y1,z0],[x1,y1,z1],[x0,y1,z1]];
+    var E = [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]];
+    for(var e=0;e<12;e++) push(c[E[e][0]], c[E[e][1]], 1.5);
+
+    for(var f=1; f<floors; f++){                       /* losa + antepecho: la banda de ventana */
+      var y  = y0 + (y1-y0)*f/floors;
+      var y2 = y + (y1-y0)/floors*.3;
+      var r  = [[x0,y,z0],[x1,y,z0],[x1,y,z1],[x0,y,z1]];
+      var r2 = [[x0,y2,z0],[x1,y2,z0],[x1,y2,z1],[x0,y2,z1]];
+      for(var k=0;k<4;k++){ push(r[k], r[(k+1)%4], .55); push(r2[k], r2[(k+1)%4], .28); }
+    }
+    var nx = Math.max(2, Math.round((x1-x0)/step));    /* montantes de fachada */
+    var nz = Math.max(2, Math.round((z1-z0)/step));
+    for(var i=1;i<nx;i++){
+      var x = x0 + (x1-x0)*i/nx;
+      push([x,y0,z0],[x,y1,z0],.38); push([x,y0,z1],[x,y1,z1],.38);
+    }
+    for(var j=1;j<nz;j++){
+      var z = z0 + (z1-z0)*j/nz;
+      push([x0,y0,z],[x0,y1,z],.38); push([x1,y0,z],[x1,y1,z],.38);
+    }
+  }
+
+  var dense = window.innerWidth > 760;
+  var st = dense ? .45 : .82;
+
+  box(-5.0,-1.6, 0,9.2, -4.0, 4.0, 9, st);        /* ala izquierda */
+  box( 1.6, 5.0, 0,9.2, -4.0, 4.0, 9, st);        /* ala derecha */
+  box(-1.6, 1.6, 0,9.2,  1.2, 4.0, 9, st);        /* cuerpo posterior: deja el patio al frente */
+  box(-6.4, 6.4, 0,2.6, -6.6,-4.0, 3, st*1.25);   /* zócalo */
+  box(-6.4,-2.6, 0,1.9, -8.2,-6.6, 2, st*1.25);   /* atrio */
+  push([-3.2,9.2, .5],[-3.2,10.8, .5],.9);        /* antenas */
+  push([ 3.4,9.2,2.0],[ 3.4,10.2,2.0],.9);
+  push([ 2.2,9.2,-2.6],[2.2,9.9,-2.6],.7);
+
+  /* orden de plotteo: cimientos primero, antenas al final */
+  var yMin=1e9, yMax=-1e9;
+  S.forEach(function(s){ var y=(s.a[1]+s.b[1])/2; if(y<yMin)yMin=y; if(y>yMax)yMax=y; });
+  S.forEach(function(s,i){
+    var y = ((s.a[1]+s.b[1])/2 - yMin) / (yMax-yMin || 1);
+    s.t0 = y*.55 + rnd(i)*.25;
+    s.j1 = (rnd(i+7)-.5)*2.2;
+    s.j2 = (rnd(i+23)-.5)*2.2;
+    s.ov = 2 + rnd(i+61)*5;                        /* la línea se pasa de la esquina */
+  });
+
+  /* ---------- cámara ---------- */
+  var TILT=.20, DIST=30, BASE=-.44, PIVOT=4.4;
+  function pt(p, ry){
+    var c=Math.cos(ry), s=Math.sin(ry);
+    var x = p[0]*c - p[2]*s, z = p[0]*s + p[2]*c, y = p[1]-PIVOT;
+    var ct=Math.cos(TILT), stt=Math.sin(TILT);
+    var yy = y*ct - z*stt, zz = y*stt + z*ct;
+    var d = DIST + zz;
+    return [x/d, -yy/d, d];
+  }
+
+  var W=0,H=0,SC=1,OX=0,OY=0;
+  function fit(){
+    var r = cv.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio||1, 2);
+    W = Math.max(1, Math.round(r.width));
+    H = Math.max(1, Math.round(r.height));
+    cv.width = W*dpr; cv.height = H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    var x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+    for(var i=0;i<S.length;i++){
+      var q = [pt(S[i].a,BASE), pt(S[i].b,BASE)];
+      for(var k=0;k<2;k++){
+        if(q[k][0]<x0)x0=q[k][0]; if(q[k][0]>x1)x1=q[k][0];
+        if(q[k][1]<y0)y0=q[k][1]; if(q[k][1]>y1)y1=q[k][1];
+      }
+    }
+    SC = Math.min(W*.88/(x1-x0), H*.86/(y1-y0));
+    OX = W/2 - (x0+x1)/2*SC;
+    OY = H/2 - (y0+y1)/2*SC;
+    if(reduce) requestAnimationFrame(draw);
+  }
+
+  /* ---------- render ---------- */
+  var start=0, mx=0, tmx=0, vis=true;
+  function draw(now){
+    if(!start) start = now;
+    var P = reduce ? 1 : Math.min(1, (now-start)/2600);
+    P = 1 - Math.pow(1-P, 2);
+    mx += (tmx-mx)*.06;
+    var ry = BASE + (reduce ? 0 : Math.sin(now/7400)*.075) + mx*.11;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.lineCap = "round";
+    var passes = dense ? 2 : 1;                     /* pasada 1: halo. pasada 2: línea */
+
+    for(var pass=0; pass<passes; pass++){
+      for(var i=0;i<S.length;i++){
+        var s = S[i];
+        var f = Math.min(1, Math.max(0, (P - s.t0)/.2));
+        if(f <= 0) continue;
+
+        var A = pt(s.a, ry), B = pt(s.b, ry);
+        var ax = A[0]*SC+OX + s.j1, ay = A[1]*SC+OY + s.j2;
+        var bx = B[0]*SC+OX + s.j2, by = B[1]*SC+OY + s.j1;
+        bx = ax + (bx-ax)*f; by = ay + (by-ay)*f;
+
+        var dx = bx-ax, dy = by-ay, L = Math.sqrt(dx*dx+dy*dy) || 1;
+        var ux = dx/L, uy = dy/L, ov = s.ov*f;
+
+        var dep = Math.min(1, Math.max(.22, (40 - (A[2]+B[2])/2)/15));
+        var tx  = Math.min(1, Math.max(0, ax/W));   /* rosa a la izquierda, naranjo a la derecha */
+        var r = 253 + ((2*tx)|0);
+        var g = (55 + 125*tx)|0;
+        var b = (190 - 78*tx)|0;
+        var al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
+
+        if(pass===0 && passes===2){
+          ctx.strokeStyle = "rgba("+r+","+g+","+b+","+(al*.13).toFixed(3)+")";
+          ctx.lineWidth = s.w*3.4;
+        } else {
+          ctx.strokeStyle = "rgba("+r+","+g+","+b+","+al.toFixed(3)+")";
+          ctx.lineWidth = s.w;
+        }
+        ctx.beginPath();
+        ctx.moveTo(ax-ux*ov, ay-uy*ov);
+        ctx.lineTo(bx+ux*ov, by+uy*ov);
+        ctx.stroke();
+      }
+    }
+    if(reduce) return;                              /* sin movimiento: una sola pasada */
+    if(vis) requestAnimationFrame(draw);
+  }
+
+  fit();
+  if(window.ResizeObserver) new ResizeObserver(fit).observe(cv);
+  else window.addEventListener("resize", fit);
+
+  var host = cv.parentNode;
+  host.addEventListener("pointermove", function(e){
+    var r = host.getBoundingClientRect();
+    tmx = (e.clientX - r.left)/r.width - .5;
+  });
+  host.addEventListener("pointerleave", function(){ tmx = 0; });
+
+  if(window.IntersectionObserver){                  /* fuera de pantalla no gasta frames */
+    new IntersectionObserver(function(en){
+      var on = en[0].isIntersecting;
+      if(on && !vis){ vis = true; if(!reduce) requestAnimationFrame(draw); }
+      else if(!on){ vis = false; }
+    },{threshold:0}).observe(cv);
+  }
+
+  requestAnimationFrame(draw);
+})();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   COHETE — librea de Fina: fuselaje violeta, aletas y penacho
+   en el gradiente rosa→naranjo de RRSS. Despega al entrar en
+   pantalla; se puede arrastrar para girar y pinchar para repetir.
+   ============================================================ */
+(function(){
+  var stage = document.getElementById("stage");
+  if(!stage || typeof THREE === "undefined") return;   /* sin CDN, la sección sigue funcionando */
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var C = {
+    pink:   0xFD37BE,
+    orange: 0xFFB470,
+    violet: 0x2A1155,
+    deep:   0x1A0A38,
+    metal:  0x241046
+  };
+
+  var scene  = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 0.4, 13);
+
+  var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  stage.appendChild(renderer.domElement);
+
+  /* ---------- luces: clave neutra, contra en violeta de marca ---------- */
+  scene.add(new THREE.AmbientLight(0xB9A8E8, 0.55));
+  var key = new THREE.DirectionalLight(0xFFFFFF, 1.1);  key.position.set(4, 6, 6);   scene.add(key);
+  var rim = new THREE.DirectionalLight(0xAB5AFF, 1.0);  rim.position.set(-6, 1, -4);  scene.add(rim);
+  var fil = new THREE.DirectionalLight(0x7A5CC4, 0.42); fil.position.set(-3, -4, 5);  scene.add(fil);
+
+  /* ---------- librea: se pinta en un canvas 2D y se mapea al fuselaje ---------- */
+  function makeLivery(){
+    var c = document.createElement("canvas");
+    c.width = 2048; c.height = 1024;
+    var g = c.getContext("2d");
+
+    var grad = g.createLinearGradient(0, 0, 0, 1024);
+    grad.addColorStop(0,   "#3A1A6B");
+    grad.addColorStop(.55, "#28105C");
+    grad.addColorStop(1,   "#15023A");
+    g.fillStyle = grad; g.fillRect(0, 0, 2048, 1024);
+
+    g.strokeStyle = "rgba(0,0,0,0.22)"; g.lineWidth = 3;
+    [120, 300, 615, 780, 900].forEach(function(y){
+      g.beginPath(); g.moveTo(0, y); g.lineTo(2048, y); g.stroke();
+    });
+    g.strokeStyle = "rgba(171,90,255,0.14)"; g.lineWidth = 2;
+    for (var x = 0; x < 2048; x += 256){
+      g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 1024); g.stroke();
+    }
+
+    /* barrido inferior con el gradiente de RRSS */
+    var sweep = g.createLinearGradient(0, 0, 2048, 0);
+    sweep.addColorStop(0, "#FD37BE");
+    sweep.addColorStop(1, "#FFB470");
+    g.fillStyle = sweep;
+    g.beginPath();
+    g.moveTo(0, 1024); g.lineTo(0, 880);
+    g.bezierCurveTo(420, 700, 700, 930, 1024, 800);
+    g.bezierCurveTo(1340, 690, 1700, 920, 2048, 830);
+    g.lineTo(2048, 1024);
+    g.closePath(); g.fill();
+
+    g.fillStyle = "#FFB470";                       /* ventanillas */
+    for (var wx = 60; wx < 2008; wx += 46) g.fillRect(wx, 470, 26, 11);
+
+    /* logotipo: el isotipo inclinado + la palabra en Figtree */
+    g.save();
+    g.translate(700, 400);
+    g.rotate(-0.045);
+    var lg = g.createLinearGradient(0, -150, 150, 0);
+    lg.addColorStop(0, "#FD37BE"); lg.addColorStop(1, "#FFB470");
+    g.fillStyle = lg;
+    g.beginPath();
+    g.moveTo(52,-150); g.lineTo(140,-150); g.lineTo(88,0); g.lineTo(0,0);
+    g.closePath(); g.fill();
+    g.fillStyle = "#FFFFFF";
+    g.font = '900 200px Figtree, sans-serif';
+    g.textBaseline = "alphabetic";
+    g.fillText("fina", 168, 0);
+    g.restore();
+
+    var tex = new THREE.CanvasTexture(c);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    tex.encoding = THREE.sRGBEncoding;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.offset.x = 0.25;                           /* gira el logo hacia la cámara */
+    return tex;
+  }
+
+  var matLivery = new THREE.MeshStandardMaterial({map:null, roughness:.45, metalness:.35});
+  var matBody   = new THREE.MeshStandardMaterial({color:C.violet, roughness:.5,  metalness:.4});
+  var matDark   = new THREE.MeshStandardMaterial({color:C.deep,   roughness:.6,  metalness:.5});
+  var matMetal  = new THREE.MeshStandardMaterial({color:C.metal,  roughness:.35, metalness:.9, side:THREE.DoubleSide});
+  var matPink   = new THREE.MeshStandardMaterial({color:C.pink,   roughness:.42, metalness:.15});
+  var matOrange = new THREE.MeshStandardMaterial({color:C.orange, roughness:.42, metalness:.15});
+
+  /* ---------- cohete ---------- */
+  var rocket = new THREE.Group();
+
+  var body = new THREE.Mesh(new THREE.CylinderGeometry(.62, .62, 3.6, 72, 1, true), matLivery);
+  body.position.y = .2; rocket.add(body);
+
+  var nose = new THREE.Mesh(new THREE.ConeGeometry(.62, 1.55, 72), matBody);
+  nose.position.y = 2.78; rocket.add(nose);
+
+  var tip = new THREE.Mesh(new THREE.ConeGeometry(.135, .42, 32), matOrange);
+  tip.position.y = 3.62; rocket.add(tip);
+
+  [1.98, -1.52].forEach(function(y){
+    var ring = new THREE.Mesh(new THREE.CylinderGeometry(.645, .645, .1, 72), matDark);
+    ring.position.y = y; rocket.add(ring);
+  });
+
+  var skirt = new THREE.Mesh(new THREE.CylinderGeometry(.62, .78, .62, 72), matBody);
+  skirt.position.y = -1.87; rocket.add(skirt);
+
+  var nozzle = new THREE.Mesh(new THREE.CylinderGeometry(.34, .58, .72, 48, 1, true), matMetal);
+  nozzle.position.y = -2.5; rocket.add(nozzle);
+
+  var finShape = new THREE.Shape();
+  finShape.moveTo(0, 0);
+  finShape.lineTo(1.18, -1.05);
+  finShape.quadraticCurveTo(1.32, -.52, 1.02, -.18);
+  finShape.lineTo(.16, 1.15);
+  finShape.quadraticCurveTo(.02, .6, 0, 0);
+  var finGeo = new THREE.ExtrudeGeometry(finShape, {depth:.085, bevelEnabled:true, bevelThickness:.02, bevelSize:.02, bevelSegments:2});
+  finGeo.translate(0, 0, -.0425);
+
+  for (var i = 0; i < 3; i++){
+    var p = new THREE.Group();
+    p.rotation.y = (i/3) * Math.PI * 2;
+    var fin = new THREE.Mesh(finGeo, matPink);
+    fin.position.set(0, -1.28, .55);
+    fin.rotation.y = Math.PI/2;
+    p.add(fin); rocket.add(p);
+  }
+  for (var j = 0; j < 3; j++){
+    var q = new THREE.Group();
+    q.rotation.y = (j/3) * Math.PI * 2 + Math.PI/3;
+    var canard = new THREE.Mesh(new THREE.BoxGeometry(.5, .055, .3), matDark);
+    canard.position.set(.85, 1.72, 0);
+    canard.rotation.z = -.12;
+    q.add(canard); rocket.add(q);
+  }
+
+  /* penacho en dos capas: núcleo naranjo, envolvente rosa */
+  function plumeMesh(color, r, h){
+    var m = new THREE.Mesh(
+      new THREE.ConeGeometry(r, h, 32, 1, true),
+      new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0,
+        blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide})
+    );
+    m.rotation.x = Math.PI;
+    rocket.add(m);
+    return m;
+  }
+  var plumeOut = plumeMesh(C.pink,   .42, 2.4); plumeOut.position.y = -4.0;
+  var plumeIn  = plumeMesh(C.orange, .22, 1.5); plumeIn.position.y  = -3.5;
+
+  rocket.rotation.z = .1;
+  scene.add(rocket);
+
+  /* ---------- polvo ---------- */
+  var dustGeo = new THREE.BufferGeometry();
+  var N = 360, pos = new Float32Array(N*3);
+  for (var k = 0; k < N; k++){
+    pos[k*3]   = (Math.random()-.5) * 26;
+    pos[k*3+1] = (Math.random()-.5) * 22;
+    pos[k*3+2] = (Math.random()-.5) * 14 - 4;
+  }
+  dustGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  var dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({color:0xAB5AFF, size:.05, transparent:true, opacity:.5}));
+  scene.add(dust);
+
+  /* ---------- interacción ---------- */
+  var targetRotX = 0, targetRotY = 0, dragRotY = 0, autoSpin = 0;
+  var dragging = false, lastX = 0, moved = 0;
+
+  stage.addEventListener("pointermove", function(e){
+    var r = stage.getBoundingClientRect();
+    targetRotX = ((e.clientY - r.top)/r.height - .5) * .28;
+    targetRotY = ((e.clientX - r.left)/r.width  - .5) * .5;
+    if (dragging){
+      var dx = e.clientX - lastX;
+      dragRotY += dx * .008; moved += Math.abs(dx); lastX = e.clientX;
+    }
+  });
+  renderer.domElement.addEventListener("pointerdown", function(e){
+    dragging = true; lastX = e.clientX; moved = 0;
+    renderer.domElement.setPointerCapture(e.pointerId);
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+    renderer.domElement.addEventListener(ev, function(){
+      if (dragging && moved < 6 && launchT === null) launchT = 0;   /* clic limpio = despegue */
+      dragging = false;
+    });
+  });
+
+  var launchT = null;
+
+  /* ---------- tamaño ---------- */
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(stage);
+  else window.addEventListener("resize", resize);
+  resize();
+
+  /* ---------- loop ---------- */
+  var clock = new THREE.Clock(), running = false;
+  function tick(){
+    if (!running) return;
+    requestAnimationFrame(tick);
+    var dt = Math.min(clock.getDelta(), .05), t = clock.elapsedTime;
+
+    if (!reduceMotion && !dragging) autoSpin += dt * .28;
+    rocket.rotation.y += ((autoSpin + dragRotY) - rocket.rotation.y) * .12;
+    rocket.rotation.x += (targetRotX - rocket.rotation.x) * .06;
+    rocket.rotation.z += ((.1 + targetRotY*.25) - rocket.rotation.z) * .06;
+
+    var baseY  = reduceMotion ? 0 : Math.sin(t*.9) * .12;
+    var thrust = reduceMotion ? 0 : .18 + Math.sin(t*9) * .05;
+
+    if (launchT !== null){
+      launchT += dt;
+      var d = launchT;
+      if (d < .7){                                  /* carga */
+        baseY -= (d/.7) * .35; thrust = .2 + (d/.7)*.7;
+      } else if (d < 2.4){                          /* subida */
+        var a = (d-.7)/1.7; baseY += -.35 + a*a*16; thrust = 1;
+      } else if (d < 3.0){                          /* fuera de cuadro */
+        baseY = 40;
+      } else if (d < 4.2){                          /* vuelve planeando */
+        var b = (d-3.0)/1.2; baseY = -14*(1-b)*(1-b); thrust = .6*(1-b);
+      } else { launchT = null; }
+    }
+
+    rocket.position.y = baseY;
+    plumeOut.scale.set(.7 + thrust, .5 + thrust*1.7, .7 + thrust);
+    plumeIn.scale.set(.7 + thrust, .5 + thrust*1.5, .7 + thrust);
+    plumeOut.material.opacity = thrust * .5;
+    plumeIn.material.opacity  = thrust * .75;
+
+    if (!reduceMotion){
+      dust.rotation.y += dt * .012;
+      dust.position.y = (dust.position.y + dt*.25) % 6;
+    }
+    renderer.render(scene, camera);
+  }
+
+  /* solo gasta frames cuando la sección está a la vista; despega al entrar */
+  var fired = false;
+  function start(){ if (running) return; running = true; clock.getDelta(); tick(); }
+  function stop(){ running = false; }
+
+  if (window.IntersectionObserver){
+    new IntersectionObserver(function(en){
+      if (en[0].isIntersecting){
+        start();
+        if (!fired && !reduceMotion){ fired = true; setTimeout(function(){ launchT = 0; }, 500); }
+      } else stop();
+    }, {threshold:.25}).observe(stage);
+  } else start();
+
+  /* la librea espera a que Figtree esté cargada, si no el logo sale en fallback */
+  var applyLivery = function(){ matLivery.map = makeLivery(); matLivery.needsUpdate = true; };
+  if (document.fonts && document.fonts.load){
+    document.fonts.load('900 200px Figtree').then(applyLivery).catch(applyLivery);
+  } else applyLivery();
+})();
+</script>
+
+<script>
+/* ============================================================
+   Scrub de la portada.
+
+   El scroll no pinta: solo mueve un objetivo. Un bucle aparte
+   persigue ese objetivo con un lerp normalizado por tiempo, de
+   modo que el resultado es igual a 60 que a 120 Hz y los saltos
+   gruesos de la rueda salen suavizados.
+   ============================================================ */
+(function(){
+  var gate   = document.getElementById("gate");
+  var spacer = document.getElementById("gate-spacer");
+  var bg     = document.getElementById("gate-bg");
+  var hint   = document.getElementById("gate-hint");
+  var halves = [document.getElementById("iso-a"), document.getElementById("iso-b")];
+  if(!gate || !spacer || !bg || !hint || !halves[0] || !halves[1]) return;
+
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    halves.forEach(function(s){ if(s.pauseAnimations) s.pauseAnimations(); });
+    return;
+  }
+
+  var target = 0, cur = 0, raf = 0, prev = 0, scrubbing = false;
+  function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  function readTarget(){
+    var span = spacer.offsetHeight || 1;
+    target = clamp((window.scrollY || window.pageYOffset) / span);
+    if(!raf){ prev = 0; raf = requestAnimationFrame(loop); }
+  }
+
+  function paint(p){
+    var open = p * 72, up = p * -61, sc = 1 + p * .42;
+    var op   = Math.max(0, 1 - p * 1.25).toFixed(3);
+
+    halves[0].style.transform = "translate3d(" + open.toFixed(2) + "%," + up.toFixed(2) + "%,0) scale(" + sc.toFixed(3) + ")";
+    halves[1].style.transform = "translate3d(" + (-open).toFixed(2) + "%," + (-up).toFixed(2) + "%,0) scale(" + sc.toFixed(3) + ")";
+    halves[0].style.opacity = halves[1].style.opacity = op;
+
+    bg.style.opacity   = (1 - clamp((p - .22) / .5)).toFixed(3);
+    hint.style.opacity = (1 - clamp(p / .28)).toFixed(3);
+    gate.style.visibility = p >= .92 ? "hidden" : "visible";
+  }
+
+  function loop(now){
+    var dt = prev ? Math.min(now - prev, 64) : 16.7;
+    prev = now;
+
+    /* lerp independiente del refresco: mismo recorrido a 60 y a 120 Hz */
+    cur += (target - cur) * (1 - Math.pow(1 - .16, dt / 16.7));
+
+    var moving = Math.abs(target - cur) > .0008;
+    if(!moving) cur = target;
+
+    if(moving !== scrubbing){
+      scrubbing = moving;
+      gate.classList.toggle("is-scrubbing", moving);
+    }
+
+    paint(cur);
+
+    if(moving){ raf = requestAnimationFrame(loop); }
+    else { raf = 0; prev = 0; }
+  }
+
+  addEventListener("scroll", readTarget, {passive:true});
+  addEventListener("resize", readTarget);
+  readTarget();
+  paint(cur);
+})();
+</script>
+</body>
+</html>
