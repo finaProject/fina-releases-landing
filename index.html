@@ -34,9 +34,8 @@
   overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0;
 }
 .title-viz{
-  width:100%;
-  height:clamp(190px, 33vh, 360px);   /* alto fijo: el escenario no puede crecer */
-  margin:4px 0 2px;
+  width:100%; aspect-ratio:16/6.4;
+  margin:6px 0 4px;
 }
 /* el polvo vive en una capa fija del tamano de la ventana: por debajo
    de la barra (40) y de la portada (60), por encima del contenido */
@@ -536,37 +535,14 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   animation:gate-bob 1.9s ease-in-out infinite;
 }
 
-/* ============================================================
-   ESCENARIO DE ENTRADA
-   Hasta el contador la pagina no baja: el escenario queda fijo y
-   el scroll solo hace SUBIR los elementos a el, uno tras otro.
-   El alto de .intro es el presupuesto de scroll de toda la
-   secuencia; .intro-stage es lo que se ve, clavado arriba.
-   ============================================================ */
-.intro{ position:relative; height:340vh; }
-.intro-stage{
-  position:sticky; top:0;
-  height:100vh; padding-top:58px;   /* deja libre la barra */
-  display:grid; align-content:center;
-  overflow:hidden;
-}
-.hero{ padding:0; }
-
-/* cada pieza entra desde abajo; --r lo escribe el scroll */
-.rise{
-  --r:0;
-  opacity:var(--r);
-  transform:translate3d(0, calc((1 - var(--r)) * 46px), 0);
-  will-change:transform, opacity;
-}
+.gate-spacer{ height:135vh; }
+.hero{ padding-top:clamp(26px,5vw,54px); }
 
 @media (prefers-reduced-motion:reduce){
   .gate{ position:relative; z-index:1; height:auto; padding:clamp(30px,6vw,60px) 0; }
   .gate-bg, .gate-hint{ display:none; }
   .iso-stack{ width:min(300px,56vw); animation:none; }
-  .intro{ height:auto; }
-  .intro-stage{ position:static; height:auto; overflow:visible; padding:clamp(40px,8vw,90px) 0; }
-  .rise{ --r:1 !important; opacity:1; transform:none; }
+  .gate-spacer{ display:none; }
 }
 
 /* ============================================================
@@ -753,46 +729,40 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     <svg class="chev" viewBox="0 0 24 14" aria-hidden="true"><path d="M2 2 L12 12 L22 2"/></svg>
   </p>
 </div>
+<div class="gate-spacer" id="gate-spacer"></div>
 
 <canvas class="title-field" id="title" aria-hidden="true"></canvas>
 
-<!-- ================= ESCENARIO DE ENTRADA ================= -->
-<div class="intro" id="intro">
- <div class="intro-stage">
+<!-- ================= HERO ================= -->
 <header class="hero wrap" id="top">
   <p class="boot"><span class="dot"></span> Registro abierto · build 2026.10</p>
 
   <h1 class="sr-only">Lo nuevo de Fina</h1>
   <div class="title-viz" id="title-viz" aria-hidden="true"></div>
 
-  <div class="hero-meta rise" data-rise="0">
+  <div class="hero-meta">
     <span><b>23.10.2026</b> · Viernes</span>
     <span><b>18:00</b> — 21:00 hrs</span>
     <span><b>Caracas</b> · presencial</span>
   </div>
 
-  <div class="hero-cta rise" data-rise="1">
+  <div class="hero-cta">
     <a class="btn" href="#rsvp">Reservar mi cupo <span class="arw">&#8594;</span></a>
     <span class="seats"><b>120</b> cupos · sin costo</span>
   </div>
 
-  <div class="count glass rise" data-rise="2" id="count" aria-label="Cuenta regresiva al evento">
+  <figure class="hero-viz glass">
+    <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
+    <figcaption class="viz-tag">// sede · <b>caracas campus</b> · 09 pisos</figcaption>
+  </figure>
+
+  <div class="count glass" id="count" aria-label="Cuenta regresiva al evento">
     <div><span class="v" id="c-d">00</span><span class="k">Días</span></div>
     <div><span class="v" id="c-h">00</span><span class="k">Horas</span></div>
     <div><span class="v" id="c-m">00</span><span class="k">Min</span></div>
     <div><span class="v" id="c-s">00</span><span class="k">Seg</span></div>
   </div>
 </header>
- </div>
-</div>
-
-<!-- ================= EDIFICIO ================= -->
-<section class="band wrap" style="border-top:0;padding-block:clamp(40px,6vw,72px)">
-  <figure class="hero-viz glass">
-    <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
-    <figcaption class="viz-tag">// sede · <b>caracas campus</b> · 09 pisos</figcaption>
-  </figure>
-</section>
 
 <!-- ================= MARQUESINA ================= -->
 <div class="marquee" aria-hidden="true">
@@ -1512,12 +1482,12 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
    gruesos de la rueda salen suavizados.
    ============================================================ */
 (function(){
-  var gate  = document.getElementById("gate");
-  var intro = document.getElementById("intro");
+  var gate   = document.getElementById("gate");
+  var spacer = document.getElementById("gate-spacer");
   var bg     = document.getElementById("gate-bg");
   var hint   = document.getElementById("gate-hint");
   var halves = [document.getElementById("iso-a"), document.getElementById("iso-b")];
-  if(!gate || !intro || !bg || !hint || !halves[0] || !halves[1]) return;
+  if(!gate || !spacer || !bg || !hint || !halves[0] || !halves[1]) return;
 
   if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
     halves.forEach(function(s){ if(s.pauseAnimations) s.pauseAnimations(); });
@@ -1527,13 +1497,9 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   var target = 0, cur = 0, raf = 0, prev = 0, scrubbing = false;
   function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
 
-  /* avance del escenario completo, 0..1 */
-  function introP(){
-    var h = intro.offsetHeight - (window.innerHeight||800);
-    return h > 0 ? clamp(-intro.getBoundingClientRect().top / h) : 1;
-  }
   function readTarget(){
-    target = clamp(introP() / .28);   /* el isotipo se abre en el primer 28% */
+    var span = spacer.offsetHeight || 1;
+    target = clamp((window.scrollY || window.pageYOffset) / span);
     if(!raf){ prev = 0; raf = requestAnimationFrame(loop); }
   }
 
@@ -1575,57 +1541,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   addEventListener("resize", readTarget);
   readTarget();
   paint(cur);
-})();
-</script>
-
-<script>
-/* ============================================================
-   Las piezas suben al escenario. El scroll no mueve la pagina:
-   escribe --r en cada una (0 abajo e invisible, 1 en su sitio).
-   Los tramos se solapan un poco para que se encadenen.
-   ============================================================ */
-(function(){
-  var intro = document.getElementById("intro");
-  var items = [].slice.call(document.querySelectorAll(".rise"));
-  if(!intro || !items.length) return;
-
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-    items.forEach(function(el){ el.style.setProperty("--r","1"); });
-    return;
-  }
-
-  var RANGES = [[.54,.70],[.66,.82],[.78,.94]];
-  var cur = items.map(function(){ return 0; });
-  var tgt = cur.slice();
-  var raf = 0, prev = 0;
-  function clamp(v){ return v<0?0:v>1?1:v; }
-
-  function read(){
-    var h = intro.offsetHeight - (window.innerHeight||800);
-    var p = h > 0 ? clamp(-intro.getBoundingClientRect().top / h) : 1;
-    for(var i=0;i<items.length;i++){
-      var r = RANGES[i] || RANGES[RANGES.length-1];
-      tgt[i] = clamp((p - r[0]) / (r[1] - r[0]));
-    }
-    if(!raf){ prev = 0; raf = requestAnimationFrame(loop); }
-  }
-
-  function loop(now){
-    raf = 0;
-    var dt = prev ? Math.min(now-prev,64) : 16.7;
-    prev = now;
-    var k = 1 - Math.pow(1-.18, dt/16.7), moving = false;
-    for(var i=0;i<items.length;i++){
-      cur[i] += (tgt[i]-cur[i])*k;
-      if(Math.abs(tgt[i]-cur[i]) < .002) cur[i] = tgt[i]; else moving = true;
-      items[i].style.setProperty("--r", cur[i].toFixed(4));
-    }
-    if(moving) raf = requestAnimationFrame(loop);
-  }
-
-  addEventListener("scroll", read, {passive:true});
-  addEventListener("resize", read);
-  read();
 })();
 </script>
 
@@ -1722,15 +1637,14 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     built = true;
   }
 
-  /* el escenario esta clavado, asi que la posicion del bloque ya no
-     dice nada: el avance sale del recorrido de la secuencia */
+  /* arranca antes y termina con la frase centrada: el polvo necesita
+     más recorrido que una nube pequeña para cruzar la pantalla */
   function progress(){
-    var intro = document.getElementById("intro");
-    if(!intro) return 1;
-    var h = intro.offsetHeight - (window.innerHeight||800);
-    if(h <= 0) return 1;
-    var p = clamp(-intro.getBoundingClientRect().top / h);
-    return clamp((p - .14) / (.52 - .14));   /* la frase se arma del 14% al 52% */
+    var r = slot.getBoundingClientRect();
+    var vh = window.innerHeight || 800;
+    var c = r.top + r.height/2;
+    var a = vh*1.25, b = vh*0.50;
+    return clamp((a-c)/(a-b));
   }
 
   var cur=0, target=0, raf=0, prev=0, onScreen=true;
