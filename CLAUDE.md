@@ -132,7 +132,6 @@ Las tres respetan `prefers-reduced-motion`: sin portada, sin rotación, un solo 
 |---|---|---|
 | Link del RSVP | `id="rsvp-link"` y el botón del nav | apunta a `#` |
 | Fecha y hora | 4 sitios en el HTML + `TARGET` en el script del contador | viernes 23.10.2026, 18:00–21:00 |
-| Los 6 releases | sección `#release` | inventados |
 | Line-up | sección `#lineup` | los 4 dicen "Por anunciar" |
 | Dirección | sección de sede | sin confirmar |
 | Cupos / correo | hero, cierre, footer | 120 · hola@finapartner.com |
