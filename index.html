@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Fina Releases [01]: una tarde de demos en vivo de todo lo que entró a producción este semestre. Viernes 23 de octubre, 18:00, Caracas. Cupos limitados.">
-<meta name="theme-color" content="#020007">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Fina">
@@ -40,17 +40,23 @@
   --color-warning:     #F4A100;
 
   /* ---- Derivados del gradiente hero #1F005D -> #020007 ---- */
-  --ink:       #070010;
-  --ink-deep:  #020007;
-  --ink-violet:#1F005D;
-  --surface:   rgba(98,10,255,.07);
-  --surface-2: rgba(171,90,255,.10);
-  --rule:      rgba(171,90,255,.22);
-  --rule-soft: rgba(171,90,255,.11);
+  --ink:       #F7F4FF;
+  --ink-deep:  #FFFFFF;
+  --ink-violet:#EDE4FF;
+  --surface:   rgba(98,10,255,.045);
+  --surface-2: rgba(98,10,255,.07);
+  --rule:      rgba(98,10,255,.18);
+  --rule-soft: rgba(98,10,255,.09);
 
-  --fg:        #FFFFFF;
-  --fg-dim:    #C3B4E8;
-  --fg-faint:  #8574B5;
+  --fg:        #14101F;
+  --fg-dim:    #4B4459;
+  --fg-faint:  #7A7191;
+
+  /* sobre blanco el naranjo del gradiente es ilegible como texto:
+     los titulares pasan a violeta->rosa, que sí contrasta */
+  --grad-text: linear-gradient(92deg,#620AFF 0%,#FD37BE 100%);
+  --ink-warm:  #B8651A;
+  --ink-cyan:  #00898D;
 
   --sans:      'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   /* secundaria: retícula de píxeles. IBM Plex Mono queda de respaldo
@@ -79,20 +85,20 @@ body{
 .bg-grad{
   position:absolute; inset:0;
   background:
-    radial-gradient(120% 70% at 50% -5%, #2E0080 0%, transparent 62%),
-    linear-gradient(180deg,#1F005D 0%,#0B0020 45%,#020007 100%);
+    radial-gradient(120% 70% at 50% -5%, #EFE6FF 0%, transparent 62%),
+    linear-gradient(180deg,#FAF7FF 0%,#FFFFFF 45%,#FFFFFF 100%);
 }
 .bg-wires{
   position:absolute; inset:0;
   background-image:
-    repeating-linear-gradient(90deg, rgba(171,90,255,.16) 0 1px, transparent 1px 78px),
-    repeating-linear-gradient(0deg, rgba(98,10,255,.13) 0 1px, transparent 1px 78px);
+    repeating-linear-gradient(90deg, rgba(98,10,255,.11) 0 1px, transparent 1px 78px),
+    repeating-linear-gradient(0deg, rgba(98,10,255,.09) 0 1px, transparent 1px 78px);
   mask-image:radial-gradient(ellipse 110% 65% at 50% 0%, #000 12%, transparent 72%);
 }
 .bg-glow{
   position:absolute; left:50%; top:-14vw; width:min(1000px,110vw); aspect-ratio:1;
   transform:translateX(-50%);
-  background:radial-gradient(circle, rgba(253,55,190,.20) 0%, transparent 58%);
+  background:radial-gradient(circle, rgba(253,55,190,.13) 0%, transparent 58%);
   filter:blur(40px);
 }
 
@@ -132,7 +138,7 @@ a{ color:inherit; }
    ============================================================ */
 .nav{
   position:sticky; top:0; z-index:40;
-  background:rgba(7,0,16,.72); backdrop-filter:blur(14px);
+  background:rgba(255,255,255,.78); backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule-soft);
 }
 .nav-in{
@@ -325,7 +331,7 @@ h1 .n{
   background:var(--rule-soft); border-radius:12px; overflow:hidden;
   box-shadow:inset 0 0 0 1px var(--rule);
 }
-.slot{ background:#0A0118; padding:clamp(22px,3vw,30px); display:flex; flex-direction:column; gap:10px; }
+.slot{ background:#FFFFFF; padding:clamp(22px,3vw,30px); display:flex; flex-direction:column; gap:10px; }
 .slot .idx{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint); }
 .slot h3{ font-family:var(--sans); font-weight:800; font-size:19px; letter-spacing:-.015em; margin:0; text-wrap:balance; }
 .slot .who{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--fina-purple-light); }
@@ -378,7 +384,7 @@ details p{ margin:0 0 18px; color:var(--fg-dim); font-size:14px; max-width:62ch;
    ============================================================ */
 .close{
   border-top:1px solid var(--rule);
-  background:linear-gradient(180deg, rgba(98,10,255,.16) 0%, rgba(2,0,7,0) 100%);
+  background:linear-gradient(180deg, rgba(98,10,255,.07) 0%, rgba(255,255,255,0) 100%);
   text-align:center;
 }
 .close .h2{ margin-bottom:18px; }
@@ -403,8 +409,8 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   overflow:hidden;
   aspect-ratio:16/7;
   background:
-    radial-gradient(75% 110% at 50% 108%, rgba(98,10,255,.26) 0%, transparent 68%),
-    rgba(7,0,16,.5);
+    radial-gradient(75% 110% at 50% 108%, rgba(98,10,255,.09) 0%, transparent 68%),
+    rgba(255,255,255,.5);
   box-shadow:inset 0 0 0 1px var(--rule);
 }
 @media (max-width:700px){ .hero-viz{ aspect-ratio:4/3; } }
@@ -414,7 +420,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 .hero-viz::before,
 .hero-viz::after{
   content:""; position:absolute; width:18px; height:18px; pointer-events:none;
-  border-color:var(--fina-purple-light); opacity:.55;
+  border-color:var(--fina-purple); opacity:.45;
 }
 .hero-viz::before{ top:14px; left:14px; border-top:1px solid; border-left:1px solid; }
 .hero-viz::after{ bottom:14px; right:14px; border-bottom:1px solid; border-right:1px solid; }
@@ -489,9 +495,9 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   position:absolute; inset:0;
   will-change:opacity;
   background:
-    radial-gradient(120% 70% at 50% -5%, #2E0080 0%, transparent 62%),
-    linear-gradient(180deg,#1F005D 0%,#0B0020 45%,#020007 100%),
-    #020007;
+    radial-gradient(120% 70% at 50% -5%, #EFE6FF 0%, transparent 62%),
+    linear-gradient(180deg,#FAF7FF 0%,#FFFFFF 45%,#FFFFFF 100%),
+    #FFFFFF;
 }
 
 .iso-stack{
@@ -580,6 +586,23 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
   .reveal{ clip-path:none; }
 }
+
+/* ============================================================
+   CONTRASTE SOBRE BLANCO
+   El gradiente rosa->naranjo sirve de relleno (botones,
+   marquesina) pero no de texto: el extremo naranjo no llega
+   a 2:1 sobre blanco. Los titulares pasan a violeta->rosa.
+   ============================================================ */
+.eyebrow .on, .grad, h1 .n, .stat .v, .log-plus, .viz-tag b{ background:var(--grad-text); }
+.chip-live{ color:var(--ink-cyan); }
+.chip-beta{ color:var(--ink-warm); }
+.slotrow .t{ color:var(--ink-warm); }
+.seats b{ color:var(--ink-warm); }
+.slot .who{ color:var(--fina-purple); }
+.boot .dot{ background:var(--ink-cyan); box-shadow:0 0 0 3px rgba(0,137,141,.18); }
+.count.is-live{ box-shadow:inset 0 0 0 1px var(--ink-cyan); }
+.count.is-live .v{ color:var(--ink-cyan); }
+.btn:hover{ box-shadow:0 10px 30px -10px rgba(253,55,190,.45); }
 </style>
 </head>
 <body>
@@ -610,64 +633,100 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   <div class="iso-stack">
     <svg class="iso-half" id="iso-a" viewBox="480 132 1400 1400" role="img" aria-label="Isotipo de Fina">
       <defs>
-        <linearGradient id="gMain-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
+        <linearGradient id="gBody-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
+          <stop offset="0" stop-color="#620AFF" stop-opacity=".16"/>
+          <stop offset="0.55" stop-color="#AB5AFF" stop-opacity=".13"/>
+          <stop offset="1" stop-color="#FD37BE" stop-opacity=".20"/>
+        </linearGradient>
+        <linearGradient id="gEdge-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
           <stop offset="0" stop-color="#620AFF"/><stop offset="0.5" stop-color="#AB5AFF"/><stop offset="1" stop-color="#FD37BE"/>
           <animateTransform attributeName="gradientTransform" type="translate" values="-95,113; 95,-113; -95,113" dur="9s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
         </linearGradient>
-        <linearGradient id="gHot-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
-          <stop offset="0" stop-color="#8B3BFF"/><stop offset="0.45" stop-color="#F6EEFF"/><stop offset="1" stop-color="#FD37BE"/>
-          <animateTransform attributeName="gradientTransform" type="translate" values="-280,334; 280,-334; -280,334" dur="7s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        <linearGradient id="gGloss-a" gradientUnits="userSpaceOnUse" x1="1330" y1="330" x2="860" y2="960">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/>
+          <stop offset="0.45" stop-color="#FFFFFF" stop-opacity=".18"/>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
         </linearGradient>
-        <linearGradient id="gInner-a" gradientUnits="userSpaceOnUse" x1="1560" y1="330" x2="800" y2="1310">
-          <stop offset="0" stop-color="#121D50"/><stop offset="0.5" stop-color="#090620"/><stop offset="1" stop-color="#1B0A3C"/>
-        </linearGradient>
-        <filter id="fHalo-a" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="40"/></filter>
-        <filter id="fSheath-a" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>
-        <filter id="fTravel-a" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="12"/></filter>
-        <filter id="fBand-a" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="8"/></filter>
-        <filter id="fHair-a" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="2.6"/></filter>
-        <filter id="fInner-a" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feMorphology operator="erode" radius="10"/><feGaussianBlur stdDeviation="26"/></filter>
+        <filter id="fDrop-a" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+          <feOffset dy="26"/><feGaussianBlur stdDeviation="26"/>
+        </filter>
+        <filter id="fFringe-a" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="9"/></filter>
+        <filter id="fInset-a" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+          <feMorphology operator="erode" radius="16"/><feGaussianBlur stdDeviation="20"/>
+        </filter>
+        <filter id="fSoft-a" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5"/></filter>
+        <filter id="fGleam-a" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="11"/></filter>
       </defs>
-      <g stroke="none" fill="url(#gInner-a)" filter="url(#fInner-a)" opacity=".9"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z"/></g>
-      <g class="iso-breathe"><g fill="none" filter="url(#fHalo-a)" opacity=".5"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gMain-a)" stroke-width="110"/></g></g>
-      <g class="iso-breathe-soft"><g fill="none" filter="url(#fSheath-a)" opacity=".8"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#FD37BE" stroke-width="66"/></g></g>
-      <g fill="none" filter="url(#fBand-a)"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gMain-a)" stroke-width="42"/></g>
-      <g fill="none" filter="url(#fHair-a)" opacity=".9"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#C9A6FF" stroke-width="21"/></g>
-      <g fill="none"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="url(#gHot-a)" stroke-width="9.5"/></g>
-      <g fill="none" opacity=".55" transform="translate(7,-8.4)" style="mix-blend-mode:screen"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" stroke="#FFFFFF" stroke-width="3.6"/></g>
-      <g fill="none" filter="url(#fTravel-a)" opacity=".8" style="mix-blend-mode:screen"><path class="iso-travel-a" d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" pathLength="100" stroke="#C9A6FF" stroke-width="46" stroke-linecap="round" stroke-dasharray="14 86"/></g>
-      <g fill="none" filter="url(#fHair-a)" opacity=".95" style="mix-blend-mode:screen"><path class="iso-travel-a" d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" pathLength="100" stroke="#F6EEFF" stroke-width="21" stroke-linecap="round" stroke-dasharray="8 92"/></g>
+
+      <g filter="url(#fDrop-a)" opacity=".16"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="#3B1C6B"/></g>
+
+      <path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="url(#gBody-a)"/>
+
+      <g filter="url(#fFringe-a)" opacity=".5">
+        <path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="none" stroke="#FD37BE" stroke-width="9" stroke-linejoin="round" transform="translate(9,11)"/>
+        <path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="none" stroke="#620AFF" stroke-width="9" stroke-linejoin="round" transform="translate(-9,-11)"/>
+      </g>
+
+      <g filter="url(#fInset-a)" opacity=".8"><path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="url(#gGloss-a)"/></g>
+
+      <path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="none" stroke="url(#gEdge-a)" stroke-width="12" stroke-linejoin="round" opacity=".92"/>
+
+      <g class="iso-breathe-soft" filter="url(#fSoft-a)" opacity=".85">
+        <path d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linejoin="round" transform="translate(-7,-9)"/>
+      </g>
+
+      <g filter="url(#fGleam-a)" opacity=".85">
+        <path class="iso-travel-a" d="M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z" pathLength="100" fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round" stroke-dasharray="11 89"/>
+      </g>
     </svg>
 
     <svg class="iso-half" id="iso-b" viewBox="480 132 1400 1400" aria-hidden="true">
       <defs>
-        <linearGradient id="gMain-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
+        <linearGradient id="gBody-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
+          <stop offset="0" stop-color="#FD37BE" stop-opacity=".20"/>
+          <stop offset="0.55" stop-color="#FF7CA0" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#FFB470" stop-opacity=".22"/>
+        </linearGradient>
+        <linearGradient id="gEdge-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
           <stop offset="0" stop-color="#FD37BE"/><stop offset="0.5" stop-color="#FF7CA0"/><stop offset="1" stop-color="#FFB470"/>
           <animateTransform attributeName="gradientTransform" type="translate" values="95,-113; -95,113; 95,-113" dur="9s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
         </linearGradient>
-        <linearGradient id="gHot-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
-          <stop offset="0" stop-color="#FD37BE"/><stop offset="0.45" stop-color="#FFF6EC"/><stop offset="1" stop-color="#FFB470"/>
-          <animateTransform attributeName="gradientTransform" type="translate" values="280,-334; -280,334; 280,-334" dur="7s" calcMode="spline" keySplines=".45 0 .55 1;.45 0 .55 1" repeatCount="indefinite"/>
+        <linearGradient id="gGloss-b" gradientUnits="userSpaceOnUse" x1="880" y1="1320" x2="1520" y2="740">
+          <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/>
+          <stop offset="0.45" stop-color="#FFFFFF" stop-opacity=".18"/>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
         </linearGradient>
-        <linearGradient id="gInner-b" gradientUnits="userSpaceOnUse" x1="1560" y1="330" x2="800" y2="1310">
-          <stop offset="0" stop-color="#121D50"/><stop offset="0.5" stop-color="#090620"/><stop offset="1" stop-color="#1B0A3C"/>
-        </linearGradient>
-        <filter id="fHalo-b" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="40"/></filter>
-        <filter id="fSheath-b" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="22"/></filter>
-        <filter id="fTravel-b" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="12"/></filter>
-        <filter id="fBand-b" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="8"/></filter>
-        <filter id="fHair-b" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="2.6"/></filter>
-        <filter id="fInner-b" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feMorphology operator="erode" radius="10"/><feGaussianBlur stdDeviation="26"/></filter>
+        <filter id="fDrop-b" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+          <feOffset dy="26"/><feGaussianBlur stdDeviation="26"/>
+        </filter>
+        <filter id="fFringe-b" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="9"/></filter>
+        <filter id="fInset-b" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+          <feMorphology operator="erode" radius="16"/><feGaussianBlur stdDeviation="20"/>
+        </filter>
+        <filter id="fSoft-b" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5"/></filter>
+        <filter id="fGleam-b" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="11"/></filter>
       </defs>
-      <g stroke="none" fill="url(#gInner-b)" filter="url(#fInner-b)" opacity=".9"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z"/></g>
-      <g class="iso-breathe"><g fill="none" filter="url(#fHalo-b)" opacity=".5"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gMain-b)" stroke-width="110"/></g></g>
-      <g class="iso-breathe-soft"><g fill="none" filter="url(#fSheath-b)" opacity=".8"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FD37BE" stroke-width="66"/></g></g>
-      <g fill="none" filter="url(#fBand-b)"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gMain-b)" stroke-width="42"/></g>
-      <g fill="none" filter="url(#fHair-b)" opacity=".9"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FFD2B0" stroke-width="21"/></g>
-      <g fill="none"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="url(#gHot-b)" stroke-width="9.5"/></g>
-      <g fill="none" opacity=".55" transform="translate(7,-8.4)" style="mix-blend-mode:screen"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" stroke="#FFFFFF" stroke-width="3.6"/></g>
-      <g fill="none" filter="url(#fTravel-b)" opacity=".8" style="mix-blend-mode:screen"><path class="iso-travel-b" d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" pathLength="100" stroke="#FFC9A6" stroke-width="46" stroke-linecap="round" stroke-dasharray="14 86"/></g>
-      <g fill="none" filter="url(#fHair-b)" opacity=".95" style="mix-blend-mode:screen"><path class="iso-travel-b" d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" pathLength="100" stroke="#FFF6EC" stroke-width="21" stroke-linecap="round" stroke-dasharray="8 92"/></g>
+
+      <g filter="url(#fDrop-b)" opacity=".16"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="#3B1C6B"/></g>
+
+      <path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="url(#gBody-b)"/>
+
+      <g filter="url(#fFringe-b)" opacity=".5">
+        <path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="none" stroke="#FFB470" stroke-width="9" stroke-linejoin="round" transform="translate(9,11)"/>
+        <path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="none" stroke="#FD37BE" stroke-width="9" stroke-linejoin="round" transform="translate(-9,-11)"/>
+      </g>
+
+      <g filter="url(#fInset-b)" opacity=".8"><path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="url(#gGloss-b)"/></g>
+
+      <path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="none" stroke="url(#gEdge-b)" stroke-width="12" stroke-linejoin="round" opacity=".92"/>
+
+      <g class="iso-breathe-soft" filter="url(#fSoft-b)" opacity=".85">
+        <path d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linejoin="round" transform="translate(-7,-9)"/>
+      </g>
+
+      <g filter="url(#fGleam-b)" opacity=".85">
+        <path class="iso-travel-b" d="M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z" pathLength="100" fill="none" stroke="#FFFFFF" stroke-width="26" stroke-linecap="round" stroke-dasharray="11 89"/>
+      </g>
     </svg>
   </div>
 
@@ -1103,13 +1162,13 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
         var dep = Math.min(1, Math.max(.22, (40 - (A[2]+B[2])/2)/15));
         var tx  = Math.min(1, Math.max(0, ax/W));   /* rosa a la izquierda, naranjo a la derecha */
-        var r = 253 + ((2*tx)|0);
-        var g = (55 + 125*tx)|0;
-        var b = (190 - 78*tx)|0;
+        var r = (98 + 155*tx)|0;      /* violeta -> rosa: los dos contrastan sobre blanco */
+        var g = (10 + 45*tx)|0;
+        var b = (255 - 65*tx)|0;
         var al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
 
         if(pass===0 && passes===2){
-          ctx.strokeStyle = "rgba("+r+","+g+","+b+","+(al*.13).toFixed(3)+")";
+          ctx.strokeStyle = "rgba("+r+","+g+","+b+","+(al*.07).toFixed(3)+")";
           ctx.lineWidth = s.w*3.4;
         } else {
           ctx.strokeStyle = "rgba("+r+","+g+","+b+","+al.toFixed(3)+")";
@@ -1178,7 +1237,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   stage.appendChild(renderer.domElement);
 
   /* ---------- luces: clave neutra, contra en violeta de marca ---------- */
-  scene.add(new THREE.AmbientLight(0xB9A8E8, 0.55));
+  scene.add(new THREE.AmbientLight(0xFFFFFF, 0.7));
   var key = new THREE.DirectionalLight(0xFFFFFF, 1.1);  key.position.set(4, 6, 6);   scene.add(key);
   var rim = new THREE.DirectionalLight(0xAB5AFF, 1.0);  rim.position.set(-6, 1, -4);  scene.add(rim);
   var fil = new THREE.DirectionalLight(0x7A5CC4, 0.42); fil.position.set(-3, -4, 5);  scene.add(fil);
@@ -1304,7 +1363,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     var m = new THREE.Mesh(
       new THREE.ConeGeometry(r, h, 32, 1, true),
       new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0,
-        blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide})
+        blending:THREE.NormalBlending, depthWrite:false, side:THREE.DoubleSide})
     );
     m.rotation.x = Math.PI;
     rocket.add(m);
@@ -1325,7 +1384,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     pos[k*3+2] = (Math.random()-.5) * 14 - 4;
   }
   dustGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  var dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({color:0xAB5AFF, size:.05, transparent:true, opacity:.5}));
+  var dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({color:0x620AFF, size:.05, transparent:true, opacity:.3}));
   scene.add(dust);
 
   /* ---------- interacción ---------- */

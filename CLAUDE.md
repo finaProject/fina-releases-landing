@@ -44,8 +44,21 @@ Fuente: `~/fina-landing/tokens.css` en la máquina de Diego.
 --fina-orange        #FFB470
 --color-info         #00CFD5   (estado "en producción")
 gradiente de marca   linear-gradient(92deg,#FD37BE 0%,#FFB470 100%)
-fondo                linear-gradient(180deg,#1F005D 0%,#0B0020 45%,#020007 100%)
+fondo                blanco, con un velo violeta arriba (#FAF7FF → #FFFFFF)
+texto                #14101F
 ```
+
+**La página es clara.** Fue oscura hasta septiembre de 2026 y se invirtió a petición de
+Diego. El histórico importa porque quedan decisiones heredadas de aquello.
+
+⚠️ **El gradiente de marca no sirve como texto sobre blanco.** El extremo naranjo #FFB470
+no llega a 2:1 de contraste. Los titulares usan `--grad-text` (violeta → rosa,
+#620AFF → #FD37BE); el rosa → naranjo se queda donde es relleno: botones y marquesina.
+Lo mismo con los chips: como texto van en `--ink-warm` #B8651A y `--ink-cyan` #00898D.
+
+⚠️ **Nada de mezcla aditiva ni `mix-blend-mode: screen`.** Sobre blanco, screen con
+cualquier cosa da blanco, y el aditivo es invisible. Toda la página está en mezcla normal.
+Si reaparece un `AdditiveBlending` o un `screen`, ese elemento simplemente no se ve.
 
 Ojo: existe un segundo sistema, `fina-rrss` (el de Claude Design), con los mismos colores
 desplazados un dígito — `#6209FF`, `#FD38BE`, `#FFB570`. La página está unificada hacia
@@ -67,8 +80,19 @@ Son lo más frágil del archivo. Cada una tiene invariantes que cuestan caro de 
 **1. Portada — isotipo a pantalla completa** (`#gate`)
 Dos SVG independientes, `#iso-a` y `#iso-b`, uno por barra del isotipo. Están separados **a
 propósito**: transformar un `<g>` dentro de un mismo SVG no se compone en GPU y el navegador
-rerasteriza los cinco desenfoques en cada frame. Por eso los `defs` están duplicados con ids
-sufijados (`fHalo-a` / `fHalo-b`).
+rerasteriza los desenfoques en cada frame. Por eso los `defs` están duplicados con ids
+sufijados (`fDrop-a` / `fDrop-b`, etc.).
+
+El isotipo está resuelto como **vidrio, no como glow**. Seis capas, en orden: sombra
+proyectada (26px abajo, muy difusa) para que flote sobre el blanco; cuerpo translúcido
+teñido al 13–22%, que deja pasar el fondo; dispersión cromática —dos copias del contorno
+desplazadas en direcciones opuestas, una rosa y otra violeta, desenfocadas— que es lo que
+lo hace leer como cristal y no como plástico de color; el canto con el degradado de marca;
+un brillo interior erosionado 16px para que el blanco quede dentro del borde; y el especular
+desplazado arriba-izquierda. Encima, el destello que recorre la pieza.
+
+No metas relleno oscuro dentro de las barras: eso era la versión con glow y es justo lo que
+se pidió quitar.
 
 - El scroll **no pinta**: mueve un objetivo. Un bucle aparte lo persigue con un lerp
   normalizado por tiempo, `1-(1-0.16)^(dt/16.7)`, para que sea igual a 60 y a 120 Hz.
