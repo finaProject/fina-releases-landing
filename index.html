@@ -753,7 +753,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   <figure class="hero-viz glass">
     <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
-    <figcaption class="viz-tag">// sede · <b>caracas</b> · 09 pisos</figcaption>
+    <figcaption class="viz-tag">// sede · <b>caracas campus</b> · 09 pisos</figcaption>
   </figure>
 
   <div class="count glass" id="count" aria-label="Cuenta regresiva al evento">
@@ -829,7 +829,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
       </div>
       <div class="venue glass">
         <dl>
-          <dt>Sede</dt><dd>Oficinas Fina<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
+          <dt>Sede</dt><dd>Caracas Campus<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
           <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
           <dt>Fecha</dt><dd>Viernes 23 de octubre, 2026</dd>
           <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
@@ -974,6 +974,44 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   box(-1.6, 1.6, 0,9.2,  1.2, 4.0, 9, st);        /* cuerpo posterior: deja el patio al frente */
   box(-6.4, 6.4, 0,2.6, -6.6,-4.0, 3, st*1.25);   /* zócalo */
   box(-6.4,-2.6, 0,1.9, -8.2,-6.6, 2, st*1.25);   /* atrio */
+  /* ---------- rotulación de fachada ----------
+     Alfabeto de trazo, no tipografía: cada letra es una polilínea en
+     una caja 0..1. Es lo que permite que el rótulo viva en el modelo 3D
+     y gire con el edificio, en vez de ser texto pegado en pantalla. */
+  var GLYPH = {
+    "A":[[[0,0],[.5,1],[1,0]],[[.22,.38],[.78,.38]]],
+    "C":[[[1,.82],[.62,1],[.22,1],[0,.74],[0,.26],[.22,0],[.62,0],[1,.18]]],
+    "M":[[[0,0],[0,1],[.5,.42],[1,1],[1,0]]],
+    "P":[[[0,0],[0,1],[.72,1],[1,.82],[1,.66],[.72,.5],[0,.5]]],
+    "R":[[[0,0],[0,1],[.72,1],[1,.82],[1,.66],[.72,.5],[0,.5]],[[.5,.5],[1,0]]],
+    "S":[[[1,.86],[.62,1],[.2,1],[0,.82],[0,.66],[.16,.56],[.84,.44],[1,.34],[1,.16],[.8,0],[.32,0],[0,.14]]],
+    "U":[[[0,1],[0,.22],[.22,0],[.78,0],[1,.22],[1,1]]]
+  };
+
+  /* proyecta el rótulo sobre el plano frontal del zócalo (z fijo) */
+  function sign(text, cx, cy, h, z, w){
+    var cw = h*1.04, gap = h*0.32;
+    var total = text.length*cw + (text.length-1)*gap;
+    var x = cx - total/2;
+    for(var i=0;i<text.length;i++){
+      var g = GLYPH[text[i]];
+      if(g){
+        for(var p=0;p<g.length;p++){
+          var poly = g[p];
+          for(var k=0;k<poly.length-1;k++){
+            push([x + poly[k][0]*cw,   cy + poly[k][1]*h,   z],
+                 [x + poly[k+1][0]*cw, cy + poly[k+1][1]*h, z], w);
+          }
+        }
+      }
+      x += cw + gap;
+    }
+  }
+
+  /* el zócalo es la superficie más adelantada del modelo (z=-6.6) */
+  sign("CARACAS", 0, 1.42, .50, -6.62, 1.0);
+  sign("CAMPUS",  0, 0.74, .50, -6.62, 1.0);
+
   push([-3.2,9.2, .5],[-3.2,10.8, .5],.9);        /* antenas */
   push([ 3.4,9.2,2.0],[ 3.4,10.2,2.0],.9);
   push([ 2.2,9.2,-2.6],[2.2,9.9,-2.6],.7);
