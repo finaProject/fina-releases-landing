@@ -159,3 +159,23 @@ Seis elementos pintan texto con degradado (`.grad`, `.stat .v`, `h1 .n`, `.eyebr
 El atajo reinicia `background-clip` a `border-box`: el degradado pasa a llenar la caja
 entera y el texto se vuelve invisible. Se ve como rectángulos de color donde debería
 haber palabras. Ya pasó una vez.
+
+## El sistema de vidrio
+
+Las superficies que flotan comparten una sola clase, `.glass`, definida con tokens
+(`--glass-fill`, `--glass-blur`, `--glass-edge`, `--glass-lift`). Cuatro ingredientes la
+hacen leer como cristal y no como una caja translúcida:
+
+1. `backdrop-filter: blur(20px) saturate(180%)` — la saturación importa tanto como el
+   desenfoque: el color de detrás se intensifica al pasar por el vidrio.
+2. Un filo blanco de 1px arriba, que es donde pega la luz.
+3. Canto con dispersión: violeta arriba-izquierda, rosa abajo-derecha. Es el mismo
+   recurso que el isotipo, y es lo que ata las dos cosas.
+4. Sombra baja y ancha, para despegarlo del papel.
+
+**Lo llevan solo cinco elementos**: la barra, el contador, el visor del edificio, la ficha
+de la sede y las tarjetas del line-up. Botones, chips, marquesina y filas del changelog no.
+Si todo es vidrio, nada lo es — y el CTA principal tiene que seguir siendo sólido.
+
+Hay dos salidas de emergencia: `@supports not (backdrop-filter)` sube la opacidad del
+relleno, y `prefers-reduced-transparency` devuelve superficie blanca sólida.

@@ -154,12 +154,57 @@ a{ color:inherit; }
 .band-head{ display:flex; flex-direction:column; gap:14px; margin-bottom:clamp(34px,5vw,56px); }
 
 /* ============================================================
+   VIDRIO
+   Un solo sistema para las superficies que flotan. Cuatro cosas
+   lo hacen leer como cristal y no como una caja translúcida:
+   desenfoque del fondo con saturación (el color de detrás se
+   intensifica al pasar por el vidrio), un filo blanco arriba,
+   canto con dispersión —violeta arriba-izquierda, rosa
+   abajo-derecha, igual que el isotipo— y una sombra baja y
+   ancha que lo despega del papel.
+
+   Se reserva para lo que de verdad flota: la barra, el contador,
+   el visor del edificio, la ficha de la sede y las tarjetas del
+   line-up. Botones, chips, marquesina y filas no lo llevan: si
+   todo es vidrio, nada lo es.
+   ============================================================ */
+:root{
+  --glass-fill: linear-gradient(170deg, rgba(255,255,255,.74) 0%, rgba(255,255,255,.40) 100%);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-edge:
+    inset 0 1px 0 0 rgba(255,255,255,.9),
+    inset 1px 1px 0 0 rgba(171,90,255,.22),
+    inset -1px -1px 0 0 rgba(253,55,190,.18),
+    inset 0 0 0 1px rgba(98,10,255,.09);
+  --glass-lift: 0 1px 2px rgba(21,0,65,.04), 0 14px 34px -14px rgba(21,0,65,.16);
+}
+.glass{
+  background:var(--glass-fill);
+  -webkit-backdrop-filter:var(--glass-blur);
+  backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-edge), var(--glass-lift);
+}
+/* sin soporte de backdrop-filter el relleno sube para no quedar lavado */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass{ background:linear-gradient(170deg, rgba(255,255,255,.96) 0%, rgba(250,247,255,.92) 100%); }
+}
+/* quien pide menos transparencia recibe superficie sólida */
+@media (prefers-reduced-transparency: reduce){
+  .glass{
+    background:#FFFFFF; -webkit-backdrop-filter:none; backdrop-filter:none;
+    box-shadow:inset 0 0 0 1px var(--rule), var(--glass-lift);
+  }
+}
+
+/* ============================================================
    NAV
    ============================================================ */
 .nav{
   position:sticky; top:0; z-index:40;
-  background:rgba(255,255,255,.78); backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--rule-soft);
+  background:linear-gradient(180deg, rgba(255,255,255,.82) 0%, rgba(255,255,255,.62) 100%);
+  -webkit-backdrop-filter:var(--glass-blur);
+  backdrop-filter:var(--glass-blur);
+  box-shadow:inset 0 -1px 0 0 rgba(98,10,255,.10), 0 6px 20px -14px rgba(21,0,65,.25);
 }
 .nav-in{
   max-width:var(--wrap); margin:0 auto; padding:0 var(--gut);
@@ -201,8 +246,11 @@ a{ color:inherit; }
 .btn:hover .arw{ transform:translateX(3px); }
 .btn-sm{ padding:10px 16px; font-size:11px; }
 .btn-ghost{
-  background:transparent; color:var(--fg);
-  box-shadow:inset 0 0 0 1px var(--rule);
+  color:var(--fg);
+  background:var(--glass-fill);
+  -webkit-backdrop-filter:var(--glass-blur);
+  backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-edge);
 }
 .btn-ghost:hover{ box-shadow:inset 0 0 0 1px var(--fina-purple-light); transform:none; }
 
@@ -234,11 +282,10 @@ a{ color:inherit; }
 
 /* contador */
 .count{
-  margin-top:44px; border-radius:10px; overflow:hidden;
-  background:var(--surface); box-shadow:inset 0 0 0 1px var(--rule);
+  margin-top:44px; border-radius:16px; overflow:hidden;
   display:grid; grid-template-columns:repeat(4,1fr);
 }
-.count div{ padding:20px 14px 16px; text-align:center; box-shadow:inset 1px 0 0 var(--rule-soft); }
+.count div{ padding:22px 14px 18px; text-align:center; box-shadow:inset 1px 0 0 rgba(98,10,255,.08); }
 .count div:first-child{ box-shadow:none; }
 .count .v{
   display:block; font-family:var(--sans); font-weight:800;
@@ -293,7 +340,7 @@ a{ color:inherit; }
   padding:22px 0 20px; border-bottom:1px solid var(--rule-soft);
   transition:background .15s;
 }
-.log-row:hover{ background:var(--surface); }
+.log-row:hover{ background:linear-gradient(90deg, rgba(171,90,255,.07) 0%, rgba(253,55,190,.05) 100%); }
 .log-plus{
   font-family:var(--sans); font-weight:800; font-size:20px; line-height:1.2;
   grid-row:1/span 2;
@@ -326,11 +373,13 @@ a{ color:inherit; }
    LINE-UP
    ============================================================ */
 .lineup{
-  display:grid; gap:1px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  background:var(--rule-soft); border-radius:12px; overflow:hidden;
-  box-shadow:inset 0 0 0 1px var(--rule);
+  display:grid; gap:clamp(12px,1.4vw,18px);
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 }
-.slot{ background:#FFFFFF; padding:clamp(22px,3vw,30px); display:flex; flex-direction:column; gap:10px; }
+.slot{
+  border-radius:18px; padding:clamp(22px,3vw,30px);
+  display:flex; flex-direction:column; gap:10px;
+}
 .slot .idx{ font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--fg-faint); }
 .slot h3{ font-family:var(--sans); font-weight:800; font-size:19px; letter-spacing:-.015em; margin:0; text-wrap:balance; }
 .slot .who{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--fina-purple-light); }
@@ -359,8 +408,7 @@ a{ color:inherit; }
 @media (min-width:900px){ .two{ grid-template-columns:.9fr 1.1fr; } }
 
 .venue{
-  background:var(--surface); border-radius:12px;
-  box-shadow:inset 0 0 0 1px var(--rule);
+  border-radius:18px;
   padding:clamp(24px,3vw,34px);
 }
 .venue dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:14px 22px; font-size:14px; }
@@ -404,13 +452,9 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 .hero-viz{
   position:relative;
   margin-top:clamp(30px,4.5vw,50px);
-  border-radius:14px;
+  border-radius:18px;
   overflow:hidden;
   aspect-ratio:16/7;
-  background:
-    radial-gradient(75% 110% at 50% 108%, rgba(98,10,255,.09) 0%, transparent 68%),
-    rgba(255,255,255,.5);
-  box-shadow:inset 0 0 0 1px var(--rule);
 }
 @media (max-width:700px){ .hero-viz{ aspect-ratio:4/3; } }
 .hero-viz canvas{ display:block; width:100%; height:100%; }
@@ -761,12 +805,12 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     <span class="seats"><b>120</b> cupos · sin costo</span>
   </div>
 
-  <figure class="hero-viz">
+  <figure class="hero-viz glass">
     <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
     <figcaption class="viz-tag">// sede · <b>caracas</b> · 09 pisos</figcaption>
   </figure>
 
-  <div class="count" id="count" aria-label="Cuenta regresiva al evento">
+  <div class="count glass" id="count" aria-label="Cuenta regresiva al evento">
     <div><span class="v" id="c-d">00</span><span class="k">Días</span></div>
     <div><span class="v" id="c-h">00</span><span class="k">Horas</span></div>
     <div><span class="v" id="c-m">00</span><span class="k">Min</span></div>
@@ -891,25 +935,25 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   </div>
 
   <div class="lineup">
-    <div class="slot">
+    <div class="slot glass">
       <span class="idx">01 / apertura</span>
       <h3>Dónde está Fina hoy</h3>
       <span class="who">Por anunciar</span>
       <p>Diez minutos de contexto: qué cambió en el producto y por qué.</p>
     </div>
-    <div class="slot">
+    <div class="slot glass">
       <span class="idx">02 / demo</span>
       <h3>Conciliación y facturación</h3>
       <span class="who">Por anunciar</span>
       <p>El bloque de automatización, corriendo sobre un cierre real.</p>
     </div>
-    <div class="slot">
+    <div class="slot glass">
       <span class="idx">03 / demo</span>
       <h3>Clasificación &amp; API</h3>
       <span class="who">Por anunciar</span>
       <p>Lo que está en beta, con sus límites a la vista.</p>
     </div>
-    <div class="slot">
+    <div class="slot glass">
       <span class="idx">04 / cierre</span>
       <h3>Roadmap y preguntas</h3>
       <span class="who">Por anunciar</span>
@@ -944,7 +988,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
         <p class="eyebrow">// 04 &nbsp;Dónde</p>
         <h2 class="h2">El lugar<span class="grad">.</span></h2>
       </div>
-      <div class="venue">
+      <div class="venue glass">
         <dl>
           <dt>Sede</dt><dd>Oficinas Fina<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
           <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
