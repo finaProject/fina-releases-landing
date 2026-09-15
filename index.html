@@ -1293,6 +1293,35 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   var rim = new THREE.DirectionalLight(0xAB5AFF, 1.0);  rim.position.set(-6, 1, -4);  scene.add(rim);
   var fil = new THREE.DirectionalLight(0x7A5CC4, 0.42); fil.position.set(-3, -4, 5);  scene.add(fil);
 
+  /* bbox del isotipo en el espacio de sus paths: 801..1559 x, 355..1309 y */
+  var ISO_A = "M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z";
+  var ISO_B = "M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z";
+  var ISO_W = 758, ISO_H = 954;
+
+  function drawLogo(g, x, y, h){
+    var k = h / ISO_H;
+    g.save();
+    g.translate(x, y);
+    if(typeof Path2D === "function"){
+      g.save();
+      g.scale(k, k);
+      g.translate(-801, -355);
+      var ga = g.createLinearGradient(1330, 330, 860, 960);
+      ga.addColorStop(0, "#7C1FEA"); ga.addColorStop(1, "#A658F1");
+      g.fillStyle = ga; g.fill(new Path2D(ISO_A));
+      var gb = g.createLinearGradient(880, 1320, 1520, 740);
+      gb.addColorStop(0, "#FF42BB"); gb.addColorStop(1, "#FFAB7B");
+      g.fillStyle = gb; g.fill(new Path2D(ISO_B));
+      g.restore();
+    }
+    /* la palabra, alineada al pie del isotipo */
+    g.fillStyle = "#FFFFFF";
+    g.font = "600 " + Math.round(h * 0.86) + "px Oceanwide, Figtree, sans-serif";
+    g.textBaseline = "alphabetic";
+    g.fillText("fina", ISO_W * k + h * 0.26, h * 0.86);
+    g.restore();
+  }
+
   /* ---------- librea: se pinta en un canvas 2D y se mapea al fuselaje ---------- */
   function makeLivery(){
     var c = document.createElement("canvas");
@@ -1329,21 +1358,11 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     g.fillStyle = "#FFB470";                       /* ventanillas */
     for (var wx = 60; wx < 2008; wx += 46) g.fillRect(wx, 470, 26, 11);
 
-    /* logotipo: el isotipo inclinado + la palabra en Figtree */
-    g.save();
-    g.translate(700, 400);
-    g.rotate(-0.045);
-    var lg = g.createLinearGradient(0, -150, 150, 0);
-    lg.addColorStop(0, "#FD37BE"); lg.addColorStop(1, "#FFB470");
-    g.fillStyle = lg;
-    g.beginPath();
-    g.moveTo(52,-150); g.lineTo(140,-150); g.lineTo(88,0); g.lineTo(0,0);
-    g.closePath(); g.fill();
-    g.fillStyle = "#FFFFFF";
-    g.font = '900 200px Figtree, sans-serif';
-    g.textBaseline = "alphabetic";
-    g.fillText("fina", 168, 0);
-    g.restore();
+    /* el logo de verdad sobre el fuselaje: el isotipo con su geometría
+       real —las dos barras de extremo redondeado, violeta arriba y
+       naranjo->rosa abajo— y la palabra en Oceanwide, que es la letra
+       del wordmark. Los paths son los mismos del isotipo de la portada. */
+    drawLogo(g, 648, 296, 206);
 
     var tex = new THREE.CanvasTexture(c);
     tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -1534,7 +1553,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   /* la librea espera a que Figtree esté cargada, si no el logo sale en fallback */
   var applyLivery = function(){ matLivery.map = makeLivery(); matLivery.needsUpdate = true; };
   if (document.fonts && document.fonts.load){
-    document.fonts.load('900 200px Figtree').then(applyLivery).catch(applyLivery);
+    document.fonts.load('600 200px Oceanwide').then(applyLivery).catch(applyLivery);
   } else applyLivery();
 })();
 </script>
