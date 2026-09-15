@@ -587,7 +587,14 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
    marquesina) pero no de texto: el extremo naranjo no llega
    a 2:1 sobre blanco. Los titulares pasan a violeta->rosa.
    ============================================================ */
-.eyebrow .on, .grad, h1 .n, .stat .v, .log-plus, .viz-tag b{ background:var(--grad-text); }
+/* OJO: aquí va background-image, NO el atajo background. El atajo
+   reinicia background-clip a border-box y el degradado deja de
+   recortarse contra el texto: salen rectángulos de color y la
+   letra desaparece (color:transparent). */
+.eyebrow .on, .grad, h1 .n, .stat .v, .log-plus, .viz-tag b{
+  background-image:var(--grad-text);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
 .chip-live{ color:var(--ink-cyan); }
 .chip-beta{ color:var(--ink-warm); }
 .slotrow .t{ color:var(--ink-warm); }

@@ -149,3 +149,13 @@ electrónica*. Hubo que corregirlo una vez porque la primera versión asumía Ch
 La estructura viene de https://hack.platan.us/26-co — corchetes `[01]`, eyebrows numerados,
 marquesina infinita, cifras gigantes, hairlines en vez de cards, changelog con `+`.
 La paleta y la tipografía son de Fina, no de ahí. Esa mezcla es deliberada.
+
+## Trampa: los textos con degradado
+
+Seis elementos pintan texto con degradado (`.grad`, `.stat .v`, `h1 .n`, `.eyebrow .on`,
+`.log-plus`, `.viz-tag b`) mediante `background-clip: text` + `color: transparent`.
+
+**Si vas a cambiarles el degradado, usa `background-image`, nunca el atajo `background`.**
+El atajo reinicia `background-clip` a `border-box`: el degradado pasa a llenar la caja
+entera y el texto se vuelve invisible. Se ve como rectángulos de color donde debería
+haber palabras. Ya pasó una vez.
