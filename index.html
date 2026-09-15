@@ -105,28 +105,8 @@ body{
   overflow-x:hidden;
 }
 
-/* fondo: gradiente hero de marca + resplandor violeta + retícula de hilos (RRSS) */
-.bg{ position:fixed; inset:0; z-index:0; pointer-events:none; }
-.bg-grad{
-  position:absolute; inset:0;
-  background:
-    radial-gradient(120% 70% at 50% -5%, #EFE6FF 0%, transparent 62%),
-    linear-gradient(180deg,#FAF7FF 0%,#FFFFFF 45%,#FFFFFF 100%);
-}
-.bg-wires{
-  position:absolute; inset:0;
-  background-image:
-    repeating-linear-gradient(90deg, rgba(98,10,255,.11) 0 1px, transparent 1px 78px),
-    repeating-linear-gradient(0deg, rgba(98,10,255,.09) 0 1px, transparent 1px 78px);
-  mask-image:radial-gradient(ellipse 110% 65% at 50% 0%, #000 12%, transparent 72%);
-}
-.bg-glow{
-  position:absolute; left:50%; top:-14vw; width:min(1000px,110vw); aspect-ratio:1;
-  transform:translateX(-50%);
-  background:radial-gradient(circle, rgba(253,55,190,.13) 0%, transparent 58%);
-  filter:blur(40px);
-}
-
+/* El fondo es blanco plano. Lo pinta el body y no hay ninguna capa
+   encima: ni degradado, ni retícula de hilos, ni resplandor rosa. */
 .page{ position:relative; z-index:1; }
 
 a{ color:inherit; }
@@ -381,7 +361,7 @@ details p{ margin:0 0 18px; color:var(--fg-dim); font-size:14px; max-width:62ch;
    ============================================================ */
 .close{
   border-top:1px solid var(--rule);
-  background:linear-gradient(180deg, rgba(98,10,255,.07) 0%, rgba(255,255,255,0) 100%);
+  background:transparent;
   text-align:center;
 }
 .close .h2{ margin-bottom:18px; }
@@ -487,10 +467,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 .gate-bg{
   position:absolute; inset:0;
   will-change:opacity;
-  background:
-    radial-gradient(120% 70% at 50% -5%, #EFE6FF 0%, transparent 62%),
-    linear-gradient(180deg,#FAF7FF 0%,#FFFFFF 45%,#FFFFFF 100%),
-    #FFFFFF;
+  background:#FFFFFF;
 }
 
 .iso-stack{
@@ -602,12 +579,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 </style>
 </head>
 <body>
-<div class="bg" aria-hidden="true">
-  <div class="bg-grad"></div>
-  <div class="bg-wires"></div>
-  <div class="bg-glow"></div>
-</div>
-
 <div class="page">
 
 <nav class="nav">
