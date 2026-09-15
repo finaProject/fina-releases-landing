@@ -939,7 +939,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   /* ---------- geometría: volúmenes, losas y montantes ---------- */
   var S = [];
-  function push(a,b,w){ S.push({a:a,b:b,w:w}); }
+  function push(a,b,w,nv){ S.push({a:a,b:b,w:w,nv:nv}); }
 
   function box(x0,x1,y0,y1,z0,z1,floors,step){
     var c = [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],
@@ -1000,7 +1000,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
           var poly = g[p];
           for(var k=0;k<poly.length-1;k++){
             push([x + poly[k][0]*cw,   cy + poly[k][1]*h,   z],
-                 [x + poly[k+1][0]*cw, cy + poly[k+1][1]*h, z], w);
+                 [x + poly[k+1][0]*cw, cy + poly[k+1][1]*h, z], w, true);
           }
         }
       }
@@ -1009,8 +1009,8 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   }
 
   /* el zócalo es la superficie más adelantada del modelo (z=-6.6) */
-  sign("CARACAS", 0, 1.42, .50, -6.62, 1.0);
-  sign("CAMPUS",  0, 0.74, .50, -6.62, 1.0);
+  sign("CARACAS", 0, 1.42, .50, -6.62, 1.2);
+  sign("CAMPUS",  0, 0.74, .50, -6.62, 1.2);
 
   push([-3.2,9.2, .5],[-3.2,10.8, .5],.9);        /* antenas */
   push([ 3.4,9.2,2.0],[ 3.4,10.2,2.0],.9);
@@ -1098,11 +1098,20 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
         var ux = dx/L, uy = dy/L, ov = s.ov*f;
 
         var dep = Math.min(1, Math.max(.22, (40 - (A[2]+B[2])/2)/15));
-        var tx  = Math.min(1, Math.max(0, ax/W));   /* rosa a la izquierda, naranjo a la derecha */
-        var r = (98 + 155*tx)|0;      /* violeta -> rosa: los dos contrastan sobre blanco */
-        var g = (10 + 45*tx)|0;
-        var b = (255 - 65*tx)|0;
-        var al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
+        var r, g, b, al;
+        if(s.nv){
+          /* la rotulacion es de Caracas Campus, no de la estructura:
+             va en su azul marino y no entra en el degradado de marca */
+          r = 21; g = 41; b = 63;
+          al = .95 * dep;
+          if(pass===0 && passes===2) continue;   /* sin halo: sobre blanco solo ensucia */
+        } else {
+          var tx = Math.min(1, Math.max(0, ax/W));   /* violeta a la izquierda, rosa a la derecha */
+          r = (98 + 155*tx)|0;
+          g = (10 + 45*tx)|0;
+          b = (255 - 65*tx)|0;
+          al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
+        }
 
         if(pass===0 && passes===2){
           ctx.strokeStyle = "rgba("+r+","+g+","+b+","+(al*.07).toFixed(3)+")";
