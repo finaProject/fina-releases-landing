@@ -337,27 +337,14 @@ a{ color:inherit; }
 /* ============================================================
    LUGAR + FAQ
    ============================================================ */
-.two{ display:grid; gap:clamp(30px,5vw,64px); grid-template-columns:1fr; }
-@media (min-width:900px){ .two{ grid-template-columns:.9fr 1.1fr; } }
-
 .venue{
+  max-width:640px;      /* sola en la seccion, sin estirarse a todo el ancho */
   border-radius:18px;
   padding:clamp(24px,3vw,34px);
 }
 .venue dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:14px 22px; font-size:14px; }
 .venue dt{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--fg-faint); padding-top:3px; }
 .venue dd{ margin:0; color:var(--fg); }
-
-details{ border-bottom:1px solid var(--rule-soft); }
-summary{
-  cursor:pointer; list-style:none; padding:16px 0;
-  display:flex; justify-content:space-between; gap:18px; align-items:center;
-  font-family:var(--sans); font-weight:800; font-size:16px; letter-spacing:-.01em;
-}
-summary::-webkit-details-marker{ display:none; }
-summary::after{ content:"+"; color:var(--fina-pink); font-size:20px; line-height:1; }
-details[open] summary::after{ content:"\2212"; }
-details p{ margin:0 0 18px; color:var(--fg-dim); font-size:14px; max-width:62ch; }
 
 /* ============================================================
    CIERRE
@@ -795,49 +782,17 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
 <!-- ================= LUGAR + FAQ ================= -->
 <section class="band wrap">
-  <div class="two">
-    <div>
-      <div class="band-head">
-        <p class="eyebrow">// 02 &nbsp;Dónde</p>
-        <h2 class="h2">El lugar<span class="grad">.</span></h2>
-      </div>
-      <div class="venue glass">
+  <div class="band-head">
+    <p class="eyebrow">// 02 &nbsp;Dónde</p>
+    <h2 class="h2">El lugar<span class="grad">.</span></h2>
+  </div>
+  <div class="venue glass">
         <dl>
           <dt>Sede</dt><dd>Caracas Campus<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
           <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
           <dt>Fecha</dt><dd>Viernes 23 de octubre, 2026</dd>
           <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
           <dt>Costo</dt><dd>Sin costo, con registro previo</dd>
-        </dl>
-      </div>
-    </div>
-
-    <div>
-      <div class="band-head">
-        <p class="eyebrow">// 03 &nbsp;Preguntas</p>
-        <h2 class="h2">Lo que siempre nos <span class="grad">preguntan</span>.</h2>
-      </div>
-      <details open>
-        <summary>¿Para quién es?</summary>
-        <p>Contadores, equipos de finanzas, founders y cualquiera que opere la contabilidad de una empresa. No hace falta ser cliente de Fina.</p>
-      </details>
-      <details>
-        <summary>¿Hay que saber de tecnología?</summary>
-        <p>No. Son demos de producto, no charlas técnicas. El bloque de API es el único con código en pantalla y se explica desde cero.</p>
-      </details>
-      <details>
-        <summary>¿Se transmite?</summary>
-        <p>Grabamos y publicamos las demos después. La sesión de preguntas es solo presencial.</p>
-      </details>
-      <details>
-        <summary>¿Puedo llevar a alguien de mi equipo?</summary>
-        <p>Sí. Cada persona reserva su propio cupo para que podamos contar bien los asientos.</p>
-      </details>
-      <details>
-        <summary>¿Qué pasa si me inscribo y no puedo ir?</summary>
-        <p>Avísanos y liberamos tu cupo. Hay lista de espera.</p>
-      </details>
-    </div>
   </div>
 </section>
 
@@ -845,7 +800,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 <section class="band close" id="rsvp">
   <div class="wrap close-in">
     <div class="close-copy">
-      <p class="eyebrow">// 04 &nbsp;<span class="on">Registro abierto</span></p>
+      <p class="eyebrow">// 03 &nbsp;<span class="on">Registro abierto</span></p>
       <h2 class="h2">Son <span class="grad">120</span> cupos.</h2>
       <p class="lede">Reserva en treinta segundos. Te llega la confirmación al correo con la dirección exacta.</p>
       <a class="btn" href="#" id="rsvp-link">Reservar mi cupo <span class="arw">&#8594;</span></a>
