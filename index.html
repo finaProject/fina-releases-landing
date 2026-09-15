@@ -39,7 +39,7 @@
   margin:6px 0 4px;
 }
 .title-viz canvas{ display:block; width:100%; height:100%; }
-@media (max-width:760px){ .title-viz{ aspect-ratio:4/3.4; } }
+@media (max-width:760px){ .title-viz{ aspect-ratio:16/9; } }
 
 /* ================================================================
    FINA RELEASES
@@ -1641,8 +1641,8 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
         var d  = (px/W)*0.42 + Math.random()*0.22;      /* retardo por columna */
         parts.push({
           tx:px, ty:py,
-          sx:px + (Math.random()-.5)*W*0.55,
-          sy:py + (Math.random()-.5)*H*0.75,
+          sx:px + (Math.random()-.5)*W*0.30,
+          sy:py + (Math.random()-.5)*H*0.16,
           bucket:Math.min(BUCKETS-1, Math.floor(t*BUCKETS)),
           d0:d, dur:0.34 + Math.random()*0.22,
           ph:Math.random()*Math.PI*2,
@@ -1653,16 +1653,20 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     }
     groups = PALETTE.map(function(){ return []; });
     parts.forEach(function(p){ groups[p.bucket].push(p); });
-    dot = Math.max(1, 2.4*DPR);
+    dot = Math.max(1, 2.6*DPR);
     built = true;
   }
 
-  /* avance: 0 cuando el bloque asoma por abajo, 1 cuando sube al 30% */
+  /* avance medido contra el CENTRO del bloque: la palabra termina de
+     armarse cuando queda centrada en la ventana, no cuando su borde
+     superior sube. Con bloques mas altos que la ventana, lo segundo
+     dejaba el texto ya formado por debajo del pliegue. */
   function progress(){
     var r = wrap.getBoundingClientRect();
     var vh = window.innerHeight || 800;
-    var a = vh, b = vh*0.30;
-    return clamp((a - r.top) / (a - b));
+    var c = r.top + r.height/2;
+    var a = vh + r.height*0.25, b = vh*0.52;
+    return clamp((a - c) / (a - b));
   }
 
   var cur = 0, target = 0, raf = 0, prev = 0, visible = true;
@@ -1682,7 +1686,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
           x += Math.sin(now*0.001*q.sp + q.ph) * q.amp * k;
           y += Math.cos(now*0.0012*q.sp + q.ph) * q.amp * k;
         }
-        ctx.globalAlpha = 0.3 + 0.7*k;
+        ctx.globalAlpha = 0.38 + 0.62*k;
         ctx.fillRect(x, y, dot, dot);
       }
     }
