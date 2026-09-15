@@ -545,96 +545,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   .gate-spacer{ display:none; }
 }
 
-
-/* ============================================================
-   BARAJA — lo práctico en tres cartas apiladas en perspectiva
-   La de delante se ve entera; las de detrás asoman como bandas.
-   Las bandas están DISEÑADAS, no son contenido aplastado: cada
-   una lleva su color y su etiqueta legible, así el apilado se
-   lee como un índice con profundidad y no como papeles pisados.
-   ============================================================ */
-.deck{ position:relative; }
-.deck-stage{
-  position:sticky; top:0;
-  height:100vh; padding-top:58px;
-  display:grid; align-content:center;
-  box-sizing:border-box; overflow:hidden;
-}
-.deck-head{ max-width:1180px; margin:0 auto 22px; padding:0 64px; width:100%; box-sizing:border-box; }
-
-.deck-cards{
-  position:relative;
-  max-width:980px; width:100%; margin:0 auto; padding:0 64px;
-  box-sizing:border-box;
-  height:clamp(330px, 56vh, 470px);
-  perspective:1400px;
-}
-.card{
-  position:absolute; left:64px; right:64px; top:0; bottom:0;
-  border-radius:20px; overflow:hidden;
-  background:var(--glass-fill);
-  -webkit-backdrop-filter:var(--glass-blur); backdrop-filter:var(--glass-blur);
-  box-shadow:var(--glass-edge), 0 26px 60px -26px rgba(21,0,65,.30);
-  transform-origin:50% 0%;
-  will-change:transform, opacity;
-  display:flex; flex-direction:column;
-}
-/* la banda: 38 px es justo lo que asoma de cada carta de atrás */
-.card-band{
-  flex:none; height:38px;
-  display:flex; align-items:center; gap:12px;
-  padding:0 20px;
-  font-family:var(--pixel); font-size:12px; letter-spacing:.16em;
-  text-transform:uppercase; color:#12002B;
-}
-.card:nth-child(1) .card-band{ background:linear-gradient(92deg,#620AFF,#AB5AFF); color:#fff; }
-.card:nth-child(2) .card-band{ background:linear-gradient(92deg,#AB5AFF,#FD37BE); color:#fff; }
-.card:nth-child(3) .card-band{ background:linear-gradient(92deg,#FD37BE,#FFB470); color:#2A0018; }
-.card-n{ opacity:.7; }
-.card-body{
-  flex:1; min-height:0; overflow:auto;
-  padding:clamp(20px,3vw,30px);
-}
-.card-body h3{
-  font-family:var(--sans); font-weight:800; font-size:clamp(22px,3vw,32px);
-  letter-spacing:-.03em; margin:0 0 16px; text-wrap:balance;
-}
-
-.deck-dots{
-  display:flex; justify-content:center; gap:10px; margin-top:22px;
-}
-.deck-dots i{
-  width:7px; height:7px; border-radius:50%;
-  background:var(--rule); transition:background .25s, transform .25s;
-}
-.deck-dots i.on{ background:var(--fina-pink); transform:scale(1.5); }
-
-/* la agenda dentro de la carta, más apretada */
-.card .slotrow{ padding:11px 0; grid-template-columns:86px 1fr auto; }
-.card .slotrow .t{ font-size:14px; }
-.card .slotrow .n{ font-size:14px; }
-.card details{ border-bottom:1px solid var(--rule-soft); }
-.card summary{ padding:12px 0; font-size:15px; }
-.card details p{ font-size:13.5px; margin-bottom:14px; }
-.card dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:13px 22px; font-size:14px; }
-.card dt{ font-family:var(--pixel); font-size:12px; letter-spacing:.09em; text-transform:uppercase; color:var(--fg-faint); padding-top:3px; }
-.card dd{ margin:0; color:var(--fg); }
-
-@media (max-width:760px){
-  .deck-cards{ padding:0 20px; height:clamp(340px,62vh,460px); }
-  .card{ left:20px; right:20px; }
-}
-
-/* sin movimiento: deja de ser baraja y se convierte en una lista */
-@media (prefers-reduced-motion:reduce){
-  .deck{ height:auto !important; }
-  .deck-stage{ position:static; height:auto; overflow:visible; padding:clamp(40px,7vw,80px) 0; }
-  .deck-cards{ height:auto; display:flex; flex-direction:column; gap:18px; perspective:none; }
-  .card{ position:static; transform:none !important; opacity:1 !important; }
-  .card-body{ overflow:visible; }
-  .deck-dots{ display:none; }
-}
-
 /* ============================================================
    CAPA MAQUINA — lo que escribe el sistema, no una persona,
    sigue en monoespaciada. Figtree lleva todo el lenguaje humano.
@@ -704,7 +614,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   <div class="nav-in">
     <a class="mark" href="#top"><img src="data:image/png;base64,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" alt="fina" width="273" height="84"><span class="rel">Releases</span></a>
     <div class="nav-links">
-      <a class="hide-s" href="#info">Lo práctico</a>
+      <a class="hide-s" href="#agenda">Agenda</a>
       <a class="btn btn-sm" href="#rsvp">Reservar cupo</a>
     </div>
   </div>
@@ -891,74 +801,69 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   </div>
 </section>
 
-<!-- ================= LO PRÁCTICO: BARAJA ================= -->
-<section class="deck" id="info">
-  <div class="deck-stage">
-    <div class="deck-head band-head" style="margin-bottom:22px">
-      <p class="eyebrow">// 01 &nbsp;Lo práctico</p>
-      <h2 class="h2">Dónde, cuándo y <span class="grad">qué pasa</span>.</h2>
+<!-- ================= AGENDA ================= -->
+<section class="band wrap" id="agenda">
+  <div class="band-head">
+    <p class="eyebrow">// 01 &nbsp;Agenda</p>
+    <h2 class="h2">Viernes 23 de octubre<span class="grad">.</span></h2>
+  </div>
+
+  <div class="sched">
+    <div class="slotrow"><span class="t">18:00</span><span class="n">Acreditación y café</span><span class="d">30 min</span></div>
+    <div class="slotrow"><span class="t">18:30</span><span class="n">Apertura — dónde está Fina hoy</span><span class="d">10 min</span></div>
+    <div class="slotrow"><span class="t">18:40</span><span class="n">Bloque 1 — automatización (3 releases)</span><span class="d">45 min</span></div>
+    <div class="slotrow"><span class="t">19:25</span><span class="n">Pausa</span><span class="d">15 min</span></div>
+    <div class="slotrow"><span class="t">19:40</span><span class="n">Bloque 2 — beta y plataforma (3 releases)</span><span class="d">45 min</span></div>
+    <div class="slotrow"><span class="t">20:25</span><span class="n">Roadmap, preguntas y cierre</span><span class="d">25 min</span></div>
+    <div class="slotrow"><span class="t">20:50</span><span class="n">Después: cervezas y conversación</span><span class="d">Libre</span></div>
+  </div>
+</section>
+
+<!-- ================= LUGAR + FAQ ================= -->
+<section class="band wrap">
+  <div class="two">
+    <div>
+      <div class="band-head">
+        <p class="eyebrow">// 02 &nbsp;Dónde</p>
+        <h2 class="h2">El lugar<span class="grad">.</span></h2>
+      </div>
+      <div class="venue glass">
+        <dl>
+          <dt>Sede</dt><dd>Caracas Campus<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
+          <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
+          <dt>Fecha</dt><dd>Viernes 23 de octubre, 2026</dd>
+          <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
+          <dt>Costo</dt><dd>Sin costo, con registro previo</dd>
+        </dl>
+      </div>
     </div>
 
-    <div class="deck-cards" id="deck-cards">
-      <article class="card">
-        <header class="card-band"><span class="card-n">01</span> Dónde y cuándo</header>
-        <div class="card-body">
-          <h3>Caracas Campus<span class="grad">.</span></h3>
-          <dl>
-            <dt>Sede</dt><dd>Caracas Campus<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
-            <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
-            <dt>Fecha</dt><dd>Viernes 23 de octubre, 2026</dd>
-            <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
-            <dt>Costo</dt><dd>Sin costo, con registro previo</dd>
-          </dl>
-        </div>
-      </article>
-
-      <article class="card">
-        <header class="card-band"><span class="card-n">02</span> Agenda</header>
-        <div class="card-body">
-          <h3>Viernes 23 de octubre<span class="grad">.</span></h3>
-          <div class="sched" style="border-top:0">
-            <div class="slotrow"><span class="t">18:00</span><span class="n">Acreditación y café</span><span class="d">30 min</span></div>
-            <div class="slotrow"><span class="t">18:30</span><span class="n">Apertura — dónde está Fina hoy</span><span class="d">10 min</span></div>
-            <div class="slotrow"><span class="t">18:40</span><span class="n">Bloque 1 — automatización</span><span class="d">45 min</span></div>
-            <div class="slotrow"><span class="t">19:25</span><span class="n">Pausa</span><span class="d">15 min</span></div>
-            <div class="slotrow"><span class="t">19:40</span><span class="n">Bloque 2 — beta y plataforma</span><span class="d">45 min</span></div>
-            <div class="slotrow"><span class="t">20:25</span><span class="n">Roadmap, preguntas y cierre</span><span class="d">25 min</span></div>
-            <div class="slotrow"><span class="t">20:50</span><span class="n">Después: cervezas y conversación</span><span class="d">Libre</span></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="card">
-        <header class="card-band"><span class="card-n">03</span> Preguntas</header>
-        <div class="card-body">
-          <h3>Lo que siempre nos <span class="grad">preguntan</span>.</h3>
-          <details open>
-            <summary>¿Para quién es?</summary>
-            <p>Contadores, equipos de finanzas, founders y cualquiera que opere la contabilidad de una empresa. No hace falta ser cliente de Fina.</p>
-          </details>
-          <details>
-            <summary>¿Hay que saber de tecnología?</summary>
-            <p>No. Son demos de producto, no charlas técnicas.</p>
-          </details>
-          <details>
-            <summary>¿Se transmite?</summary>
-            <p>Grabamos y publicamos las demos después. La sesión de preguntas es solo presencial.</p>
-          </details>
-          <details>
-            <summary>¿Puedo llevar a alguien de mi equipo?</summary>
-            <p>Sí. Cada persona reserva su propio cupo para que podamos contar bien los asientos.</p>
-          </details>
-          <details>
-            <summary>¿Qué pasa si me inscribo y no puedo ir?</summary>
-            <p>Avísanos y liberamos tu cupo. Hay lista de espera.</p>
-          </details>
-        </div>
-      </article>
+    <div>
+      <div class="band-head">
+        <p class="eyebrow">// 03 &nbsp;Preguntas</p>
+        <h2 class="h2">Lo que siempre nos <span class="grad">preguntan</span>.</h2>
+      </div>
+      <details open>
+        <summary>¿Para quién es?</summary>
+        <p>Contadores, equipos de finanzas, founders y cualquiera que opere la contabilidad de una empresa. No hace falta ser cliente de Fina.</p>
+      </details>
+      <details>
+        <summary>¿Hay que saber de tecnología?</summary>
+        <p>No. Son demos de producto, no charlas técnicas. El bloque de API es el único con código en pantalla y se explica desde cero.</p>
+      </details>
+      <details>
+        <summary>¿Se transmite?</summary>
+        <p>Grabamos y publicamos las demos después. La sesión de preguntas es solo presencial.</p>
+      </details>
+      <details>
+        <summary>¿Puedo llevar a alguien de mi equipo?</summary>
+        <p>Sí. Cada persona reserva su propio cupo para que podamos contar bien los asientos.</p>
+      </details>
+      <details>
+        <summary>¿Qué pasa si me inscribo y no puedo ir?</summary>
+        <p>Avísanos y liberamos tu cupo. Hay lista de espera.</p>
+      </details>
     </div>
-
-    <div class="deck-dots" id="deck-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
   </div>
 </section>
 
@@ -966,7 +871,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 <section class="band close" id="rsvp">
   <div class="wrap close-in">
     <div class="close-copy">
-      <p class="eyebrow">// 02 &nbsp;<span class="on">Registro abierto</span></p>
+      <p class="eyebrow">// 04 &nbsp;<span class="on">Registro abierto</span></p>
       <h2 class="h2">Son <span class="grad">120</span> cupos.</h2>
       <p class="lede">Reserva en treinta segundos. Te llega la confirmación al correo con la dirección exacta.</p>
       <a class="btn" href="#" id="rsvp-link">Reservar mi cupo <span class="arw">&#8594;</span></a>
@@ -1801,83 +1706,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
       if(onScreen) kick(); else ctx.clearRect(0,0,VW,VH);
     },{rootMargin:"20% 0px"}).observe(slot);
   }
-})();
-</script>
-<script>
-/* ============================================================
-   BARAJA — el scroll adelanta las cartas.
-   Para cada carta, o = su indice menos el avance: 0 es la de
-   delante, o>0 son las que esperan detras (subidas y reducidas,
-   asomando solo su banda) y o<0 las ya vistas, que bajan y se
-   van. Una sola resta gobierna toda la pila.
-   ============================================================ */
-(function(){
-  var deck  = document.getElementById("info");
-  var wrap  = document.getElementById("deck-cards");
-  var dots  = document.getElementById("deck-dots");
-  if(!deck || !wrap) return;
-  var cards = [].slice.call(wrap.children);
-  if(!cards.length) return;
-
-  var N = cards.length;
-  /* el alto da el presupuesto de scroll: una pantalla por carta */
-  deck.style.height = (N*95 + 40) + "vh";
-
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  var STEP = 38;    /* px que asoma cada banda */
-  var cur = 0, target = 0, raf = 0, prev = 0;
-  function clamp(v){ return v<0?0:v>1?1:v; }
-
-  function read(){
-    var h = deck.offsetHeight - (window.innerHeight||800);
-    var p = h > 0 ? clamp(-deck.getBoundingClientRect().top / h) : 0;
-    /* un pequeno margen al principio y al final para que la primera
-       carta se lea antes de empezar a pasar */
-    target = clamp((p - .08) / .84) * (N - 1);
-    if(!raf){ prev = 0; raf = requestAnimationFrame(loop); }
-  }
-
-  function paint(t){
-    for(var i=0;i<N;i++){
-      var o = i - t, ty, sc, op;
-      if(o >= 0){                       /* esperando detras */
-        ty = -o * STEP;
-        sc = 1 - o * .055;
-        op = o > 2.6 ? 0 : 1;
-      }else{                            /* ya vista: baja y se va */
-        ty = -o * 118;                  /* en % de su propia altura */
-        sc = 1;
-        op = clamp(1 + o * 1.5);
-      }
-      var el = cards[i];
-      el.style.zIndex = Math.round(100 - o*10);
-      el.style.opacity = op;
-      el.style.transform = o >= 0
-        ? "translate3d(0," + ty.toFixed(1) + "px,0) scale(" + sc.toFixed(3) + ")"
-        : "translate3d(0," + ty.toFixed(1) + "%,0)";
-    }
-    if(dots){
-      var on = Math.round(t);
-      for(var k=0;k<dots.children.length;k++)
-        dots.children[k].className = (k === on ? "on" : "");
-    }
-  }
-
-  function loop(now){
-    raf = 0;
-    var dt = prev ? Math.min(now-prev,64) : 16.7;
-    prev = now;
-    cur += (target-cur) * (1 - Math.pow(1-.20, dt/16.7));
-    var moving = Math.abs(target-cur) > .002;
-    if(!moving) cur = target;
-    paint(cur);
-    if(moving) raf = requestAnimationFrame(loop);
-  }
-
-  addEventListener("scroll", read, {passive:true});
-  addEventListener("resize", read);
-  read(); paint(0);
 })();
 </script>
 </body>
