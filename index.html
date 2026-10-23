@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, 18:00, Caracas Campus. Cupos limitados.">
+<meta name="description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, Caracas. Cupos limitados.">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light">
 
@@ -11,10 +11,10 @@
 <meta property="og:site_name" content="Fina">
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="Lo nuevo de Fina">
-<meta property="og:description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, 18:00, Caracas Campus. Cupos limitados.">
+<meta property="og:description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, Caracas. Cupos limitados.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lo nuevo de Fina">
-<meta name="twitter:description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, 18:00, Caracas Campus. Cupos limitados.">
+<meta name="twitter:description" content="Lo nuevo de Fina: una tarde de demos en vivo de todo lo que entró a producción este semestre. Martes 24 de noviembre, Caracas. Cupos limitados.">
 
 <title>Lo nuevo de Fina</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -285,9 +285,33 @@ a{ color:inherit; }
 /* ============================================================
    MARQUESINA
    ============================================================ */
+/* Vidrio. Sobre blanco el backdrop-filter no tiene nada que refractar,
+   así que debajo del relleno translúcido va un tinte de marca bajo: eso
+   es lo que el desenfoque satura y lo que hace que la cinta lea como
+   cristal teñido y no como una banda gris. */
 .marquee{
-  background:var(--fina-gradient-rrss); color:#12002B;
-  overflow:hidden; display:flex;
+  position:relative; overflow:hidden; display:flex;
+  color:var(--fg);
+  background-image:
+    var(--glass-fill),
+    linear-gradient(92deg, rgba(253,55,190,.34) 0%, rgba(255,180,112,.34) 100%);
+  -webkit-backdrop-filter:var(--glass-blur);
+  backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-edge);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .marquee{
+    background-image:
+      linear-gradient(170deg, rgba(255,255,255,.90) 0%, rgba(255,255,255,.72) 100%),
+      linear-gradient(92deg, rgba(253,55,190,.34) 0%, rgba(255,180,112,.34) 100%);
+  }
+}
+@media (prefers-reduced-transparency: reduce){
+  .marquee{
+    background-image:none; background-color:#FFFFFF;
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+    box-shadow:inset 0 1px 0 0 var(--rule-soft), inset 0 -1px 0 0 var(--rule-soft);
+  }
 }
 .marquee-track{ display:flex; flex:0 0 auto; min-width:100%; animation:slide 30s linear infinite; }
 .marquee span{
@@ -319,20 +343,45 @@ a{ color:inherit; }
 }
 
 /* ============================================================
-   CRONOGRAMA
+   CRONOGRAMA — rueda con scroll
+   Un tramo de 100vh por momento; el escenario queda sticky y el
+   scroll gira la rueda. La geometria la calcula el script: aqui
+   solo va lo que no depende del viewport.
    ============================================================ */
-.sched{ border-top:1px solid var(--rule); }
-.slotrow{
-  display:grid; grid-template-columns:100px 1fr auto; gap:14px 22px; align-items:baseline;
-  padding:16px 0; border-bottom:1px solid var(--rule-soft);
+.aw{ position:relative; height:500vh; background:linear-gradient(180deg,#FAF7FF 0%,#FFFFFF 40%); }
+.aw-stage{ position:sticky; top:0; height:100vh; overflow:hidden; border-top:1px solid var(--rule-soft); }
+.aw-head,.aw-foot{
+  position:absolute; left:var(--aw-wrap,var(--gut)); right:var(--aw-wrap,var(--gut));
+  display:flex; justify-content:space-between; gap:24px; z-index:2;
 }
-.slotrow .t{ font-weight:600; font-size:14px; color:var(--fina-orange); }
-.slotrow .n{ font-size:15px; }
-.slotrow .d{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-faint); }
-@media (max-width:640px){
-  .slotrow{ grid-template-columns:76px 1fr; }
-  .slotrow .d{ grid-column:2; }
+.aw-head{ top:clamp(28px,6vh,64px); align-items:baseline; }
+.aw-foot{ bottom:clamp(24px,5vh,48px); align-items:center; }
+.aw-eyebrow,.aw-count,.aw-foot{ font-family:var(--pixel); text-transform:uppercase; color:var(--fg-faint); }
+.aw-eyebrow{ font-size:11px; letter-spacing:.2em; margin:0 0 14px; }
+.aw-title{ font-weight:800; font-size:clamp(28px,4.6vw,54px); line-height:1.02; letter-spacing:-.035em; margin:0; }
+.aw-count{ font-size:13px; letter-spacing:.14em; display:flex; align-items:center; gap:12px; }
+.aw-count b{ font-weight:400; color:var(--fg); }
+.aw-count i{ width:48px; height:1px; background:var(--rule); }
+.aw-foot{ font-size:11px; letter-spacing:.2em; }
+.aw-bar{ flex:1; max-width:240px; height:2px; background:var(--rule-soft); border-radius:2px; overflow:hidden; }
+.aw-bar span{ display:block; height:100%; width:20%; background-image:var(--fina-gradient-rrss); }
+.aw-anchor{ position:absolute; width:0; height:0; }
+.aw-ring{ position:absolute; border-radius:50%; border:1px solid var(--rule); box-sizing:border-box; }
+.aw-wheel,.aw-arm{ position:absolute; left:0; top:0; transform-origin:0 0; will-change:transform; }
+.aw-dot{ position:absolute; top:-5px; width:10px; height:10px; border-radius:50%; }
+.aw-num{ position:absolute; top:0; transform:translateY(-50%); cursor:pointer; background:none; border:0; padding:0; }
+/* OJO: el degradado del numero lo escribe el script con background-image.
+   El atajo background reinicia background-clip y la cifra desaparece. */
+.aw-num span{
+  display:block; font-family:var(--sans); font-weight:700; line-height:.85; letter-spacing:-.04em;
+  font-variant-numeric:tabular-nums; -webkit-background-clip:text; background-clip:text; color:transparent;
+  transform-origin:0 50%; will-change:transform; padding:.06em .04em;
 }
+.aw-desc{ position:absolute; }
+.aw-item{ position:absolute; left:0; right:0; top:50%; }
+.aw-time{ font-family:var(--pixel); font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:var(--fina-purple); }
+.aw-name{ font-weight:800; font-size:clamp(28px,3.4vw,44px); line-height:1.05; letter-spacing:-.03em; margin-top:14px; text-wrap:pretty; }
+.aw-sub{ font-family:var(--pixel); font-size:clamp(14px,1.2vw,16px); line-height:1.6; letter-spacing:.04em; color:var(--fg-dim); margin-top:12px; text-wrap:pretty; }
 
 /* ============================================================
    LUGAR + FAQ
@@ -517,7 +566,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
    sigue en monoespaciada. Figtree lleva todo el lenguaje humano.
    ============================================================ */
 .boot, .hero-meta, .seats, .count .k, .stat .k,
-.slotrow .t, .slotrow .d, .venue dt, .foot, .mark .rel{
+.venue dt, .foot, .mark .rel{
   font-family:var(--pixel);
 }
 .btn{ font-family:var(--sans); font-weight:700; letter-spacing:0; }
@@ -532,14 +581,12 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
    altas—, así que también ato la interlínea o las cajas crecen.
    ============================================================ */
 .eyebrow, .boot, .hero-meta, .seats, .count .k, .stat .k,
-.slotrow .t, .slotrow .d, .venue dt, .foot, .mark .rel, .viz-tag{
+.venue dt, .foot, .mark .rel, .viz-tag{
   font-weight:400; letter-spacing:.09em; line-height:1.35;
 }
 .eyebrow, .seats, .stat .k, .venue dt, .foot, .mark .rel{ font-size:12px; }
 .count .k, .viz-tag{ font-size:11px; }
-.slotrow .d{ font-size:12px; }
 .boot, .hero-meta{ font-size:13px; }
-.slotrow .t{ font-size:15px; }
 
 @media (prefers-reduced-motion:reduce){
   *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
@@ -560,7 +607,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   background-image:var(--grad-text);
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
-.slotrow .t{ color:var(--ink-warm); }
 .seats b{ color:var(--ink-warm); }
 .boot .dot{ background:var(--ink-cyan); box-shadow:0 0 0 3px rgba(0,137,141,.18); }
 .count.is-live{ box-shadow:inset 0 0 0 1px var(--ink-cyan); }
@@ -703,7 +749,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   <div class="hero-meta">
     <span><b>24.11.2026</b> · Martes</span>
-    <span><b>18:00</b> — 21:00 hrs</span>
     <span><b>Caracas</b> · presencial</span>
   </div>
 
@@ -714,7 +759,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   <figure class="hero-viz glass">
     <canvas id="bld" role="img" aria-label="Dibujo animado en alambre del edificio sede del evento"></canvas>
-    <figcaption class="viz-tag">// sede · <b>caracas campus</b> · 09 pisos</figcaption>
+    <figcaption class="viz-tag">// sede · <b>caracas</b></figcaption>
   </figure>
 
   <div class="count glass" id="count" aria-label="Cuenta regresiva al evento">
@@ -728,10 +773,10 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 <!-- ================= MARQUESINA ================= -->
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
-    <span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span><span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span>
+    <span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span><span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span><span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span>
   </div>
   <div class="marquee-track">
-    <span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span><span>6 releases en 90 minutos</span><span>cupos limitados</span><span>demos en vivo, sin slides</span><span>pregúntale al equipo que lo construyó</span>
+    <span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span><span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span><span>un nuevo ecosistema</span><span>cupos limitados</span><span>pregúntale al equipo que lo construyó</span>
   </div>
 </div>
 
@@ -745,14 +790,14 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   <div class="stats">
     <div class="stat">
-      <span class="v">06</span>
-      <div class="k">Releases</div>
-      <p class="d">Seis funcionalidades nuevas, demostradas contra datos reales.</p>
+      <span class="v">01</span>
+      <div class="k">Ecosistema</div>
+      <p class="d">Fina crece contigo. Te acompaña desde el inicio y, cuando llegue el momento, te abre las puertas para ir por más.</p>
     </div>
     <div class="stat">
-      <span class="v">90'</span>
-      <div class="k">De demos</div>
-      <p class="d">Quince minutos por release. Cronómetro visible en pantalla.</p>
+      <span class="v">60</span>
+      <div class="k">Minutos</div>
+      <p class="d">Conoce nuestra historia, descubre el nuevo ecosistema Fina</p>
     </div>
     <div class="stat">
       <span class="v">120</span>
@@ -770,29 +815,26 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   </div>
   <div class="venue glass">
         <dl>
-          <dt>Sede</dt><dd>Caracas Campus<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
+          <dt>Sede</dt><dd>Caracas<br><span style="color:var(--fg-faint)">Por confirmar dirección exacta</span></dd>
           <dt>Ciudad</dt><dd>Caracas, Venezuela</dd>
           <dt>Fecha</dt><dd>Martes 24 de noviembre, 2026</dd>
-          <dt>Hora</dt><dd>18:00 — 21:00 hrs</dd>
           <dt>Costo</dt><dd>Sin costo, con registro previo</dd>
   </div>
 </section>
 
 <!-- ================= AGENDA ================= -->
-<section class="band wrap" id="agenda">
-  <div class="band-head">
-    <p class="eyebrow">// 02 &nbsp;Agenda</p>
-    <h2 class="h2">Martes 24 de noviembre<span class="grad">.</span></h2>
-  </div>
-
-  <div class="sched">
-    <div class="slotrow"><span class="t">18:00</span><span class="n">Acreditación y café</span><span class="d">30 min</span></div>
-    <div class="slotrow"><span class="t">18:30</span><span class="n">Apertura — dónde está Fina hoy</span><span class="d">10 min</span></div>
-    <div class="slotrow"><span class="t">18:40</span><span class="n">Bloque 1 — automatización (3 releases)</span><span class="d">45 min</span></div>
-    <div class="slotrow"><span class="t">19:25</span><span class="n">Pausa</span><span class="d">15 min</span></div>
-    <div class="slotrow"><span class="t">19:40</span><span class="n">Bloque 2 — beta y plataforma (3 releases)</span><span class="d">45 min</span></div>
-    <div class="slotrow"><span class="t">20:25</span><span class="n">Roadmap, preguntas y cierre</span><span class="d">25 min</span></div>
-    <div class="slotrow"><span class="t">20:50</span><span class="n">Después: cervezas y conversación</span><span class="d">Libre</span></div>
+<section class="aw" id="agenda" aria-label="Agenda">
+  <div class="aw-stage">
+    <div class="aw-head">
+      <div>
+        <p class="aw-eyebrow">// 02 &nbsp;Agenda</p>
+        <h2 class="aw-title">Martes, 24 de noviembre</h2>
+      </div>
+      <div class="aw-count"><b data-aw-count>01</b><i></i><span>05</span></div>
+    </div>
+    <div class="aw-anchor"><div class="aw-ring"></div><div class="aw-wheel"></div></div>
+    <div class="aw-desc"></div>
+    <div class="aw-foot"><span>Haz scroll</span><div class="aw-bar"><span></span></div></div>
   </div>
 </section>
 
@@ -804,7 +846,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
       <h2 class="h2">Son <span class="grad">120</span> cupos.</h2>
       <p class="lede">Reserva en treinta segundos. Te llega la confirmación al correo con la dirección exacta.</p>
       <a class="btn" href="#" id="rsvp-link">Reservar mi cupo <span class="arw">&#8594;</span></a>
-      <p class="eyebrow">Martes 24.11.2026 · 18:00 · Caracas</p>
+      <p class="eyebrow">Martes 24.11.2026 · Caracas</p>
     </div>
 
     <div class="stage" id="stage">
@@ -868,7 +910,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 
   /* ---------- geometría: volúmenes, losas y montantes ---------- */
   var S = [];
-  function push(a,b,w,nv){ S.push({a:a,b:b,w:w,nv:nv}); }
+  function push(a,b,w){ S.push({a:a,b:b,w:w}); }
 
   function box(x0,x1,y0,y1,z0,z1,floors,step){
     var c = [[x0,y0,z0],[x1,y0,z0],[x1,y0,z1],[x0,y0,z1],
@@ -903,44 +945,6 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   box(-1.6, 1.6, 0,9.2,  1.2, 4.0, 9, st);        /* cuerpo posterior: deja el patio al frente */
   box(-6.4, 6.4, 0,2.6, -6.6,-4.0, 3, st*1.25);   /* zócalo */
   box(-6.4,-2.6, 0,1.9, -8.2,-6.6, 2, st*1.25);   /* atrio */
-  /* ---------- rotulación de fachada ----------
-     Alfabeto de trazo, no tipografía: cada letra es una polilínea en
-     una caja 0..1. Es lo que permite que el rótulo viva en el modelo 3D
-     y gire con el edificio, en vez de ser texto pegado en pantalla. */
-  var GLYPH = {
-    "A":[[[0,0],[.5,1],[1,0]],[[.22,.38],[.78,.38]]],
-    "C":[[[1,.82],[.62,1],[.22,1],[0,.74],[0,.26],[.22,0],[.62,0],[1,.18]]],
-    "M":[[[0,0],[0,1],[.5,.42],[1,1],[1,0]]],
-    "P":[[[0,0],[0,1],[.72,1],[1,.82],[1,.66],[.72,.5],[0,.5]]],
-    "R":[[[0,0],[0,1],[.72,1],[1,.82],[1,.66],[.72,.5],[0,.5]],[[.5,.5],[1,0]]],
-    "S":[[[1,.86],[.62,1],[.2,1],[0,.82],[0,.66],[.16,.56],[.84,.44],[1,.34],[1,.16],[.8,0],[.32,0],[0,.14]]],
-    "U":[[[0,1],[0,.22],[.22,0],[.78,0],[1,.22],[1,1]]]
-  };
-
-  /* proyecta el rótulo sobre el plano frontal del zócalo (z fijo) */
-  function sign(text, cx, cy, h, z, w){
-    var cw = h*1.04, gap = h*0.32;
-    var total = text.length*cw + (text.length-1)*gap;
-    var x = cx - total/2;
-    for(var i=0;i<text.length;i++){
-      var g = GLYPH[text[i]];
-      if(g){
-        for(var p=0;p<g.length;p++){
-          var poly = g[p];
-          for(var k=0;k<poly.length-1;k++){
-            push([x + poly[k][0]*cw,   cy + poly[k][1]*h,   z],
-                 [x + poly[k+1][0]*cw, cy + poly[k+1][1]*h, z], w, true);
-          }
-        }
-      }
-      x += cw + gap;
-    }
-  }
-
-  /* el zócalo es la superficie más adelantada del modelo (z=-6.6) */
-  sign("CARACAS", 0, 1.42, .50, -6.62, 1.8);
-  sign("CAMPUS",  0, 0.74, .50, -6.62, 1.8);
-
   push([-3.2,9.2, .5],[-3.2,10.8, .5],.9);        /* antenas */
   push([ 3.4,9.2,2.0],[ 3.4,10.2,2.0],.9);
   push([ 2.2,9.2,-2.6],[2.2,9.9,-2.6],.7);
@@ -1027,20 +1031,11 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
         var ux = dx/L, uy = dy/L, ov = s.ov*f;
 
         var dep = Math.min(1, Math.max(.22, (40 - (A[2]+B[2])/2)/15));
-        var r, g, b, al;
-        if(s.nv){
-          /* la rotulacion es de Caracas Campus, no de la estructura:
-             va en su azul marino y no entra en el degradado de marca */
-          r = 21; g = 41; b = 63;
-          al = .95 * dep;
-          if(pass===0 && passes===2) continue;   /* sin halo: sobre blanco solo ensucia */
-        } else {
-          var tx = Math.min(1, Math.max(0, ax/W));   /* violeta a la izquierda, rosa a la derecha */
-          r = (98 + 155*tx)|0;
-          g = (10 + 45*tx)|0;
-          b = (255 - 65*tx)|0;
-          al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
-        }
+        var tx = Math.min(1, Math.max(0, ax/W));   /* violeta a la izquierda, rosa a la derecha */
+        var r = (98 + 155*tx)|0;
+        var g = (10 + 45*tx)|0;
+        var b = (255 - 65*tx)|0;
+        var al = (s.w>=1.4 ? .95 : (s.w>=.5 ? .5 : .3)) * dep;
 
         if(pass===0 && passes===2){
           ctx.strokeStyle = "rgba("+r+","+g+","+b+","+(al*.07).toFixed(3)+")";
@@ -1083,6 +1078,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script>
 /* ============================================================
    COHETE — librea de Fina: fuselaje violeta, aletas y penacho
@@ -1094,13 +1090,7 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   if(!stage || typeof THREE === "undefined") return;   /* sin CDN, la sección sigue funcionando */
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  var C = {
-    pink:   0xFD37BE,
-    orange: 0xFFB470,
-    violet: 0x2A1155,
-    deep:   0x1A0A38,
-    metal:  0x241046
-  };
+  var C = { pink: 0xFD37BE, orange: 0xFFB470 };
 
   var scene  = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
@@ -1117,158 +1107,43 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   var rim = new THREE.DirectionalLight(0xAB5AFF, 1.0);  rim.position.set(-6, 1, -4);  scene.add(rim);
   var fil = new THREE.DirectionalLight(0x7A5CC4, 0.42); fil.position.set(-3, -4, 5);  scene.add(fil);
 
-  /* bbox del isotipo en el espacio de sus paths: 801..1559 x, 355..1309 y */
-  var ISO_A = "M1123.2,355 L801.1,738.6 A150,150 0 0 0 1030.9,931.4 L1514.6,355 Z";
-  var ISO_B = "M1236.8,1309 L1558.9,925.4 A150,150 0 0 0 1329.1,732.6 L845.4,1309 Z";
-  var ISO_W = 758, ISO_H = 954;
-
-  /* Contorno de Venezuela, derivado de un GeoJSON real (Natural Earth
-     via world.geo.json): proyeccion equirectangular corregida por el
-     coseno de la latitud media, normalizado a 100 de alto. Caja 117.7x100. */
-  var VEN = "M17.1,3.4L16.9,5.4L11.8,6.5L14.6,10.4L14.5,15L10.7,20.1L14,27L17.7,26.4L19.7,20.1L17,17.1L16.5,10.4L27.4,6.9L26.2,2.8L29.2,0L32.3,6.1L38.4,6.3L44.1,11.2L44.4,14.1L52.2,14.1L61.5,13.2L66.5,17.1L73.1,18.2L78,15.5L78.1,13.3L88.8,12.8L99.2,12.6L91.9,15.2L94.8,19.4L101.8,20L108.4,24.3L109.8,31.3L114.3,31.1L117.7,33.2L110.8,38.3L110,41.5L113,44.7L110.9,46.4L105.5,47.8L105.7,51.8L103.3,54.2L109.2,60.9L110.4,63.3L107.2,66.7L97.5,69.9L91.2,71.3L88.7,73.4L81.8,71.2L75.4,70.1L73.7,70.9L77.6,73.1L77.3,79L78.5,84.5L85.9,85.3L86.3,87.1L80.1,89.6L79.1,93.3L75.5,94.7L69.1,96.8L67.4,99.4L60.6,100L55.8,95.4L53.2,86.7L50.9,83.6L47.7,81.7L52.1,77.3L51.8,75.4L49.4,72.8L47.6,67L48.3,60.7L50.2,57.8L51.8,53L48.7,51.5L43.8,52.5L37.5,52.1L34,53L27.9,45.5L22.9,44.4L11.7,45.2L9.6,42.2L7.5,41.4L7.2,39.6L8.2,36.4L7.5,32.8L5.6,30.9L4.5,26.9L0,26.3L2.4,21.2L3.5,15L6,11.7L9.4,9.2L11.6,4.8L17.1,3.4Z";
-  var VEN_W = 117.7, VEN_H = 100;
-
-  function drawVenezuela(g, x, y, h){
-    if(typeof Path2D !== "function") return;
-    var k = h / VEN_H;
-    g.save();
-    g.translate(x, y); g.scale(k, k);
-    g.fillStyle = "rgba(255,255,255,.92)";
-    g.fill(new Path2D(VEN));
-    g.restore();
-  }
-
-  function drawLogo(g, x, y, h){
-    var k = h / ISO_H;
-    g.save();
-    g.translate(x, y);
-    if(typeof Path2D === "function"){
-      g.save();
-      g.scale(k, k);
-      g.translate(-801, -355);
-      var ga = g.createLinearGradient(1330, 330, 860, 960);
-      ga.addColorStop(0, "#7C1FEA"); ga.addColorStop(1, "#A658F1");
-      g.fillStyle = ga; g.fill(new Path2D(ISO_A));
-      var gb = g.createLinearGradient(880, 1320, 1520, 740);
-      gb.addColorStop(0, "#FF42BB"); gb.addColorStop(1, "#FFAB7B");
-      g.fillStyle = gb; g.fill(new Path2D(ISO_B));
-      g.restore();
-    }
-    /* la palabra, alineada al pie del isotipo */
-    g.fillStyle = "#FFFFFF";
-    g.font = "600 " + Math.round(h * 0.86) + "px Oceanwide, Figtree, sans-serif";
-    g.textBaseline = "alphabetic";
-    g.fillText("fina", ISO_W * k + h * 0.26, h * 0.86);
-    g.restore();
-  }
-
-  /* ---------- librea: se pinta en un canvas 2D y se mapea al fuselaje ---------- */
-  function makeLivery(){
-    var c = document.createElement("canvas");
-    c.width = 2048; c.height = 1024;
-    var g = c.getContext("2d");
-
-    var grad = g.createLinearGradient(0, 0, 0, 1024);
-    grad.addColorStop(0,   "#3A1A6B");
-    grad.addColorStop(.55, "#28105C");
-    grad.addColorStop(1,   "#15023A");
-    g.fillStyle = grad; g.fillRect(0, 0, 2048, 1024);
-
-    g.strokeStyle = "rgba(0,0,0,0.22)"; g.lineWidth = 3;
-    [120, 300, 615, 780, 900].forEach(function(y){
-      g.beginPath(); g.moveTo(0, y); g.lineTo(2048, y); g.stroke();
-    });
-    g.strokeStyle = "rgba(171,90,255,0.14)"; g.lineWidth = 2;
-    for (var x = 0; x < 2048; x += 256){
-      g.beginPath(); g.moveTo(x, 0); g.lineTo(x, 1024); g.stroke();
-    }
-
-    /* barrido inferior con el gradiente de RRSS */
-    var sweep = g.createLinearGradient(0, 0, 2048, 0);
-    sweep.addColorStop(0, "#FD37BE");
-    sweep.addColorStop(1, "#FFB470");
-    g.fillStyle = sweep;
-    g.beginPath();
-    g.moveTo(0, 1024); g.lineTo(0, 880);
-    g.bezierCurveTo(420, 700, 700, 930, 1024, 800);
-    g.bezierCurveTo(1340, 690, 1700, 920, 2048, 830);
-    g.lineTo(2048, 1024);
-    g.closePath(); g.fill();
-
-    g.fillStyle = "#FFB470";                       /* ventanillas */
-    for (var wx = 60; wx < 2008; wx += 46) g.fillRect(wx, 470, 26, 11);
-
-    /* el logo de verdad sobre el fuselaje: el isotipo con su geometría
-       real —las dos barras de extremo redondeado, violeta arriba y
-       naranjo->rosa abajo— y la palabra en Oceanwide, que es la letra
-       del wordmark. Los paths son los mismos del isotipo de la portada. */
-    drawLogo(g, 648, 236, 190);   /* por encima de la linea de ventanillas (y=470) */
-    /* la librea da la vuelta al cilindro: +1024 es media circunferencia,
-       asi que el mapa queda en la cara opuesta al logo y aparece al girar */
-    drawVenezuela(g, 1672, 250, 168);
-
-    var tex = new THREE.CanvasTexture(c);
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-    tex.encoding = THREE.sRGBEncoding;
-    tex.wrapS = THREE.RepeatWrapping;
-    tex.offset.x = 0.25;                           /* gira el logo hacia la cámara */
-    return tex;
-  }
-
-  var matLivery = new THREE.MeshStandardMaterial({map:null, roughness:.45, metalness:.35});
-  var matBody   = new THREE.MeshStandardMaterial({color:C.violet, roughness:.5,  metalness:.4});
-  var matDark   = new THREE.MeshStandardMaterial({color:C.deep,   roughness:.6,  metalness:.5});
-  var matMetal  = new THREE.MeshStandardMaterial({color:C.metal,  roughness:.35, metalness:.9, side:THREE.DoubleSide});
-  var matPink   = new THREE.MeshStandardMaterial({color:C.pink,   roughness:.42, metalness:.15});
-  var matOrange = new THREE.MeshStandardMaterial({color:C.orange, roughness:.42, metalness:.15});
-
-  /* ---------- cohete ---------- */
+  /* ---------- cohete: modelo GLB ----------
+     El modelo trae su propia librea y sus texturas, así que aquí no se
+     pinta nada: solo se normaliza para que ocupe lo mismo que ocupaba el
+     cohete anterior y la cámara no tenga que moverse.
+     Se carga en diferido —son 18,5 MB— cuando la sección se acerca. */
   var rocket = new THREE.Group();
 
-  var body = new THREE.Mesh(new THREE.CylinderGeometry(.62, .62, 3.6, 72, 1, true), matLivery);
-  body.position.y = .2; rocket.add(body);
+  var TARGET_H = 6.6;    /* alto en unidades de escena */
+  var CENTER_Y = 0.5;    /* centro vertical, el que tenía el cohete que sustituye */
+  var NOZZLE_Y = CENTER_Y - TARGET_H/2;   /* de aquí sale el fuego */
 
-  var nose = new THREE.Mesh(new THREE.ConeGeometry(.62, 1.55, 72), matBody);
-  nose.position.y = 2.78; rocket.add(nose);
+  var modelReady = false, loadStarted = false;
 
-  var tip = new THREE.Mesh(new THREE.ConeGeometry(.135, .42, 32), matOrange);
-  tip.position.y = 3.62; rocket.add(tip);
-
-  [1.98, -1.52].forEach(function(y){
-    var ring = new THREE.Mesh(new THREE.CylinderGeometry(.645, .645, .1, 72), matDark);
-    ring.position.y = y; rocket.add(ring);
-  });
-
-  var skirt = new THREE.Mesh(new THREE.CylinderGeometry(.62, .78, .62, 72), matBody);
-  skirt.position.y = -1.87; rocket.add(skirt);
-
-  var nozzle = new THREE.Mesh(new THREE.CylinderGeometry(.34, .58, .72, 48, 1, true), matMetal);
-  nozzle.position.y = -2.5; rocket.add(nozzle);
-
-  var finShape = new THREE.Shape();
-  finShape.moveTo(0, 0);
-  finShape.lineTo(1.18, -1.05);
-  finShape.quadraticCurveTo(1.32, -.52, 1.02, -.18);
-  finShape.lineTo(.16, 1.15);
-  finShape.quadraticCurveTo(.02, .6, 0, 0);
-  var finGeo = new THREE.ExtrudeGeometry(finShape, {depth:.085, bevelEnabled:true, bevelThickness:.02, bevelSize:.02, bevelSegments:2});
-  finGeo.translate(0, 0, -.0425);
-
-  for (var i = 0; i < 3; i++){
-    var p = new THREE.Group();
-    p.rotation.y = (i/3) * Math.PI * 2;
-    var fin = new THREE.Mesh(finGeo, matPink);
-    fin.position.set(0, -1.28, .55);
-    fin.rotation.y = Math.PI/2;
-    p.add(fin); rocket.add(p);
-  }
-  for (var j = 0; j < 3; j++){
-    var q = new THREE.Group();
-    q.rotation.y = (j/3) * Math.PI * 2 + Math.PI/3;
-    var canard = new THREE.Mesh(new THREE.BoxGeometry(.5, .055, .3), matDark);
-    canard.position.set(.85, 1.72, 0);
-    canard.rotation.z = -.12;
-    q.add(canard); rocket.add(q);
+  function loadRocket(){
+    if (loadStarted || typeof THREE.GLTFLoader !== "function") return;
+    loadStarted = true;
+    new THREE.GLTFLoader().load("rocket.glb", function(gltf){
+      var obj = gltf.scene;
+      obj.traverse(function(n){
+        if (n.isMesh && n.material && n.material.map) n.material.map.encoding = THREE.sRGBEncoding;
+      });
+      var box = new THREE.Box3().setFromObject(obj);
+      var size = box.getSize(new THREE.Vector3());
+      var mid  = box.getCenter(new THREE.Vector3());
+      var s = TARGET_H / (size.y || 1);
+      obj.scale.setScalar(s);
+      obj.position.set(-mid.x*s, -mid.y*s + CENTER_Y, -mid.z*s);
+      rocket.add(obj);
+      modelReady = true;
+    }, null, function(){
+      /* la sección sigue funcionando: solo se queda sin cohete. El caso
+         típico es abrir index.html como file://, donde el navegador bloquea
+         la petición del .glb. Se avisa por consola para no perder la tarde. */
+      if (window.console && console.warn){
+        console.warn("rocket.glb no se cargó. Si abriste la página como file://, sírvela por HTTP: el navegador bloquea la petición del modelo.");
+      }
+    });
   }
 
   /* penacho en dos capas: núcleo naranjo, envolvente rosa */
@@ -1282,11 +1157,74 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     rocket.add(m);
     return m;
   }
-  var plumeOut = plumeMesh(C.pink,   .42, 2.4); plumeOut.position.y = -4.0;
-  var plumeIn  = plumeMesh(C.orange, .22, 1.5); plumeIn.position.y  = -3.5;
+  var plumeOut = plumeMesh(C.pink,   .42, 2.4); plumeOut.position.y = NOZZLE_Y - 1.2;
+  var plumeIn  = plumeMesh(C.orange, .22, 1.5); plumeIn.position.y  = NOZZLE_Y - .75;
 
   rocket.rotation.z = .1;
   scene.add(rocket);
+
+  /* ---------- estela ----------
+     Las chispas viven en el espacio de la escena, no en el del cohete:
+     por eso se quedan atrás cuando sube, que es lo que hace la estela.
+     Mezcla normal, como todo lo demás: sobre blanco la aditiva no se ve. */
+  var SPK = 240;
+  var spkPos  = new Float32Array(SPK*3);
+  var spkCol  = new Float32Array(SPK*3);
+  var spkVel  = new Float32Array(SPK*3);
+  var spkLife = new Float32Array(SPK);      /* 0 = libre */
+  var spkGeo  = new THREE.BufferGeometry();
+  spkGeo.setAttribute("position", new THREE.BufferAttribute(spkPos, 3));
+  spkGeo.setAttribute("color",    new THREE.BufferAttribute(spkCol, 3));
+  var sparks = new THREE.Points(spkGeo, new THREE.PointsMaterial({
+    size:.17, vertexColors:true, transparent:true, opacity:0,
+    depthWrite:false, blending:THREE.NormalBlending
+  }));
+  sparks.frustumCulled = false;
+  scene.add(sparks);
+
+  /* naranjo al nacer, rosa a media vida, violeta pálido al apagarse */
+  var HOT = [1.00, .71, .44], MID = [.99, .21, .74], COLD = [.80, .72, 1.00];
+
+  function emitSparks(n, originY, spread){
+    for (var e = 0; e < n; e++){
+      for (var idx = 0; idx < SPK; idx++){
+        if (spkLife[idx] > 0) continue;
+        spkLife[idx] = .5 + Math.random()*.7;
+        spkPos[idx*3]   = (Math.random()-.5) * .5;
+        spkPos[idx*3+1] = originY - Math.random()*.4;
+        spkPos[idx*3+2] = (Math.random()-.5) * .5;
+        spkVel[idx*3]   = (Math.random()-.5) * spread;
+        spkVel[idx*3+1] = -2.4 - Math.random()*3.2;
+        spkVel[idx*3+2] = (Math.random()-.5) * spread;
+        break;
+      }
+    }
+  }
+
+  function updateSparks(dt){
+    var alive = 0;
+    for (var i2 = 0; i2 < SPK; i2++){
+      if (spkLife[i2] <= 0){ spkCol[i2*3] = spkCol[i2*3+1] = spkCol[i2*3+2] = 1; continue; }
+      spkLife[i2] -= dt;
+      if (spkLife[i2] <= 0){ spkPos[i2*3+1] = 1e4; continue; }   /* fuera de cuadro */
+      alive++;
+      spkPos[i2*3]   += spkVel[i2*3]   * dt;
+      spkPos[i2*3+1] += spkVel[i2*3+1] * dt;
+      spkPos[i2*3+2] += spkVel[i2*3+2] * dt;
+      spkVel[i2*3]   *= (1 - dt*1.6);          /* el aire las frena */
+      spkVel[i2*3+1] *= (1 - dt*0.9);
+      spkVel[i2*3+2] *= (1 - dt*1.6);
+      var a = Math.min(1, Math.max(0, 1 - spkLife[i2]/1.2));   /* 0 recién nacida */
+      var from = a < .5 ? HOT : MID, to = a < .5 ? MID : COLD;
+      var f = a < .5 ? a*2 : (a-.5)*2;
+      spkCol[i2*3]   = from[0] + (to[0]-from[0])*f;
+      spkCol[i2*3+1] = from[1] + (to[1]-from[1])*f;
+      spkCol[i2*3+2] = from[2] + (to[2]-from[2])*f;
+    }
+    spkGeo.attributes.position.needsUpdate = true;
+    spkGeo.attributes.color.needsUpdate = true;
+    return alive;
+  }
 
   /* ---------- polvo ---------- */
   var dustGeo = new THREE.BufferGeometry();
@@ -1372,6 +1310,13 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     plumeOut.material.opacity = thrust * .5;
     plumeIn.material.opacity  = thrust * .75;
 
+    /* la estela solo existe mientras hay empuje de verdad */
+    if (!reduceMotion && thrust > .45 && baseY < 30){
+      emitSparks(Math.round(2 + thrust*6), baseY + NOZZLE_Y, 1.6 + thrust*1.4);
+    }
+    var aliveSparks = reduceMotion ? 0 : updateSparks(dt);
+    sparks.material.opacity = aliveSparks ? .85 : 0;
+
     if (!reduceMotion){
       dust.rotation.y += dt * .012;
       dust.position.y = (dust.position.y + dt*.25) % 6;
@@ -1384,20 +1329,19 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
   function start(){ if (running) return; running = true; clock.getDelta(); tick(); }
   function stop(){ running = false; }
 
+  /* el modelo empieza a bajar un poco antes de entrar en cuadro */
   if (window.IntersectionObserver){
+    new IntersectionObserver(function(en){
+      if (en[0].isIntersecting) loadRocket();
+    }, {rootMargin:"200% 0px"}).observe(stage);
+
     new IntersectionObserver(function(en){
       if (en[0].isIntersecting){
         start();
         if (!fired && !reduceMotion){ fired = true; setTimeout(function(){ launchT = 0; }, 500); }
       } else stop();
     }, {threshold:.25}).observe(stage);
-  } else start();
-
-  /* la librea espera a que Figtree esté cargada, si no el logo sale en fallback */
-  var applyLivery = function(){ matLivery.map = makeLivery(); matLivery.needsUpdate = true; };
-  if (document.fonts && document.fonts.load){
-    document.fonts.load('600 200px Oceanwide').then(applyLivery).catch(applyLivery);
-  } else applyLivery();
+  } else { loadRocket(); start(); }
 })();
 </script>
 
@@ -1539,7 +1483,9 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
     lines.forEach(function(l,i){ o.fillText(l, bw/2, top + i*lh); });
 
     var data = o.getImageData(0,0,bw,bh).data;
-    var step = Math.max(3, Math.round(Math.sqrt(bw*bh)/300) * DPR);
+    /* el paso tiene que ser entero: con DPR fraccionario (Windows al 125%)
+       un indice decimal lee un byte desalineado y el muestreo se vuelve ruido */
+    var step = Math.max(3, Math.round(Math.sqrt(bw*bh)/300 * DPR));
     var parts = [];
     for(var y=0;y<bh;y+=step){
       for(var x=0;x<bw;x+=step){
@@ -1635,6 +1581,107 @@ footer{ border-top:1px solid var(--rule-soft); padding-block:26px; }
       if(onScreen) kick(); else ctx.clearRect(0,0,VW,VH);
     },{rootMargin:"20% 0px"}).observe(slot);
   }
+})();
+</script>
+
+<!-- ================= AGENDA: RUEDA ================= -->
+<script>
+(() => {
+  const DATA = [
+    ['01', 'Bienvenida.', '60 min', 'Café y acreditación.'],
+    ['02', 'Empecemos.', '', 'Arranca el evento.'],
+    ['03', 'Nuestra historia.', '20 min', 'Fina, su trayectoria, inversionistas y clientes.'],
+    ['04', 'Un nuevo ecosistema.', '40 min', 'Fina, Fina Presta y sus nuevas verticales.'],
+    ['05', 'Brindemos.', '90 min', 'Brindis y networking.'],
+  ];
+  const STEP_ANGLE = 22;   /* grados entre numeros */
+  const HOLD = 0.2;        /* fraccion de cada tramo en que el numero se queda quieto */
+  const LERP = 0.12;       /* suavizado por frame a 60 Hz */
+
+  const root = document.getElementById('agenda'); if (!root) return;
+  const $ = s => root.querySelector(s);
+  const anchor = $('.aw-anchor'), ring = $('.aw-ring'), wheel = $('.aw-wheel'), desc = $('.aw-desc');
+  const bar = $('.aw-bar span'), count = $('[data-aw-count]');
+  const n = DATA.length;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const arms = DATA.map(([num, name, time, sub], k) => {
+    const arm = document.createElement('div'); arm.className = 'aw-arm';
+    arm.style.transform = `rotate(${k * STEP_ANGLE}deg)`;
+    arm.innerHTML = `<div class="aw-dot"></div><button class="aw-num" aria-label="${num} ${name}"><span>${num}</span></button>`;
+    arm.querySelector('button').addEventListener('click', () => goTo(k));
+    wheel.appendChild(arm);
+    const item = document.createElement('div'); item.className = 'aw-item';
+    item.innerHTML = `<div class="aw-time">${time}</div><div class="aw-name">${name}</div><div class="aw-sub">${sub}</div>`;
+    desc.appendChild(item);
+    return { dot: arm.querySelector('.aw-dot'), btn: arm.querySelector('.aw-num'), num: arm.querySelector('.aw-num span'), item };
+  });
+
+  let L = {};
+  function layout() {
+    const vw = innerWidth, vh = innerHeight, mobile = vw < 760;
+    const gut = Math.max(20, Math.min(64, vw * .05));
+    const wrap = Math.max(gut, (vw - 1180) / 2);
+    const R = Math.round(Math.max(260, Math.min(460, vh * .46)));
+    const numSize = mobile ? 96 : Math.round(Math.min(168, vh * .2));
+    const edge = mobile ? wrap + 24 : wrap + 140;
+    const cy = mobile ? vh * .44 : vh * .54, gap = 28;
+    L = { R, numSize };
+    root.style.setProperty('--aw-wrap', wrap + 'px');
+    Object.assign(anchor.style, { left: (edge - R) + 'px', top: cy + 'px' });
+    Object.assign(ring.style, { left: -R + 'px', top: -R + 'px', width: 2 * R + 'px', height: 2 * R + 'px' });
+    arms.forEach(a => { a.dot.style.left = (R - 5) + 'px'; a.btn.style.left = (R + gap) + 'px'; a.num.style.fontSize = numSize + 'px'; });
+    Object.assign(desc.style, mobile
+      ? { left: wrap + 'px', right: wrap + 'px', maxWidth: '', top: (cy + numSize * .9) + 'px', height: '160px' }
+      : { left: (edge + gap + numSize * 1.22 + 40) + 'px', right: wrap + 'px', maxWidth: '460px', top: cy + 'px', height: '0' });
+  }
+
+  const mix = (a, b, w) => a.map((v, j) => v + (b[j] - v) * w);
+  const rgba = c => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${c[3].toFixed(3)})`;
+  const FAINT = [98, 10, 255, .16], C1 = [98, 10, 255, 1], C2 = [253, 55, 190, 1], WHITE = [255, 255, 255, 1];
+
+  function paint(pos) {
+    wheel.style.transform = `rotate(${(-pos * STEP_ANGLE).toFixed(3)}deg)`;
+    const i = Math.round(pos);
+    arms.forEach((a, k) => {
+      const d = Math.abs(k - pos), w = Math.max(0, 1 - d), we = w * w * (3 - 2 * w);
+      a.num.style.transform = `scale(${(.42 + .58 * we).toFixed(4)})`;
+      a.num.style.backgroundImage = `linear-gradient(92deg,${rgba(mix(FAINT, C1, we))} 0%,${rgba(mix(FAINT, C2, we))} 100%)`;
+      a.dot.style.background = rgba(mix(WHITE, C1, we));
+      a.dot.style.boxShadow = `0 0 0 ${6 * we}px rgba(98,10,255,${(.12 * we).toFixed(3)}), inset 0 0 0 1.5px rgba(98,10,255,${(.35 * (1 - we)).toFixed(3)})`;
+      a.item.style.opacity = Math.max(0, Math.min(1, 1 - d * 2.2));
+      a.item.style.transform = `translateY(calc(-50% + ${((k - pos) * 36).toFixed(2)}px))`;
+      a.item.style.pointerEvents = k === i ? 'auto' : 'none';
+    });
+    bar.style.width = ((pos + 1) / n * 100) + '%';
+    count.textContent = DATA[i][0];
+  }
+
+  let pos = 0, target = 0, raf = 0, last = 0;
+  function measure() {
+    const r = root.getBoundingClientRect(), vh = innerHeight;
+    const p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - vh)));
+    const s = p * (n - 1), k = Math.min(n - 2, Math.floor(s)), f = s - k;
+    const t = Math.max(0, Math.min(1, (f - HOLD) / Math.max(.01, 1 - 2 * HOLD)));
+    target = k + t * t * (3 - 2 * t);
+    if (reduce) { pos = Math.round(target); paint(pos); return; }
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
+  }
+  function tick(now) {
+    const dt = Math.min(64, now - last); last = now;
+    pos += (target - pos) * (1 - Math.pow(1 - LERP, dt / 16.7));
+    if (Math.abs(target - pos) < .0005) pos = target;
+    paint(pos);
+    raf = pos === target ? 0 : requestAnimationFrame(tick);
+  }
+  function goTo(k) {
+    const top = root.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + (k / (n - 1)) * (root.offsetHeight - innerHeight), behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  layout(); measure(); pos = target; paint(pos);
+  addEventListener('scroll', measure, { passive: true });
+  addEventListener('resize', () => { layout(); measure(); });
 })();
 </script>
 </body>
