@@ -52,7 +52,7 @@ Fuente: `~/fina-landing/tokens.css` en la máquina de Diego.
 --fina-orange        #FFB470
 --color-info         #00CFD5   (estado "en producción")
 gradiente de marca   linear-gradient(92deg,#FD37BE 0%,#FFB470 100%)
-fondo                blanco, con un velo violeta arriba (#FAF7FF → #FFFFFF)
+fondo                blanco plano, sin capas encima en ninguna sección
 texto                #150041   (--fg, la tinta del wordmark)
 ```
 
@@ -65,7 +65,7 @@ Diego. El histórico importa porque quedan decisiones heredadas de aquello.
 ⚠️ **El gradiente de marca no sirve como texto sobre blanco.** El extremo naranjo #FFB470
 no llega a 2:1 de contraste. Los titulares usan `--grad-text` (violeta → rosa,
 #620AFF → #FD37BE); el rosa → naranjo se queda donde es relleno: el botón primario y el
-tinte bajo el vidrio del cintillo. Lo mismo con los chips: como texto van en
+canto de los botones. Lo mismo con los chips: como texto van en
 `--ink-warm` #B8651A y `--ink-cyan` #00898D.
 
 ⚠️ **Nada de mezcla aditiva ni `mix-blend-mode: screen`.** Sobre blanco, screen con
@@ -83,7 +83,8 @@ escribe una persona va en Figtree*. Es lo que sostiene el aire techie; si se rom
 página se vuelve una landing genérica.
 
 El hero va en Figtree **600**, no 900. A 162px el peso alto empasta las contraformas.
-Compensación óptica: a más tamaño, menos peso. Los títulos de sección sí van en 800.
+Compensación óptica: a más tamaño, menos peso. Los títulos de sección sí van en 800, y las
+cifras grandes (hasta 150px) en 700.
 
 Única excepción conocida a la regla: las descripciones de la rueda de la agenda (`.aw-sub`)
 van en pixel aunque son prosa humana. Viene así del handoff de diseño, marcado como final.
@@ -96,6 +97,17 @@ La regla común a todas: **el scroll no pinta, mueve un objetivo.** El handler s
 actualiza un número y un bucle de `requestAnimationFrame` lo persigue con un lerp
 normalizado por tiempo, `1-(1-k)^(dt/16.7)`. El exponente es lo que hace que corra igual
 a 60 que a 120 Hz; sin él va al doble de velocidad en pantallas rápidas.
+
+La segunda regla, igual de importante: **cada pieza se apaga cuando no está en pantalla.**
+Las cinco llevan su `IntersectionObserver`. Si se añade una sexta sin él, el bucle corre
+durante todo el scroll de la página aunque la sección esté a cinco pantallas de distancia;
+pasó con la rueda de la agenda y costó 3,3 segundos de frames en un solo recorrido.
+
+Para medirlo: parchear `requestAnimationFrame` y contar llamadas por segundo en reposo a
+distintas alturas. En una página quieta tiene que dar cerca de cero en todas menos donde
+esté la pieza visible. **Con la pestaña en segundo plano el navegador limita a 20fps**, así
+que una medición de 50ms clavados no es carga, es throttling: hay que medir con la pestaña
+delante.
 
 **1. Portada — isotipo a pantalla completa** (`#gate`)
 
@@ -146,7 +158,7 @@ coordenada y lee un byte desalineado: la R o la G de un píxel vecino en vez de 
 Solo el 39% de las partículas cae sobre una letra, el resto se reparte por todo el bloque
 y la frase no llega a formarse. En móvil el DPR es 2 o 3, el paso sale entero y no se ve.
 
-**3. Hero — edificio en alambre** (`#bld`)
+**3. Dónde y cuándo — edificio en alambre** (`#bld`)
 Geometría 3D procedural sobre canvas 2D, sin librerías. Cinco cajas: dos alas de 9 pisos, un
 cuerpo posterior que deja el patio al frente, zócalo y atrio.
 
@@ -155,9 +167,13 @@ cuerpo posterior que deja el patio al frente, zócalo y atrio.
 - Las líneas sobresalen 2–7px de cada esquina. Eso es lo que da el aire de plano trazado a
   mano en vez de render limpio; no es un bug.
 - Color por posición en pantalla, interpolando el gradiente de marca.
-- El zócalo llevó rotulación ("CARACAS CAMPUS", letras como polilíneas 3D que giraban con
-  el edificio). Se quitó en octubre de 2026 junto con el alfabeto de trazo y la rama de
-  color azul marino que existía solo para ellas.
+- El zócalo lleva rotulación: "CARACAS" y "CAMPUS" como polilíneas 3D que giran con el
+  edificio. Es un alfabeto de trazo (`GLYPH`), no tipografía, y por eso vive dentro del
+  modelo en vez de ser texto pegado en pantalla. Va en azul marino y queda fuera del
+  degradado de marca: lo marca el flag `nv` que `push()` arrastra hasta el bucle de dibujo.
+- Solo se lee de frente, y el edificio da una vuelta completa cada 22s.
+- El visor vivía en el hero hasta octubre de 2026; al bajar a esta sección su clase pasó de
+  `.hero-viz` a `.venue-viz`.
 
 **4. Agenda — rueda con scroll** (`#agenda`)
 Sección de 500vh (100vh por momento) con el escenario en `position:sticky`. El scroll gira
@@ -169,6 +185,13 @@ una rueda de cinco números; todo deriva de un único `pos` continuo.
 - Ningún ancestro puede llevar `overflow:hidden` o el sticky deja de funcionar. El `body`
   tiene `overflow-x:hidden`, que en Chrome convive bien con esto, pero es frágil: si el
   escenario deja de quedarse fijo, mirar ahí primero.
+
+⚠️ **El bucle necesita su `IntersectionObserver` y no es opcional.** `tick()` solo se
+detiene cuando posición y objetivo coinciden *exactamente*, y cada evento de scroll vuelve
+a mover el objetivo. Sin el control de visibilidad la rueda repinta sus cinco brazos
+también en la portada y en el cierre, durante todo el scroll de la página. Fue la única de
+las cinco piezas que nació sin él, y costaba caro: en un recorrido completo ya en caliente,
+46 frames largos y 3,3 segundos perdidos, que bajaron a 1 frame y 33ms al añadirlo.
 
 **5. Cierre — cohete 3D** (`#stage`)
 Three.js r128 desde cdnjs más `GLTFLoader` desde jsDelivr. El cohete es `rocket.glb`
@@ -196,20 +219,25 @@ frame estático.
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Link del RSVP | `id="rsvp-link"` y el botón del nav | **apunta a `#`** |
-| Fecha | 5 sitios en el HTML + `TARGET` en el script del contador | martes 24.11.2026 |
+| Link del RSVP | `id="rsvp-link"` y los otros dos botones | **apunta a `#`** |
+| Fecha | 4 sitios en el HTML + `TARGET` en el script del contador | martes 24.11.2026 |
 | Duración del momento 02 | `DATA` en el script de la rueda | **vacía, llegó así del handoff** |
-| Dirección | sección de sede | sin confirmar, solo "Caracas" |
+| Dirección | subtítulo de `// 00` | sin confirmar, solo "Caracas Campus" |
 | Cupos / correo | hero, cierre, footer | 120 · hola@finapartner.com |
 | `build 2026.10` | eyebrow del hero | sigue diciendo octubre |
 
-El evento **ya no se cuenta como seis releases** sino como un ecosistema: las cifras del
-hero son `01 Ecosistema`, `60 Minutos` y `120 Cupos`. Queda un resto del marco viejo en el
-párrafo de `// 00 Qué es esto`, que aún habla de "cada cosa nueva que entró a producción".
+El evento **ya no se cuenta como seis releases** sino como un ecosistema para emprender, y
+el público dejó de ser "contadores, founders y equipos de finanzas" para ser quien
+emprende. Las cifras son `01 Ecosistema`, `60 Minutos` y `120 Cupos`. Ya no queda ningún
+resto del marco viejo en el texto; solo sobrevive en el **nombre** del evento, que sigue
+siendo Fina Releases: el lockup del nav, el `<title>` y el pie.
 
-La página **no muestra horas**. Se quitaron a propósito en octubre de 2026. El `TARGET` del
-contador conserva las 18:00 porque necesita un instante al que llegar, pero esa hora no
-aparece en ninguna parte.
+La página **no muestra horas** y tampoco dice ya "presencial". Ambas cosas se quitaron a
+propósito en octubre de 2026. El `TARGET` del contador conserva las 18:00 porque necesita
+un instante al que llegar, pero esa hora no aparece en ninguna parte.
+
+Los botones dicen **"Solicitar mi cupo"**, no "Reservar". La entradilla del cierre sí sigue
+diciendo "Reserva en treinta segundos".
 
 Si cambias la fecha, cambia también `TARGET` — está en ISO con offset `-04:00` (Venezuela,
 no Chile). Y verifica el día de la semana: ya hubo un error de "jueves" en una fecha que
@@ -221,20 +249,38 @@ electrónica*. Hubo que corregirlo una vez porque la primera versión asumía Ch
 ## Referencia visual
 
 La estructura viene de https://hack.platan.us/26-co — corchetes `[01]`, eyebrows numerados,
-cintillo infinito, cifras gigantes, hairlines en vez de cards.
-La paleta y la tipografía son de Fina, no de ahí. Esa mezcla es deliberada.
+cintillo infinito, cifras gigantes. La paleta y la tipografía son de Fina, no de ahí.
+Esa mezcla es deliberada.
 
-El changelog con `+` y la baraja del line-up que había en esa referencia ya no existen:
-se eliminaron con la sección de preguntas y con el cambio de la agenda a rueda.
+El changelog con `+`, la baraja del line-up y las hairlines entre secciones ya no existen.
+Las divisorias se quitaron en octubre de 2026 para que la página corriera seguida: lo que
+separa ahora las secciones es solo el aire del `padding-block` de `.band`.
 
-La página son hoy cinco bloques: portada (`#gate`), hero (`#top`), qué es esto + cifras,
-dónde (ficha de sede), agenda en rueda (`#agenda`) y registro (`#rsvp`).
+## Orden de la página
+
+1. **Portada** (`#gate`) — el isotipo a pantalla completa
+2. **Hero** (`#top`) — eyebrow, título en partículas, claim, entradilla y el CTA con la
+   línea de cupos al lado
+3. **`// 00 Dónde y cuándo`** — "El día y el lugar", la fecha y el campus en grande, el
+   visor del edificio y el contador
+4. **Cintillo** — sin fondo, solo el texto corriendo
+5. **`// 01 Qué es esto`** — titular, entradilla y las tres cifras
+6. **`// 02 Agenda`** (`#agenda`) — la rueda
+7. **`// 03 Registro abierto`** (`#rsvp`) — el cierre
+
+Los eyebrows van numerados por **orden de aparición**: si se mueve una sección, hay que
+renumerarlos. La junta entre el hero y la primera sección lleva su propio aire
+(`.hero + .band`), más corto que el del resto, porque si no se sumaban dos paddings
+completos y quedaban 166px de hueco.
 
 ## Trampa: los textos con degradado
 
-Cinco elementos pintan texto con degradado (`.grad`, `.stat .v`, `.eyebrow .on`,
-`.viz-tag b` y los números de la rueda `.aw-num span`) mediante `background-clip: text` +
-`color: transparent`. Los de la rueda los escribe el script, que ya usa `backgroundImage`.
+Seis sitios pintan texto con degradado mediante `background-clip: text` +
+`color: transparent`: `.grad`, `.eyebrow .on`, `.viz-tag b`, las etiquetas de las cifras
+`.stat .k`, el número de cupos `.seats b` y los números de la rueda `.aw-num span`, que los
+escribe el script y ya usa `backgroundImage`.
+
+Las cifras grandes (`.stat .v`) **no** llevan degradado: van en azul oscuro plano.
 
 **Si vas a cambiarles el degradado, usa `background-image`, nunca el atajo `background`.**
 El atajo reinicia `background-clip` a `border-box`: el degradado pasa a llenar la caja
@@ -254,15 +300,39 @@ hacen leer como cristal y no como una caja translúcida:
    recurso que el isotipo, y es lo que ata las dos cosas.
 4. Sombra baja y ancha, para despegarlo del papel.
 
-**Lo llevan**: la barra del nav, el contador, el visor del edificio, la ficha de la sede,
-el botón fantasma y —desde octubre de 2026— el cintillo. Chips y filas de lista no. La
-idea sigue siendo que si todo es vidrio nada lo es, y el CTA principal tiene que seguir
-siendo sólido.
+**Lo llevan solo dos elementos**: el contador y el visor del edificio. La barra del nav usa
+los mismos tokens sin la clase. Nada más.
 
-El cintillo fue una excepción pedida expresamente: antes era relleno rosa → naranjo. Sobre
-blanco el `backdrop-filter` no tiene nada que refractar, así que bajo el relleno
-translúcido va un tinte de marca al 34%; eso es lo que el desenfoque satura. Sin ese tinte
-la banda se vuelve gris y desaparece.
+La ficha de sede desapareció con la reestructuración, y el cintillo llegó a ser de vidrio
+durante unos días de octubre de 2026 —con un tinte de marca debajo, porque sobre blanco el
+`backdrop-filter` no tiene nada que refractar— pero acabó sin fondo ninguno. Si alguien
+vuelve a querer vidrio sobre blanco, ese es el truco: el relleno translúcido solo no basta,
+necesita algo tintado debajo que el desenfoque pueda saturar.
 
 Hay dos salidas de emergencia: `@supports not (backdrop-filter)` sube la opacidad del
 relleno, y `prefers-reduced-transparency` devuelve superficie blanca sólida.
+
+## Botones
+
+Un solo estilo, `.btn-outline`, con su variante pequeña `.btn-outline-sm` para el nav. Los
+tres dicen lo mismo y van al mismo sitio. Pastilla de **interior transparente**, canto
+degradado que barre, texto en azul oscuro y halo alrededor.
+
+Dos detalles que no son arbitrarios y que ya costaron un intento fallido cada uno:
+
+⚠️ **El canto va en un anillo aparte** (`::before` con `mask-composite: exclude`), no en el
+fondo del botón. La técnica de dos fondos recortados contra `padding-box` y `border-box`
+necesita una capa opaca que confine el degradado al borde; con el interior transparente el
+degradado llena la pastilla entera. Y la máscara no puede ir en el propio botón porque
+afecta también al contenido: borraría el texto junto con el relleno.
+
+⚠️ **El halo es `box-shadow`, no `drop-shadow`.** `drop-shadow` se calcula sobre lo que
+está pintado, así que con el interior transparente seguiría solo la línea de 1,5px del
+canto. `box-shadow` se dibuja contra la caja y rodea la pastilla completa sin rellenarla.
+
+El barrido del canto anima `background-position` sobre una imagen del doble de ancho, en
+`alternate` para que no pegue el salto al reiniciar: los degradados no interpolan en CSS,
+así que animarlos es siempre mover la imagen, nunca cambiarla.
+
+Quedan en el CSS las reglas de `.btn`, `.btn-sm` y `.btn-ghost`, el botón sólido anterior.
+Ya no las usa nadie.
