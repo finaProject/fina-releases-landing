@@ -1,4 +1,4 @@
-# Fina Releases — landing
+# Fina 360° — landing
 
 Página única del evento de lanzamiento de Fina. Sin build ni dependencias:
 todo está en `index.html` (CSS y JS inline).
