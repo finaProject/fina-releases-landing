@@ -1,0 +1,1032 @@
+<title>Registros Fina 360°</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=DotGothic16&display=swap">
+<style>
+:root{
+  --fina-purple:#620AFF;
+  --fina-pink:#FD37BE;
+  --bg:#F7F4FF;
+  --surface:#FFFFFF;
+  --surface-2:#F1ECFF;
+  --fg:#150041;
+  --muted:#6C5D95;
+  --faint:#9488BC;
+  --line:#E3DAF9;
+  --line-soft:#EFE9FD;
+  --ok:#0A7A55;      --ok-bg:#E4F6EF;    --ok-line:#A9DEC9;
+  --no:#B92652;      --no-bg:#FCE9F0;    --no-line:#F1B6CC;
+  --maybe:#8A5A00;   --maybe-bg:#FDF2DD; --maybe-line:#EBCF93;
+  --grad:linear-gradient(92deg,#FD37BE 0%,#620AFF 62%);
+  --shadow:0 1px 2px rgba(21,0,65,.05), 0 8px 24px -16px rgba(21,0,65,.22);
+  --radius:14px;
+  --mono:"DotGothic16","Courier New",monospace;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B0520; --surface:#160C31; --surface-2:#1E1240;
+    --fg:#EFEAFF; --muted:#A99CD2; --faint:#7D6FAA;
+    --line:#2E1F58; --line-soft:#241650;
+    --ok:#6FE0B2;    --ok-bg:#0E2E24;    --ok-line:#1D5C46;
+    --no:#FF8FB4;    --no-bg:#330F20;    --no-line:#6A2440;
+    --maybe:#F2C879; --maybe-bg:#30220A; --maybe-line:#5F4517;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B0520; --surface:#160C31; --surface-2:#1E1240;
+  --fg:#EFEAFF; --muted:#A99CD2; --faint:#7D6FAA;
+  --line:#2E1F58; --line-soft:#241650;
+  --ok:#6FE0B2;    --ok-bg:#0E2E24;    --ok-line:#1D5C46;
+  --no:#FF8FB4;    --no-bg:#330F20;    --no-line:#6A2440;
+  --maybe:#F2C879; --maybe-bg:#30220A; --maybe-line:#5F4517;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--fg);
+  font-family:var(--sans); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  max-width:1180px; margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:28px 72px;
+}
+h1,h2,h3{margin:0; text-wrap:balance; letter-spacing:-.02em}
+p{margin:0}
+button,input,select,textarea{font:inherit; color:inherit}
+
+/* ---------- cabecera ---------- */
+.top{display:flex; flex-wrap:wrap; gap:16px 24px; align-items:flex-end; justify-content:space-between; margin-bottom:22px}
+.brand h1{font-size:1.65rem; font-weight:800}
+.brand h1 em{
+  font-style:normal;
+  background-image:var(--grad);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.brand p{color:var(--muted); font-size:.92rem; margin-top:4px}
+.mode{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.06em;
+  color:var(--muted); border:1px solid var(--line); border-radius:999px;
+  padding:5px 11px; background:var(--surface); white-space:nowrap;
+}
+
+/* ---------- contadores ---------- */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:24px}
+.stat{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow)}
+.stat .n{font-family:var(--mono); font-size:1.9rem; line-height:1; display:block}
+.stat .l{display:block; margin-top:7px; font-size:.68rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.stat.ok .n{color:var(--ok)} .stat.no .n{color:var(--no)} .stat.maybe .n{color:var(--maybe)}
+
+/* ---------- tarjetas ---------- */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:16px; overflow:hidden}
+.card > header{
+  display:flex; gap:12px; align-items:center; justify-content:space-between;
+  padding:13px 18px; border-bottom:1px solid var(--line-soft); flex-wrap:wrap;
+}
+.card > header h2{font-size:.96rem; font-weight:700; display:flex; align-items:center; gap:9px}
+.step{
+  font-family:var(--mono); font-size:.7rem; color:#fff; background:var(--fina-purple);
+  width:20px; height:20px; border-radius:6px; display:inline-grid; place-items:center;
+}
+.card .body{padding:18px}
+.hint{color:var(--muted); font-size:.85rem; margin-top:8px}
+.hint code, .note code{font-family:var(--mono); background:var(--surface-2); padding:1px 5px; border-radius:4px}
+
+/* ---------- controles ---------- */
+.btn{
+  border:1px solid var(--line); background:var(--surface); color:var(--fg);
+  border-radius:9px; padding:8px 14px; font-size:.86rem; font-weight:600;
+  cursor:pointer; transition:border-color .15s, background .15s, transform .1s;
+}
+.btn:hover:not(:disabled){border-color:var(--fina-purple)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn:disabled{opacity:.42; cursor:not-allowed}
+.btn.primary{background-image:var(--grad); border-color:transparent; color:#fff}
+.btn.primary:hover:not(:disabled){filter:brightness(1.07)}
+.btn.sm{padding:5px 10px; font-size:.78rem; border-radius:7px}
+.btn.yes{color:var(--ok); border-color:var(--ok-line); background:var(--ok-bg)}
+.btn.nope{color:var(--no); border-color:var(--no-line); background:var(--no-bg)}
+.btn.ghost{background:none}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+input[type=text], input[type=search], select, textarea{
+  background:var(--bg); border:1px solid var(--line); border-radius:9px;
+  padding:8px 11px; font-size:.88rem; width:100%; min-width:0;
+}
+input:focus, select:focus, textarea:focus{outline:2px solid var(--fina-purple); outline-offset:-1px}
+textarea{resize:vertical; line-height:1.55}
+label.fld{display:flex; flex-direction:column; gap:5px; min-width:0}
+label.fld > span{font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:700}
+
+/* ---------- zona de carga ---------- */
+.drop{
+  border:1.5px dashed var(--line); border-radius:12px; padding:22px 18px; text-align:center;
+  background:var(--surface-2); transition:border-color .15s, background .15s;
+}
+.drop.hot{border-color:var(--fina-pink); background:var(--no-bg)}
+.drop p{color:var(--muted); font-size:.86rem; margin-top:8px}
+
+/* ---------- mapeo ---------- */
+.mapgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px}
+.cols{display:flex; flex-wrap:wrap; gap:7px; margin-top:12px}
+.colchip{
+  display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line);
+  background:var(--bg); border-radius:999px; padding:5px 12px 5px 9px; font-size:.82rem; cursor:pointer;
+}
+.colchip input{accent-color:var(--fina-purple); margin:0}
+.colchip.on{border-color:var(--fina-purple); background:var(--surface-2)}
+
+/* ---------- filtros ---------- */
+.filters{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px}
+.fgroup > h3{font-size:.7rem; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:8px}
+.opts{display:flex; flex-direction:column; gap:5px; max-height:190px; overflow:auto}
+.opt{display:flex; align-items:center; gap:8px; font-size:.85rem; cursor:pointer; min-width:0}
+.opt input{accent-color:var(--fina-purple); flex:none; margin:0}
+.opt .t{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.opt .c{margin-left:auto; font-family:var(--mono); font-size:.72rem; color:var(--faint); flex:none}
+.segs{display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden}
+.segs button{border:0; background:none; padding:7px 13px; font-size:.8rem; font-weight:600; cursor:pointer; color:var(--muted)}
+.segs button + button{border-left:1px solid var(--line)}
+.segs button[aria-pressed="true"]{background:var(--surface-2); color:var(--fg)}
+
+/* ---------- tabla ---------- */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:.85rem}
+th,td{text-align:left; padding:10px 12px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{
+  font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  font-weight:700; white-space:nowrap; position:sticky; top:0; background:var(--surface); z-index:1;
+}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr.gone{opacity:.5}
+td.who strong{display:block; font-weight:600}
+td.who span{color:var(--muted); font-size:.79rem; word-break:break-all}
+td.ans{max-width:320px}
+.ansline{margin-bottom:3px}
+.ansline b{color:var(--faint); font-weight:600; font-size:.74rem; letter-spacing:.03em}
+.tag{
+  display:inline-block; border-radius:999px; padding:2px 9px; font-size:.72rem; font-weight:700;
+  border:1px solid transparent; white-space:nowrap;
+}
+.tag.ok{color:var(--ok); background:var(--ok-bg); border-color:var(--ok-line)}
+.tag.no{color:var(--no); background:var(--no-bg); border-color:var(--no-line)}
+.tag.maybe{color:var(--maybe); background:var(--maybe-bg); border-color:var(--maybe-line)}
+.tag.pend{color:var(--muted); background:var(--surface-2); border-color:var(--line)}
+.why{display:block; margin-top:5px; color:var(--muted); font-size:.78rem; line-height:1.45}
+td.act{white-space:nowrap}
+td.act .btn{margin-right:5px}
+.empty{padding:46px 18px; text-align:center; color:var(--muted)}
+.empty b{display:block; color:var(--fg); margin-bottom:5px}
+
+/* ---------- varios ---------- */
+.bar{
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+  padding:12px 18px; border-top:1px solid var(--line-soft); background:var(--surface-2);
+}
+.note{
+  border-left:3px solid var(--fina-pink); background:var(--surface-2);
+  padding:11px 14px; border-radius:0 10px 10px 0; font-size:.85rem; color:var(--muted); margin-bottom:16px;
+}
+.note b{color:var(--fg)}
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%);
+  bottom:calc(20px + env(safe-area-inset-bottom, 0px));
+  background:var(--fg); color:var(--bg); padding:10px 18px; border-radius:999px;
+  font-size:.85rem; font-weight:600; z-index:40; box-shadow:0 8px 30px -8px rgba(0,0,0,.5);
+}
+.bars{height:3px; background:var(--line-soft); border-radius:2px; overflow:hidden; margin-top:10px}
+.bars i{display:block; height:100%; background-image:var(--grad); width:0; transition:width .25s}
+@media (max-width:620px){
+  .wrap{padding-block:20px 56px}
+  .brand h1{font-size:1.35rem}
+  td.ans{max-width:200px}
+}
+</style>
+
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <h1>Registros <em>Fina 360°</em></h1>
+      <p>Filtra las respuestas del formulario de Luma y decide a quién se aprueba.</p>
+    </div>
+    <div class="mode" id="mode">iniciando…</div>
+  </div>
+
+  <div class="note">
+    <b>Plan Free de Luma.</b> La API de aprobación necesita Luma Plus, así que este panel
+    decide y exporta: los correos aprobados se pegan en <b>Manage → Guests → Bulk Update
+    Status</b>, y es Luma quien manda el correo de confirmación. El detalle está en
+    <code>REGISTROS.md</code>.
+  </div>
+
+  <div class="stats">
+    <div class="stat"><span class="n" id="s-total">0</span><span class="l">Cargados</span></div>
+    <div class="stat"><span class="n" id="s-pend">0</span><span class="l">Sin decidir</span></div>
+    <div class="stat ok"><span class="n" id="s-ok">0</span><span class="l">Aprobados</span></div>
+    <div class="stat no"><span class="n" id="s-no">0</span><span class="l">Rechazados</span></div>
+    <div class="stat maybe"><span class="n" id="s-cupo">120</span><span class="l">Cupos libres</span></div>
+  </div>
+
+  <section class="card">
+    <header>
+      <h2><span class="step">1</span> Cargar el CSV de Luma</h2>
+      <button class="btn sm ghost" id="toggle-load">Ocultar</button>
+    </header>
+    <div class="body" id="load-body">
+      <div class="drop" id="drop">
+        <input type="file" id="file" accept=".csv,.tsv,text/csv,text/plain" hidden>
+        <button class="btn primary" id="pick">Elegir archivo</button>
+        <p>o arrastra el CSV aquí · también puedes pegarlo abajo</p>
+      </div>
+      <details style="margin-top:14px">
+        <summary style="cursor:pointer; font-size:.85rem; color:var(--muted)">Pegar el CSV como texto</summary>
+        <textarea id="paste" rows="5" placeholder="Pega aquí el contenido del CSV (primera fila = encabezados)" style="margin-top:10px"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="parse-paste">Leer lo pegado</button>
+        </div>
+      </details>
+      <p class="hint">En Luma: <code>Manage → Guests → Download CSV</code>. El panel no se conecta
+        a Luma ni a Sheets; todo entra por aquí.</p>
+    </div>
+  </section>
+
+  <section class="card" id="map-card" hidden>
+    <header>
+      <h2><span class="step">2</span> Mapeo de columnas</h2>
+      <span class="mode" id="map-count"></span>
+    </header>
+    <div class="body">
+      <div class="mapgrid">
+        <label class="fld"><span>Columna de correo</span><select id="map-email"></select></label>
+        <label class="fld"><span>Columna de nombre</span><select id="map-name"></select></label>
+      </div>
+      <p class="hint" style="margin-top:14px">Marca qué columnas son <b>respuestas del formulario</b>.
+        Con ellas se arman los filtros y la evaluación.</p>
+      <div class="cols" id="map-answers"></div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn primary" id="do-import">Importar registros</button>
+        <button class="btn ghost" id="cancel-import">Descartar</button>
+        <span class="hint" id="import-msg" style="margin:0"></span>
+      </div>
+      <div class="bars" id="import-bar" hidden><i></i></div>
+    </div>
+  </section>
+
+  <section class="card" id="ai-card" hidden>
+    <header>
+      <h2><span class="step">3</span> Criterios de admisión</h2>
+      <span class="mode" id="ai-state"></span>
+    </header>
+    <div class="body">
+      <textarea id="criteria" rows="5" placeholder="Ej.: Aprobar a dueñas y dueños de pymes venezolanas que ya lleven inventario o facturación. Rechazar estudiantes sin negocio y perfiles de agencias que solo vienen a vender."></textarea>
+      <div class="row" style="margin-top:12px">
+        <button class="btn primary" id="run-ai">Evaluar pendientes con IA</button>
+        <button class="btn ghost" id="stop-ai" hidden>Detener</button>
+        <span class="hint" id="ai-msg" style="margin:0"></span>
+      </div>
+      <div class="bars" id="ai-bar" hidden><i></i></div>
+      <p class="hint">La IA sugiere; no decide. Cada veredicto sigue necesitando que confirmes
+        aprobar o rechazar.</p>
+    </div>
+  </section>
+
+  <section class="card" id="filter-card" hidden>
+    <header>
+      <h2><span class="step">4</span> Filtros</h2>
+      <button class="btn sm ghost" id="clear-filters">Limpiar</button>
+    </header>
+    <div class="body">
+      <div class="row" style="margin-bottom:16px">
+        <div class="segs" id="seg-status">
+          <button data-st="all" aria-pressed="true">Todos</button>
+          <button data-st="pending" aria-pressed="false">Sin decidir</button>
+          <button data-st="approved" aria-pressed="false">Aprobados</button>
+          <button data-st="rejected" aria-pressed="false">Rechazados</button>
+        </div>
+        <div style="flex:1; min-width:190px"><input type="search" id="q" placeholder="Buscar nombre, correo o respuesta…"></div>
+      </div>
+      <div class="filters" id="filters"></div>
+    </div>
+  </section>
+
+  <section class="card" id="table-card" hidden>
+    <header>
+      <h2><span class="step">5</span> Decisiones</h2>
+      <span class="mode" id="shown"></span>
+    </header>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th style="width:30px"><input type="checkbox" id="all" title="Seleccionar lo filtrado"></th>
+          <th>Invitado</th>
+          <th>Respuestas</th>
+          <th>IA</th>
+          <th>Estado</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="norows" hidden><b>Nada que mostrar</b>Ningún registro cumple los filtros activos.</div>
+    <div class="bar">
+      <div class="row">
+        <span class="hint" id="sel" style="margin:0">0 seleccionados</span>
+        <button class="btn sm yes" id="bulk-ok" disabled>Aprobar selección</button>
+        <button class="btn sm nope" id="bulk-no" disabled>Rechazar selección</button>
+      </div>
+      <div class="row">
+        <button class="btn sm" id="copy">Copiar correos aprobados</button>
+        <button class="btn sm" id="dl">Descargar CSV</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var CUPOS = 120;
+  var META_RE = /^(created at|registered at|fecha|ticket|approval status|status|checked in|check-in|qr|id|guest id|api id|amount|currency|coupon)/i;
+
+  var caps = { db:null, user:null, sample:null, downloads:null };
+  var canWrite = true;
+  var records = new Map();
+  var cfg = { email:"", name:"", answers:[], criteria:"" };
+  var draft = null;
+  var filters = Object.create(null);
+  var statusFilter = "all";
+  var query = "";
+  var selection = new Set();
+  var aiAbort = null;
+
+  var VERDICT = {
+    aprobado:  { cls:"ok",    txt:"Aprobar" },
+    rechazado: { cls:"no",    txt:"Rechazar" },
+    revisar:   { cls:"maybe", txt:"Revisar" }
+  };
+
+  function $(id){ return document.getElementById(id); }
+
+  function esc(s){
+    return String(s == null ? "" : s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function toast(msg){
+    var t = document.createElement("div");
+    t.className = "toast"; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function(){ t.remove(); }, 2800);
+  }
+
+  function idFor(email){
+    return String(email || "").trim().toLowerCase()
+      .replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 180) || "_";
+  }
+
+  function parseCSV(text){
+    text = String(text).replace(/^﻿/, "");
+    var head = text.split(/\r?\n/)[0] || "";
+    var n = { ",": (head.match(/,/g)||[]).length,
+              ";": (head.match(/;/g)||[]).length,
+              "\t": (head.match(/\t/g)||[]).length };
+    var d = ",";
+    if (n[";"] > n[d]) d = ";";
+    if (n["\t"] > n[d]) d = "\t";
+
+    var out = [], row = [], field = "", quoted = false, i = 0;
+    while (i < text.length){
+      var c = text[i];
+      if (quoted){
+        if (c === '"'){
+          if (text[i+1] === '"'){ field += '"'; i += 2; continue; }
+          quoted = false; i++; continue;
+        }
+        field += c; i++; continue;
+      }
+      if (c === '"'){ quoted = true; i++; continue; }
+      if (c === d){ row.push(field); field = ""; i++; continue; }
+      if (c === "\r"){ i++; continue; }
+      if (c === "\n"){ row.push(field); out.push(row); row = []; field = ""; i++; continue; }
+      field += c; i++;
+    }
+    if (field.length || row.length){ row.push(field); out.push(row); }
+    return out.filter(function(r){ return r.some(function(v){ return String(v).trim() !== ""; }); });
+  }
+
+  function csvCell(v){
+    v = String(v == null ? "" : v);
+    return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+  }
+
+  function stripMeta(rec){
+    var o = {};
+    Object.keys(rec).forEach(function(k){ if (k !== "__id") o[k] = rec[k]; });
+    return o;
+  }
+
+  /* ---------------- arranque ---------------- */
+
+  async function boot(){
+    var claude = window.claude;
+    if (claude && typeof claude.use === "function"){
+      var got = await Promise.all([
+        claude.use("db").catch(function(){ return null; }),
+        claude.use("user").catch(function(){ return null; }),
+        claude.use("sample").catch(function(){ return null; }),
+        claude.use("downloads").catch(function(){ return null; })
+      ]);
+      caps.db = got[0]; caps.user = got[1]; caps.sample = got[2]; caps.downloads = got[3];
+    }
+
+    if (caps.user){
+      var w = null;
+      try { w = await caps.user.can("data.write"); } catch(e){ w = null; }
+      if (w === false) canWrite = false;
+    }
+
+    $("mode").textContent = caps.db
+      ? (canWrite ? "guardando en la base compartida" : "solo lectura")
+      : "sin base de datos · sesión local";
+    if (!caps.sample){
+      $("ai-state").textContent = "IA no disponible aquí";
+      $("run-ai").disabled = true;
+    }
+    if (!caps.downloads) $("dl").disabled = true;
+
+    if (caps.db){
+      try {
+        var snap = await caps.db.doc("config/mapping").get();
+        if (snap.exists){
+          var d = snap.data() || {};
+          cfg = {
+            email: d.email || "",
+            name: d.name || "",
+            answers: Array.isArray(d.answers) ? d.answers : [],
+            criteria: typeof d.criteria === "string" ? d.criteria : ""
+          };
+        }
+      } catch(e){}
+      try {
+        caps.db.collection("registros").onSnapshot(function(qs){
+          var next = new Map();
+          qs.docs.forEach(function(s){
+            var v = Object.assign({}, s.data() || {});
+            v.__id = s.id;
+            next.set(s.id, v);
+          });
+          records = next;
+          renderAll();
+        }, function(){});
+      } catch(e){}
+    }
+
+    $("criteria").value = cfg.criteria;
+    if (!canWrite){
+      $("criteria").disabled = true;
+      $("run-ai").disabled = true;
+      $("do-import").disabled = true;
+    }
+    renderAll();
+  }
+
+  /* ---------------- entrada de CSV ---------------- */
+
+  function loadText(text){
+    var rows = parseCSV(text);
+    if (rows.length < 2){ toast("El CSV no trae filas de datos"); return; }
+    var headers = rows[0].map(function(h){ return String(h).trim(); });
+    var body = rows.slice(1).map(function(r){
+      var o = {};
+      headers.forEach(function(h, i){ o[h] = (r[i] == null ? "" : String(r[i]).trim()); });
+      return o;
+    });
+    draft = { headers: headers, rows: body };
+    openMapping();
+  }
+
+  function guessEmail(headers, rows){
+    var byName = headers.filter(function(c){ return /e-?mail|correo/i.test(c); })[0];
+    if (byName) return byName;
+    var best = headers[0], score = 0;
+    headers.forEach(function(c){
+      var hits = rows.reduce(function(n, r){ return n + (/@/.test(r[c]) ? 1 : 0); }, 0);
+      if (hits > score){ score = hits; best = c; }
+    });
+    return best;
+  }
+
+  function openMapping(){
+    var h = draft.headers, rows = draft.rows;
+    var emailCol = (cfg.email && h.indexOf(cfg.email) >= 0) ? cfg.email : guessEmail(h, rows);
+    var nameCol  = (cfg.name && h.indexOf(cfg.name) >= 0) ? cfg.name
+                 : (h.filter(function(c){ return /^(name|nombre|full name)$/i.test(c); })[0] || "");
+
+    function fill(sel, val, allowEmpty){
+      sel.innerHTML = (allowEmpty ? '<option value="">— ninguna —</option>' : "") +
+        h.map(function(c){
+          return '<option value="' + esc(c) + '"' + (c === val ? " selected" : "") + ">" +
+                 esc(c || "(sin nombre)") + "</option>";
+        }).join("");
+    }
+    fill($("map-email"), emailCol, false);
+    fill($("map-name"), nameCol, true);
+
+    var chosen = cfg.answers.filter(function(c){ return h.indexOf(c) >= 0; });
+    if (!chosen.length){
+      chosen = h.filter(function(c){ return c && c !== emailCol && c !== nameCol && !META_RE.test(c); });
+    }
+    $("map-answers").innerHTML = h.map(function(c){
+      var on = chosen.indexOf(c) >= 0;
+      return '<label class="colchip' + (on ? " on" : "") + '">' +
+             '<input type="checkbox" value="' + esc(c) + '"' + (on ? " checked" : "") + ">" +
+             esc(c || "(sin nombre)") + "</label>";
+    }).join("");
+    $("map-answers").onchange = function(e){
+      if (e.target.tagName === "INPUT"){
+        e.target.parentNode.classList.toggle("on", e.target.checked);
+      }
+    };
+
+    $("map-count").textContent = rows.length + " filas · " + h.length + " columnas";
+    $("import-msg").textContent = "";
+    $("map-card").hidden = false;
+    $("map-card").scrollIntoView({ behavior:"smooth", block:"nearest" });
+  }
+
+  async function doImport(){
+    if (!draft) return;
+    var emailCol = $("map-email").value;
+    var nameCol = $("map-name").value;
+    var answers = Array.prototype.map.call(
+      $("map-answers").querySelectorAll("input:checked"),
+      function(i){ return i.value; });
+
+    if (!emailCol){ toast("Falta elegir la columna de correo"); return; }
+
+    cfg = { email:emailCol, name:nameCol, answers:answers, criteria:$("criteria").value || cfg.criteria };
+    await saveCfg();
+
+    var bar = $("import-bar"), fillEl = bar.firstElementChild;
+    bar.hidden = false;
+    $("do-import").disabled = true;
+
+    var total = draft.rows.length, done = 0, nuevos = 0, repetidos = 0, sinCorreo = 0;
+
+    for (var k = 0; k < total; k++){
+      var r = draft.rows[k];
+      var email = String(r[emailCol] || "").trim();
+      done++;
+      fillEl.style.width = Math.round(done / total * 100) + "%";
+      if (!email){ sinCorreo++; continue; }
+
+      var id = idFor(email);
+      var prev = records.get(id);
+      var rec = {
+        email: email,
+        nombre: nameCol ? (r[nameCol] || "") : "",
+        row: r,
+        ai: (prev && prev.ai) || null,
+        decision: (prev && prev.decision) || null,
+        decidedAt: (prev && prev.decidedAt) || null,
+        loadedAt: (prev && prev.loadedAt) || Date.now()
+      };
+      rec.__id = id;
+      if (prev) repetidos++; else nuevos++;
+      records.set(id, rec);
+
+      if (caps.db && canWrite){
+        try { await caps.db.doc("registros/" + id).set(stripMeta(rec)); }
+        catch(e){ toast("No se pudo guardar " + email); }
+      }
+      if (done % 10 === 0) $("import-msg").textContent = done + " / " + total;
+    }
+
+    var resumen = nuevos + " nuevos · " + repetidos + " ya estaban (conservan su decisión)" +
+      (sinCorreo ? " · " + sinCorreo + " sin correo, omitidos" : "");
+    $("import-msg").textContent = resumen;
+    toast(resumen);
+    $("do-import").disabled = false;
+    setTimeout(function(){ bar.hidden = true; fillEl.style.width = "0"; }, 900);
+
+    draft = null;
+    filters = Object.create(null);
+    selection.clear();
+    $("map-card").hidden = true;
+    $("load-body").hidden = true;
+    $("toggle-load").textContent = "Mostrar";
+    renderAll();
+    $("filter-card").scrollIntoView({ behavior:"smooth", block:"start" });
+  }
+
+  async function saveCfg(){
+    if (!caps.db || !canWrite) return;
+    try { await caps.db.doc("config/mapping").set(cfg); } catch(e){}
+  }
+
+  /* ---------------- filtros ---------------- */
+
+  function distinct(col){
+    var m = new Map();
+    records.forEach(function(r){
+      var v = String((r.row && r.row[col]) || "").trim() || "(sin responder)";
+      m.set(v, (m.get(v) || 0) + 1);
+    });
+    return m;
+  }
+
+  function renderFilters(){
+    var box = $("filters");
+    if (!cfg.answers.length || !records.size){ box.innerHTML = ""; return; }
+
+    box.innerHTML = cfg.answers.map(function(col){
+      var d = distinct(col);
+      var vals = Array.from(d.keys());
+      var avg = vals.reduce(function(a, v){ return a + v.length; }, 0) / (vals.length || 1);
+      /* respuesta cerrada = pocos valores, cortos y REPETIDOS. Sin la última
+         condición una columna abierta con pocas filas se dibuja como casillas. */
+      var closed = vals.length <= 12 && avg < 48 &&
+                   vals.length <= Math.max(2, Math.round(records.size * 0.6));
+
+      if (closed){
+        vals.sort(function(a, b){ return d.get(b) - d.get(a); });
+        var cur = (filters[col] instanceof Set) ? filters[col] : null;
+        return '<div class="fgroup"><h3>' + esc(col) + '</h3><div class="opts">' +
+          vals.map(function(v){
+            return '<label class="opt"><input type="checkbox" data-col="' + esc(col) +
+              '" value="' + esc(v) + '"' + (cur && cur.has(v) ? " checked" : "") +
+              '><span class="t" title="' + esc(v) + '">' + esc(v) +
+              '</span><span class="c">' + d.get(v) + "</span></label>";
+          }).join("") + "</div></div>";
+      }
+      var t = (filters[col] && filters[col].text) || "";
+      return '<div class="fgroup"><h3>' + esc(col) + "</h3>" +
+        '<input type="search" data-text="' + esc(col) + '" value="' + esc(t) +
+        '" placeholder="contiene…"></div>';
+    }).join("");
+
+    box.onchange = function(e){
+      var col = e.target.getAttribute("data-col");
+      if (!col) return;
+      if (!(filters[col] instanceof Set)) filters[col] = new Set();
+      if (e.target.checked) filters[col].add(e.target.value);
+      else filters[col]["delete"](e.target.value);
+      if (!filters[col].size) delete filters[col];
+      renderTable();
+    };
+    box.oninput = function(e){
+      var col = e.target.getAttribute("data-text");
+      if (!col) return;
+      var v = e.target.value.trim();
+      if (v) filters[col] = { text: v.toLowerCase() }; else delete filters[col];
+      renderTable();
+    };
+  }
+
+  function visible(){
+    var out = [];
+    records.forEach(function(r){
+      var st = r.decision || "pending";
+      if (statusFilter !== "all" && st !== statusFilter) return;
+
+      var ok = true;
+      Object.keys(filters).forEach(function(col){
+        if (!ok) return;
+        var v = String((r.row && r.row[col]) || "").trim() || "(sin responder)";
+        var f = filters[col];
+        if (f instanceof Set){ if (!f.has(v)) ok = false; }
+        else if (f && f.text && v.toLowerCase().indexOf(f.text) < 0) ok = false;
+      });
+      if (!ok) return;
+
+      if (query){
+        var hay = (r.email + " " + (r.nombre || "") + " " +
+                   Object.keys(r.row || {}).map(function(k){ return r.row[k]; }).join(" ") + " " +
+                   ((r.ai && r.ai.motivo) || "")).toLowerCase();
+        if (hay.indexOf(query) < 0) return;
+      }
+      out.push(r);
+    });
+    out.sort(function(a, b){
+      return String(a.nombre || a.email).localeCompare(String(b.nombre || b.email), "es");
+    });
+    return out;
+  }
+
+  /* ---------------- tabla ---------------- */
+
+  function renderTable(){
+    var list = visible();
+    $("shown").textContent = list.length + " de " + records.size;
+    $("norows").hidden = list.length > 0;
+
+    $("rows").innerHTML = list.map(function(r){
+      var st = r.decision || "pending";
+      var ai = r.ai;
+      var v = ai ? (VERDICT[ai.veredicto] || VERDICT.revisar) : null;
+
+      var ansHTML = cfg.answers.map(function(c){
+        var val = (r.row && r.row[c]) || "";
+        return val ? '<div class="ansline"><b>' + esc(c) + ":</b> " + esc(val) + "</div>" : "";
+      }).join("") || '<span class="why">—</span>';
+
+      return '<tr class="' + (st === "rejected" ? "gone" : "") + '" data-id="' + esc(r.__id) + '">' +
+        '<td><input type="checkbox" class="pick"' + (selection.has(r.__id) ? " checked" : "") + "></td>" +
+        '<td class="who"><strong>' + esc(r.nombre || "—") + "</strong><span>" + esc(r.email) + "</span></td>" +
+        '<td class="ans">' + ansHTML + "</td>" +
+        "<td>" + (v
+          ? '<span class="tag ' + v.cls + '">' + v.txt + '</span><span class="why">' + esc(ai.motivo || "") + "</span>"
+          : '<span class="tag pend">—</span>') + "</td>" +
+        "<td>" + (st === "approved" ? '<span class="tag ok">Aprobado</span>'
+                : st === "rejected" ? '<span class="tag no">Rechazado</span>'
+                : '<span class="tag pend">Sin decidir</span>') + "</td>" +
+        '<td class="act">' +
+          '<button class="btn sm yes" data-do="approved"' + (canWrite ? "" : " disabled") + ">Aprobar</button>" +
+          '<button class="btn sm nope" data-do="rejected"' + (canWrite ? "" : " disabled") + ">Rechazar</button>" +
+          (st !== "pending" && canWrite ? '<button class="btn sm ghost" data-do="clear">Deshacer</button>' : "") +
+        "</td></tr>";
+    }).join("");
+
+    var n = selection.size;
+    $("sel").textContent = n + (n === 1 ? " seleccionado" : " seleccionados");
+    $("bulk-ok").disabled = $("bulk-no").disabled = (n === 0 || !canWrite);
+    $("all").checked = list.length > 0 && list.every(function(r){ return selection.has(r.__id); });
+  }
+
+  function renderStats(){
+    var t = 0, p = 0, a = 0, x = 0;
+    records.forEach(function(r){
+      t++;
+      if (r.decision === "approved") a++;
+      else if (r.decision === "rejected") x++;
+      else p++;
+    });
+    $("s-total").textContent = t;
+    $("s-pend").textContent = p;
+    $("s-ok").textContent = a;
+    $("s-no").textContent = x;
+    $("s-cupo").textContent = Math.max(0, CUPOS - a);
+  }
+
+  function renderAll(){
+    var has = records.size > 0;
+    $("ai-card").hidden = !has;
+    $("filter-card").hidden = !has;
+    $("table-card").hidden = !has;
+    renderStats();
+    if (has){ renderFilters(); renderTable(); }
+  }
+
+  /* ---------------- decisiones ---------------- */
+
+  async function decide(id, value){
+    if (!canWrite) return;
+    var r = records.get(id);
+    if (!r || r.decision === value) return;
+    r.decision = value;
+    r.decidedAt = value ? Date.now() : null;
+    renderStats(); renderTable();
+    if (caps.db){
+      try { await caps.db.doc("registros/" + id).update({ decision:value, decidedAt:r.decidedAt }); }
+      catch(e){ toast("No se pudo guardar la decisión"); }
+    }
+  }
+
+  async function bulk(value){
+    var ids = Array.from(selection);
+    for (var i = 0; i < ids.length; i++) await decide(ids[i], value);
+    selection.clear();
+    renderTable();
+    toast(ids.length + (value === "approved" ? " aprobados" : " rechazados"));
+  }
+
+  /* ---------------- evaluación con IA ---------------- */
+
+  async function runAI(){
+    if (!caps.sample) return;
+    var criteria = $("criteria").value.trim();
+    if (!criteria){ toast("Escribe primero los criterios"); return; }
+    if (criteria !== cfg.criteria){ cfg.criteria = criteria; saveCfg(); }
+
+    var pend = [];
+    records.forEach(function(r){ if (!r.ai && !r.decision) pend.push(r); });
+    if (!pend.length){ toast("No hay registros pendientes de evaluar"); return; }
+
+    aiAbort = new AbortController();
+    $("run-ai").disabled = true;
+    $("stop-ai").hidden = false;
+    var bar = $("ai-bar"), fillEl = bar.firstElementChild;
+    bar.hidden = false;
+
+    var SIZE = 15, done = 0;
+    try {
+      for (var s = 0; s < pend.length; s += SIZE){
+        var batch = pend.slice(s, s + SIZE);
+        var payload = batch.map(function(r, i){
+          var o = { i:i, nombre:r.nombre || "", correo:r.email };
+          cfg.answers.forEach(function(c){ o[c] = (r.row && r.row[c]) || ""; });
+          return o;
+        });
+
+        var prompt =
+          "Eres el filtro de inscripciones del evento Fina 360° (Caracas, 120 cupos, " +
+          "registro con aprobación previa).\n\n" +
+          "CRITERIOS DE ADMISIÓN, escritos por la organizadora:\n" + criteria + "\n\n" +
+          "Evalúa cada registro contra esos criterios y nada más. Si los criterios no " +
+          "alcanzan para decidir un caso, usa \"revisar\" en vez de inventar una razón.\n\n" +
+          "Responde ÚNICAMENTE con un array JSON, un objeto por registro, en el mismo orden:\n" +
+          '[{"i":0,"veredicto":"aprobado","motivo":"Dueña de pyme con inventario, encaja con el perfil."}]\n' +
+          'donde "veredicto" es "aprobado", "rechazado" o "revisar", y "motivo" es una sola ' +
+          "frase en español de máximo 15 palabras.\n\nREGISTROS:\n" +
+          JSON.stringify(payload, null, 1);
+
+        var res = await caps.sample.json(prompt, { signal: aiAbort.signal, modelTier: "default" });
+        if (!Array.isArray(res)) throw { code:"invalid_json", message:"la respuesta no fue un array" };
+
+        for (var k = 0; k < res.length; k++){
+          var item = res[k] || {};
+          var target = batch[Number(item.i)];
+          if (!target) continue;
+          var vd = String(item.veredicto || "revisar").toLowerCase();
+          if (!VERDICT[vd]) vd = "revisar";
+          target.ai = { veredicto:vd, motivo:String(item.motivo || "").slice(0, 220), at:Date.now() };
+          if (caps.db && canWrite){
+            try { await caps.db.doc("registros/" + target.__id).update({ ai: target.ai }); } catch(e){}
+          }
+        }
+
+        done += batch.length;
+        fillEl.style.width = Math.round(done / pend.length * 100) + "%";
+        $("ai-msg").textContent = done + " / " + pend.length + " evaluados";
+        renderTable();
+      }
+      $("ai-msg").textContent = "Listo: " + done + " evaluados.";
+    } catch(e){
+      var code = e && e.code;
+      $("ai-msg").textContent =
+        code === "cancelled"    ? "Detenido. Lo ya evaluado quedó guardado." :
+        code === "not_granted"  ? "No se dio permiso para usar Claude en este panel." :
+        code === "rate_limited" ? "Demasiadas consultas seguidas. Espera un momento." :
+        code === "invalid_json" ? "La respuesta no vino en el formato esperado. Acorta los criterios." :
+                                  "No se pudo completar la evaluación.";
+      if (code === "not_granted") caps.sample = null;
+    } finally {
+      aiAbort = null;
+      $("run-ai").disabled = !caps.sample || !canWrite;
+      $("stop-ai").hidden = true;
+      setTimeout(function(){ bar.hidden = true; fillEl.style.width = "0"; }, 900);
+      renderTable();
+    }
+  }
+
+  /* ---------------- salida ---------------- */
+
+  function approvedEmails(){
+    var out = [];
+    records.forEach(function(r){ if (r.decision === "approved") out.push(r.email); });
+    return out.sort();
+  }
+
+  async function copyApproved(){
+    var list = approvedEmails();
+    if (!list.length){ toast("Todavía no hay aprobados"); return; }
+    var text = list.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      toast(list.length + " correos copiados");
+      return;
+    } catch(e){}
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.cssText = "position:fixed;left:-9999px;top:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); toast(list.length + " correos copiados"); }
+    catch(e2){ toast("El navegador bloqueó el portapapeles: copia desde el CSV"); }
+    ta.remove();
+  }
+
+  async function download(){
+    if (!caps.downloads) return;
+    var head = ["correo", "nombre"].concat(cfg.answers)
+                 .concat(["veredicto_ia", "motivo_ia", "decision"]);
+    var lines = [head.map(csvCell).join(",")];
+    visible().forEach(function(r){
+      var line = [r.email, r.nombre || ""]
+        .concat(cfg.answers.map(function(c){ return (r.row && r.row[c]) || ""; }))
+        .concat([
+          r.ai ? r.ai.veredicto : "",
+          r.ai ? r.ai.motivo : "",
+          r.decision === "approved" ? "aprobado" : r.decision === "rejected" ? "rechazado" : ""
+        ]);
+      lines.push(line.map(csvCell).join(","));
+    });
+    try {
+      await caps.downloads.save({
+        filename: "registros-fina-360.csv",
+        data: "﻿" + lines.join("\r\n")
+      });
+      toast("CSV guardado");
+    } catch(e){
+      if (e && e.code !== "declined") toast("No se pudo descargar el CSV");
+    }
+  }
+
+  /* ---------------- eventos ---------------- */
+
+  function readFile(f){
+    if (!f) return;
+    var fr = new FileReader();
+    fr.onload = function(){ loadText(fr.result); };
+    fr.readAsText(f, "utf-8");
+  }
+
+  $("pick").onclick = function(){ $("file").click(); };
+  $("file").onchange = function(e){ readFile(e.target.files && e.target.files[0]); e.target.value = ""; };
+  $("parse-paste").onclick = function(){
+    var v = $("paste").value.trim();
+    if (v) loadText(v); else toast("Pega el CSV primero");
+  };
+
+  (function(){
+    var dz = $("drop");
+    ["dragenter","dragover"].forEach(function(ev){
+      dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.add("hot"); });
+    });
+    ["dragleave","drop"].forEach(function(ev){
+      dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.remove("hot"); });
+    });
+    dz.addEventListener("drop", function(e){
+      readFile(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]);
+    });
+  })();
+
+  $("toggle-load").onclick = function(){
+    var b = $("load-body");
+    b.hidden = !b.hidden;
+    this.textContent = b.hidden ? "Mostrar" : "Ocultar";
+  };
+
+  $("do-import").onclick = doImport;
+  $("cancel-import").onclick = function(){ draft = null; $("map-card").hidden = true; };
+
+  $("run-ai").onclick = runAI;
+  $("stop-ai").onclick = function(){ if (aiAbort) aiAbort.abort(); };
+  $("criteria").addEventListener("change", function(){ cfg.criteria = this.value; saveCfg(); });
+
+  $("seg-status").onclick = function(e){
+    var b = e.target.closest("button");
+    if (!b) return;
+    statusFilter = b.getAttribute("data-st");
+    Array.prototype.forEach.call(this.children, function(c){
+      c.setAttribute("aria-pressed", String(c === b));
+    });
+    renderTable();
+  };
+  $("q").oninput = function(){ query = this.value.trim().toLowerCase(); renderTable(); };
+  $("clear-filters").onclick = function(){
+    filters = Object.create(null);
+    query = ""; $("q").value = "";
+    statusFilter = "all";
+    Array.prototype.forEach.call($("seg-status").children, function(c){
+      c.setAttribute("aria-pressed", String(c.getAttribute("data-st") === "all"));
+    });
+    renderFilters(); renderTable();
+  };
+
+  $("rows").onclick = function(e){
+    var btn = e.target.closest("button[data-do]");
+    if (!btn) return;
+    var tr = e.target.closest("tr");
+    if (!tr) return;
+    var v = btn.getAttribute("data-do");
+    decide(tr.getAttribute("data-id"), v === "clear" ? null : v);
+  };
+  $("rows").onchange = function(e){
+    if (!e.target.classList.contains("pick")) return;
+    var id = e.target.closest("tr").getAttribute("data-id");
+    if (e.target.checked) selection.add(id); else selection["delete"](id);
+    renderTable();
+  };
+  $("all").onchange = function(){
+    var list = visible(), on = this.checked;
+    list.forEach(function(r){ if (on) selection.add(r.__id); else selection["delete"](r.__id); });
+    renderTable();
+  };
+  $("bulk-ok").onclick = function(){ bulk("approved"); };
+  $("bulk-no").onclick = function(){ bulk("rejected"); };
+  $("copy").onclick = copyApproved;
+  $("dl").onclick = download;
+
+  boot();
+})();
+</script>
