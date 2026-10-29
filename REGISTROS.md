@@ -1,4 +1,4 @@
-# Gestión de registros — Fina 360°
+# Gestión de registros — Fina 360
 
 Cómo se filtran las respuestas del formulario de Luma, cómo se decide a quién se
 aprueba y cómo llega el correo de confirmación.
@@ -6,7 +6,7 @@ aprueba y cómo llega el correo de confirmación.
 | | |
 |---|---|
 | Evento | <https://luma.com/jxv3y34r> · calendario `cal-6hJ4kE1XV3TLrUD` |
-| Hoja | [Registro Fina 360°](https://docs.google.com/spreadsheets/d/1tlixwrGRKzyZtuqekFil8CglP8WI7CZeG89290Q_hPo/edit) |
+| Hoja | [Registro Fina 360](https://docs.google.com/spreadsheets/d/1tlixwrGRKzyZtuqekFil8CglP8WI7CZeG89290Q_hPo/edit) |
 | Panel | `registros-panel.html` en esta rama, publicado como artefacto |
 | Cupos | 120 · el registro es **con aprobación previa** |
 
@@ -189,7 +189,7 @@ const COL_RESULTADO = 3;              // columna C: la escribe el script
 
 function onOpen() {
   SpreadsheetApp.getUi()
-    .createMenu('Fina 360°')
+    .createMenu('Fina 360')
     .addItem('Traer registros de Luma', 'sincronizar')
     .addItem('Aplicar decisiones', 'aplicarDecisiones')
     .addToUi();
