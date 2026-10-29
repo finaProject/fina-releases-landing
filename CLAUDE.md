@@ -1,4 +1,4 @@
-# Fina 360° — landing del evento
+# Fina 360 — landing del evento
 
 El evento se llamó **Fina Releases** hasta octubre de 2026. El repo, el proyecto de Vercel
 y la URL conservan el nombre viejo (`fina-releases-landing`); solo cambió el nombre público.
@@ -232,8 +232,8 @@ frame estático.
 El evento **ya no se cuenta como seis releases** sino como un ecosistema para emprender, y
 el público dejó de ser "contadores, founders y equipos de finanzas" para ser quien
 emprende. Las cifras son `01 Ecosistema`, `60 Minutos` y `120 Cupos`. Ya no queda ningún
-resto del marco viejo en el texto, y el evento pasó a llamarse **Fina 360°**: el lockup del
-nav dice "fina | 360°" y el pie "Fina 360° [01] — 2026".
+resto del marco viejo en el texto, y el evento pasó a llamarse **Fina 360**: el lockup del
+nav dice "fina | 360" y el pie "Fina 360 [01] — 2026".
 
 La página **no muestra horas** y tampoco dice ya "presencial". Ambas cosas se quitaron a
 propósito en octubre de 2026. El `TARGET` del contador conserva las 18:00 porque necesita
