@@ -505,8 +505,6 @@ footer{ padding-block:26px; }
   display:flex; flex-wrap:wrap; gap:10px 26px; justify-content:space-between;
   font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-faint);
 }
-.foot a{ text-decoration:none; }
-.foot a:hover{ color:var(--fina-pink); }
 
 /* ============================================================
    SEDE — dibujo en alambre, plotteado en vivo sobre canvas
@@ -581,7 +579,6 @@ footer{ padding-block:26px; }
 
 .close-copy{ display:flex; flex-direction:column; align-items:flex-start; gap:16px; }
 .close .h2{ margin-bottom:0; }
-.close .lede{ margin-inline:0; text-align:left; }
 .close .btn{ margin-top:10px; }
 .close-copy .eyebrow{ margin:0 !important; }
 
@@ -976,7 +973,6 @@ footer{ padding-block:26px; }
     <div class="close-copy">
       <p class="eyebrow">// 03 &nbsp;<span class="on">Registro abierto</span></p>
       <h2 class="h2">Son <span class="grad">120</span> cupos.</h2>
-      <p class="lede">Reserva en treinta segundos. Te llega la confirmación al correo con la dirección exacta.</p>
       <a class="btn-outline" href="https://luma.com/jxv3y34r" id="rsvp-link"
          target="_blank" rel="noopener">Solicitar mi cupo <span class="arw">&#8594;</span></a>
       <p class="eyebrow">Martes 24.11.2026 · Caracas</p>
@@ -991,7 +987,6 @@ footer{ padding-block:26px; }
 <footer>
   <div class="wrap foot">
     <span>Fina 360&deg; [01] — 2026</span>
-    <span><a href="mailto:hola@finapartner.com">hola@finapartner.com</a></span>
     <span>Hecho en Caracas</span>
   </div>
 </footer>
@@ -1319,6 +1314,11 @@ footer{ padding-block:26px; }
       obj.position.set(-mid.x*s, -mid.y*s + CENTER_Y, -mid.z*s);
       rocket.add(obj);
       modelReady = true;
+      /* El modelo puede llegar con la seccion fuera de cuadro y el bucle
+         parado: sin este fotograma suelto el cohete se queda cargado, en su
+         sitio, y el lienzo en blanco hasta que alguien vuelva a pasar. */
+      if (!running) renderer.render(scene, camera);
+      maybeLaunch();
     }, null, function(){
       /* la sección sigue funcionando: solo se queda sin cohete. El caso
          típico es abrir index.html como file://, donde el navegador bloquea
@@ -1440,7 +1440,9 @@ footer{ padding-block:26px; }
   });
   ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
     renderer.domElement.addEventListener(ev, function(){
-      if (dragging && moved < 6 && launchT === null) launchT = 0;   /* clic limpio = despegue */
+      /* sin modelo no hay nada que despegar: el clic sobre el recuadro vacio
+         gastaba la animacion en un grupo sin mallas */
+      if (dragging && moved < 6 && launchT === null && modelReady) launchT = 0;   /* clic limpio = despegue */
       dragging = false;
     });
   });
@@ -1508,9 +1510,21 @@ footer{ padding-block:26px; }
   }
 
   /* solo gasta frames cuando la sección está a la vista; despega al entrar */
-  var fired = false;
+  var fired = false, onScreen = false;
   function start(){ if (running) return; running = true; clock.getDelta(); tick(); }
   function stop(){ running = false; }
+
+  /* El despegue espera al modelo, no a un temporizador. Antes arrancaba a los
+     500 ms de entrar la seccion mirara o no si el .glb habia llegado, y como
+     la secuencia lleva el cohete a y=40 —muy fuera de cuadro— entre el
+     segundo 2,4 y el 3,0, un modelo de 18,5 MB que terminaba de bajar justo
+     ahi se materializaba donde no se ve. De ahi que el recuadro saliera
+     vacio unas veces si y otras no, segun la cache y la conexion. */
+  function maybeLaunch(){
+    if (fired || reduceMotion || !modelReady || !onScreen) return;
+    fired = true;
+    setTimeout(function(){ launchT = 0; }, 500);
+  }
 
   /* el modelo empieza a bajar un poco antes de entrar en cuadro */
   if (window.IntersectionObserver){
@@ -1519,12 +1533,11 @@ footer{ padding-block:26px; }
     }, {rootMargin:"200% 0px"}).observe(stage);
 
     new IntersectionObserver(function(en){
-      if (en[0].isIntersecting){
-        start();
-        if (!fired && !reduceMotion){ fired = true; setTimeout(function(){ launchT = 0; }, 500); }
-      } else stop();
+      onScreen = en[0].isIntersecting;
+      if (onScreen){ start(); maybeLaunch(); }
+      else stop();
     }, {threshold:.25}).observe(stage);
-  } else { loadRocket(); start(); }
+  } else { onScreen = true; loadRocket(); start(); }
 })();
 </script>
 
